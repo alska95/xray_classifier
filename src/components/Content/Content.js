@@ -1,6 +1,11 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import styled from 'styled-components';
 import images from '../../images/sample';
+import {useDispatch, useSelector} from "react-redux";
+import {setBinaryImageAction, setImageAction} from "../../reducers";
+import Classifier from "./Classifier";
+import { createCanvas } from 'canvas'
+import * as tf from '@tensorflow/tfjs'
 
 const style = {};
 
@@ -28,7 +33,7 @@ style.InfoContainer = styled.div`
 `;
 
 style.Info = styled.div`
-    height 300px;
+    height: 300px;
     border: 1px solid #000000;
     padding: 5px;
     margin-bottom: 10px;
@@ -39,7 +44,7 @@ style.InfoItem = styled.label`
 `;
 
 style.FilterContainer = styled.div`
-    height: 300px;
+    height: 100px;
 `;
 
 style.FilterItem = styled.input`
@@ -49,7 +54,11 @@ style.FilterItem = styled.input`
 let boxChecked = false;
 let heatmapChecked = false;
 
+
+
 const Content = () => {
+    const dispatch = useDispatch();
+    const result = useSelector((state)=>state.index.result);
     const [image, setImage] = useState("");
 
     const check = (type) => {
@@ -62,7 +71,21 @@ const Content = () => {
         if(boxChecked&&heatmapChecked) setImage(images.chest_both);
     }
 
-    console.log(boxChecked + " / " + heatmapChecked);
+
+    const handleFileOnChange = (event) => {
+        event.preventDefault();
+
+        let reader = new FileReader();
+        let file = event.target.files[0];
+        reader.onloadend = () => {
+            setImage(reader.result);
+            console.log(file);
+            dispatch(setImageAction(reader.result));
+        }
+
+        reader.readAsDataURL(file);
+    }
+
 
     const red_label = {
         color: "red",
@@ -75,9 +98,9 @@ const Content = () => {
     return (
         <style.Container>
             {image==="" ? (
-                <style.InputImage type="file" accept="img/*" onChange={(e) => setImage(images.chest_default)}/>
+                <style.InputImage type="file" accept="img/*" onChange={handleFileOnChange}/>
             ) : (
-                <style.OutputImage src={image}/> 
+                <Classifier/>
             )}
             {image!=="" && (
                 <style.InfoContainer>
@@ -91,7 +114,9 @@ const Content = () => {
                     </style.FilterContainer>
                 </style.InfoContainer>
             )}
-            
+            {result && <div>
+                {result}
+            </div>}
         </style.Container>
     );
 }

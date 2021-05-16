@@ -3,12 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/plugin-syntax-jsx": "^7.12.13",
+    "@tensorflow/tfjs": "^3.6.0",
+    "@tensorflow/tfjs-converter": "^3.6.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.3",
+    "canvas": "^2.7.0",
+    "cors": "^2.8.5",
+    "next-redux-wrapper": "^6.0.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.3",
+    "redux": "^4.1.0",
+    "redux-devtools-extension": "^2.13.9",
     "styled-components": "^5.2.1",
     "web-vitals": "^1.1.1"
   },
@@ -35,5 +43,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.4",
+    "@babel/plugin-transform-react-jsx": "^7.13.12",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-react": "^7.13.13",
+    "react-redux": "^7.2.4"
   }
 }
