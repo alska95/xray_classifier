@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import styled from 'styled-components';
 import images from '../../images/sample';
 import {useDispatch, useSelector} from "react-redux";
-import {setBinaryImageAction, setImageAction} from "../../reducers";
+import {setImageAction} from "../../reducers";
 import Classifier from "./Classifier";
 import Disease from './Disease'
 
@@ -14,11 +14,13 @@ style.Container = styled.div`
     padding: 10px;
 `;
 
-style.InputImage = styled.input`
+style.InputImage = styled.div`
     width: 600px;
     height: 600px;
     border: 1px solid #000000;
     margin-right: 10px;
+    display: flex;
+    flex-direction: column;
 `;
 
 style.OutputImage = styled.img`
@@ -33,6 +35,7 @@ style.InfoContainer = styled.div`
 `;
 
 style.Info = styled.div`
+    width: 222px;
     height: 300px;
     border: 1px solid #000000;
     padding: 5px;
@@ -44,12 +47,20 @@ style.InfoItem = styled.label`
 `;
 
 style.FilterContainer = styled.div`
-    height: 100px;
+    height: 50px;
 `;
 
 style.FilterItem = styled.input`
     color: black;
 `;
+
+const OutputImage = styled.img`
+    width: 600px;
+    height: 600px;
+    margin-right: 10px;
+    border: 1px solid black;
+`;
+
 
 let boxChecked = false;
 let heatmapChecked = false;
@@ -57,6 +68,11 @@ let heatmapChecked = false;
 
 
 const Content = () => {
+    const imageInput = useRef();
+    const onClickImageUpload = useCallback(() => {
+        imageInput.current.click();
+    }, []);
+
     const dispatch = useDispatch();
     const result = useSelector((state)=>state.index.result);
     const [image, setImage] = useState("");
@@ -86,39 +102,35 @@ const Content = () => {
         reader.readAsDataURL(file);
     }
 
-
-    const red_label = {
-        color: "red",
-    };
-
-    const blue_label = {
-        color: "blue",
-    };
-
     return (
         <style.Container>
             {image==="" ? (
-                <style.InputImage type="file" accept="img/*" onChange={handleFileOnChange}/>
+                    <style.InputImage>
+                        <input multiple hidden ref ={imageInput} type="file" accept="img/*" onChange={handleFileOnChange}/>
+                        <button style={{width : "200px" , margin : "10px" , fontWeight : "bold"}} onClick={onClickImageUpload}>이미지 업로드</button>
+                    </style.InputImage>
             ) : (
-                <div>
-                    <Classifier/>
-                    <input type="file" accept="img/*" onChange={handleFileOnChange}/>
-                </div>
+                <style.InputImage>
+                    <OutputImage src = {image}/>
+                </style.InputImage>
 
             )}
             {image!=="" && (
                 <style.InfoContainer>
                     <style.Info>
-                    {result &&
-                    result.map((v , index)=>
-                        <Disease factor = {v} index = {index} key = {index}/>
-                    )}
+                        {result &&
+                        result.map((v , index)=>
+                            <Disease factor = {v} index = {index} key = {index}/>
+                        )}
                     </style.Info>
 
                     <style.FilterContainer>
                         <style.FilterItem type="checkbox" name="box" onChange={() => check("box")}/>Box
                         <style.FilterItem type="checkbox" name="heatmap" onChange={() => check("heatmap")}/>Heatmap
                     </style.FilterContainer>
+                    <Classifier/>
+                    <input multiple hidden ref ={imageInput} type="file" accept="img/*" onChange={handleFileOnChange}/>
+                    <button style={{width : "200px" , marginTop : "10px" , fontWeight : "bold"}} onClick={onClickImageUpload}>새로운 이미지 업로드</button>
                 </style.InfoContainer>
             )}
 

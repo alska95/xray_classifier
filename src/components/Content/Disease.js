@@ -1,7 +1,17 @@
-import React from 'react';
+import React, {useCallback, useState} from 'react';
+import styled from "styled-components";
 
-
-const label = ['Cardiomegaly',
+const colorStyle = [
+    {color: "red"},
+    {color: "green"},
+    {color: "blue"},
+    {color: "gray"},
+    {color: "purple"},
+    {color: "pink"},
+    {color: "black"},
+    ]
+const label = [
+    'Cardiomegaly',
     'Emphysema',
     'Effusion',
     'Hernia',
@@ -32,8 +42,14 @@ const threshold = [
     0.12
 ];
 
+const DiseaseFactor = styled.div`
+  font-weight: bold;
+`
+
 const Disease = ({factor , index}) => {
     let unFoundCount = 0;
+    const fac = parseFloat(factor);
+
     const checkThreshold = () =>{
         if(fac > threshold[index]){
             return true;
@@ -42,11 +58,11 @@ const Disease = ({factor , index}) => {
             return false;
         }
     }
-    const fac = parseFloat(factor);
+
     return (
         <>
             { checkThreshold() &&
-            <div>{label[index]} : {factor}</div>}
+            <DiseaseFactor style={colorStyle[index%7]}>{label[index]} : {fac}</DiseaseFactor>}
             {unFoundCount >= 14 &&
             <div>unFound</div>}
         </>
