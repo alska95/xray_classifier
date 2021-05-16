@@ -15,13 +15,30 @@ const label = ['Cardiomegaly',
     'Fibrosis',
     'Edema',
     'Consolidation']
+const threshold = [
+    0.17,
+    0.1,
+    0.4,
+    0.05,
+    0.4,
+    0.2,
+    0.2,
+    0.2,
+    0.1,
+    0.1,
+    0.05,
+    0.05,
+    0.1,
+    0.12
+];
 
 const Disease = ({factor , index}) => {
-    const threshold = 0.4;
+
     const fac = parseFloat(factor);
+
     return (
         <>
-            {fac > threshold &&
+            {fac > threshold[index] &&
             <div>{label[index]} : {factor}</div>}
         </>
     );
