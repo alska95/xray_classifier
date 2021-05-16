@@ -100,14 +100,18 @@ const Content = () => {
             {image==="" ? (
                 <style.InputImage type="file" accept="img/*" onChange={handleFileOnChange}/>
             ) : (
-                <Classifier/>
+                <div>
+                    <Classifier/>
+                    <input type="file" accept="img/*" onChange={handleFileOnChange}/>
+                </div>
+
             )}
             {image!=="" && (
                 <style.InfoContainer>
                     <style.Info>
                     {result &&
                     result.map((v , index)=>
-                        <Disease factor = {v} index = {index}/>
+                        <Disease factor = {v} index = {index} key = {index}/>
                     )}
                     </style.Info>
 
