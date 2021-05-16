@@ -33,13 +33,22 @@ const threshold = [
 ];
 
 const Disease = ({factor , index}) => {
-
+    let unFoundCount = 0;
+    const checkThreshold = () =>{
+        if(fac > threshold[index]){
+            return true;
+        }else{
+            unFoundCount += 1;
+            return false;
+        }
+    }
     const fac = parseFloat(factor);
-
     return (
         <>
-            {fac > threshold[index] &&
+            { checkThreshold() &&
             <div>{label[index]} : {factor}</div>}
+            {unFoundCount >= 14 &&
+            <div>unFound</div>}
         </>
     );
 };
