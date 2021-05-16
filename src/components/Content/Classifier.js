@@ -22,7 +22,7 @@ const Classifier = () => {
     let imageFile = useSelector((state)=> state.index.image);
     console.log(imageFile);
     let im = new Image();
-
+    let resultArray;
     async function preprocess(img)
     {
         im.src = img;
@@ -46,12 +46,14 @@ const Classifier = () => {
         const img = await preprocess(imageFile);
         const result = await model.predict(img);
         await result.print();
-
-        console.log(result);
+        const rs = await result.toString().replace(/( )|(\[)|\]|(Tensor)/gi,'')
+        resultArray = rs.split(',');
+        dispatch(setResultAction(resultArray));
+        console.log(resultArray);
     }
-/*    const showResult = ()=>{
-        dispatch(setResultAction(result));
-    }*/
+    const showResult = ()=>{
+
+    }
     return (
         <>
             <OutputImage src = {imageFile}/>

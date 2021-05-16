@@ -4,8 +4,8 @@ import images from '../../images/sample';
 import {useDispatch, useSelector} from "react-redux";
 import {setBinaryImageAction, setImageAction} from "../../reducers";
 import Classifier from "./Classifier";
-import { createCanvas } from 'canvas'
-import * as tf from '@tensorflow/tfjs'
+import Disease from './Disease'
+
 
 const style = {};
 
@@ -105,18 +105,19 @@ const Content = () => {
             {image!=="" && (
                 <style.InfoContainer>
                     <style.Info>
-                        <style.InfoItem style={red_label}>Pneumonia 82%</style.InfoItem>
-                        <style.InfoItem style={blue_label}>Nodule 51%</style.InfoItem>
+                    {result &&
+                    result.map((v , index)=>
+                        <Disease factor = {v} index = {index}/>
+                    )}
                     </style.Info>
+
                     <style.FilterContainer>
                         <style.FilterItem type="checkbox" name="box" onChange={() => check("box")}/>Box
                         <style.FilterItem type="checkbox" name="heatmap" onChange={() => check("heatmap")}/>Heatmap
                     </style.FilterContainer>
                 </style.InfoContainer>
             )}
-            {result && <div>
-                {result}
-            </div>}
+
         </style.Container>
     );
 }
