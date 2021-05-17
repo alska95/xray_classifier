@@ -11,35 +11,36 @@ const colorStyle = [
     {color: "black"},
     ]
 const label = [
+    'Atelectasis',
     'Cardiomegaly',
-    'Emphysema',
+    'Consolidation',
+    'Edema',
     'Effusion',
+    'Emphysema',
+    'Fibrosis',
     'Hernia',
     'Infiltration',
     'Mass',
     'Nodule',
-    'Atelectasis',
-    'Pneumothorax',
     'Pleural_Thickening',
     'Pneumonia',
-    'Fibrosis',
-    'Edema',
-    'Consolidation']
+    'Pneumothorax',
+]
 const threshold = [
+    0.2,
     0.17,
+    0.12,
     0.1,
     0.4,
+    0.1,
+    0.05,
     0.05,
     0.4,
     0.2,
     0.2,
-    0.2,
-    0.1,
     0.1,
     0.05,
-    0.05,
     0.1,
-    0.12
 ];
 
 const DiseaseFactor = styled.div`
