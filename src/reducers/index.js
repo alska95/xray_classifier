@@ -2,13 +2,27 @@ import {combineReducers} from "redux";
 
 const initialState = {
     image : [],
-    binaryImage : [],
     result : [],
-    unFoundCount : 0,
+    unFoundFlag : false,
+    threshold : [
+        0.2,
+        0.17,
+        0.12,
+        0.1,
+        0.4,
+        0.1,
+        0.05,
+        0.05,
+        0.37,
+        0.2,
+        0.2,
+        0.1,
+        0.05,
+        0.1,
+    ],
 };
 
 const SET_IMAGE = 'SET_IMAGE';
-const SET_BINARY_IMAGE = 'SET_BINARY_IMAGE';
 const SET_RESULT = 'SET_RESULT';
 const SET_UNFOUND = 'SET_UNFOUND';
 
@@ -18,11 +32,6 @@ export const setImageAction = (data)=>({
 })
 export const setUnFoundAction = (data)=>({
     type:SET_UNFOUND,
-    data,
-})
-
-export const setBinaryImageAction = (data)=>({
-    type:SET_BINARY_IMAGE,
     data,
 })
 
@@ -40,12 +49,6 @@ const rootReducer = combineReducers({
                     ...state,
                     image: action.data,
                 }
-            case SET_BINARY_IMAGE:
-                return{
-                    ...state,
-                    binaryImage: action.data,
-                }
-
             case SET_RESULT:
                 return{
                     ...state,
@@ -54,7 +57,7 @@ const rootReducer = combineReducers({
             case SET_UNFOUND:
                 return{
                     ...state,
-                    unFoundCount: action.data,
+                    unFoundFlag: action.data,
                 }
             default:
                 return{

@@ -69,10 +69,12 @@ let heatmapChecked = false;
 
 const Content = () => {
     const imageInput = useRef();
+
     const onClickImageUpload = useCallback(() => {
         imageInput.current.click();
     }, []);
 
+    const unFoundFlag = useSelector((state)=>state.index.unFoundFlag);
     const dispatch = useDispatch();
     const result = useSelector((state)=>state.index.result);
     const [image, setImage] = useState("");
@@ -118,10 +120,17 @@ const Content = () => {
             {image!=="" && (
                 <style.InfoContainer>
                     <style.Info>
-                        {result &&
-                        result.map((v , index)=>
-                            <Disease factor = {v} index = {index} key = {index}/>
-                        )}
+                        {!unFoundFlag && result ?
+                            (
+                                result.map((v , index)=>
+                                    <Disease factor = {v} index = {index} key = {index}/>
+                                )
+                            ):
+                            (
+                                <div style={{fontWeight : "bold"}}>unFound</div>
+                            )
+                        }
+
                     </style.Info>
 
                     <style.FilterContainer>
@@ -130,7 +139,7 @@ const Content = () => {
                     </style.FilterContainer>
                     <Classifier/>
                     <input multiple hidden ref ={imageInput} type="file" accept="img/*" onChange={handleFileOnChange}/>
-                    <button style={{width : "200px" , marginTop : "10px" , fontWeight : "bold"}} onClick={onClickImageUpload}>새로운 이미지 업로드</button>
+                    <button style={{width : "233px" , marginTop : "10px" , fontWeight : "bold"}} onClick={onClickImageUpload}>새로운 이미지 업로드</button>
                 </style.InfoContainer>
             )}
 
