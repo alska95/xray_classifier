@@ -11,7 +11,7 @@ const colorStyle = [
     {color: "purple"},
     {color: "pink"},
     {color: "black"},
-    ]
+]
 const label = [
     'Atelectasis',
     'Cardiomegaly',
