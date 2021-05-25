@@ -1,10 +1,11 @@
 import React, {useCallback, useRef, useState} from 'react';
 import styled from 'styled-components';
-import images from '../../images/sample';
 import {useDispatch, useSelector} from "react-redux";
 import {setImageAction} from "../../reducers";
 import Classifier from "./Classifier";
 import Disease from './Disease'
+import { Button } from 'antd';
+
 
 
 const style = {};
@@ -59,49 +60,50 @@ const OutputImage = styled.img`
     height: 600px;
     margin-right: 10px;
     border: 1px solid black;
+    object-fit: cover;
 `;
 
 
-let boxChecked = false;
+
 let heatmapChecked = false;
 
 
 
 const Content = () => {
+    const [loading , setLoading] = useState(0);
     const imageInput = useRef();
-
     const onClickImageUpload = useCallback(() => {
         imageInput.current.click();
     }, []);
-
+    const gradCamImage = useSelector((state)=>state.index.gradImage);
     const unFoundFlag = useSelector((state)=>state.index.unFoundFlag);
     const dispatch = useDispatch();
     const result = useSelector((state)=>state.index.result);
     const [image, setImage] = useState("");
 
+    const targetImage = useSelector((state)=>state.index.image);
     const check = (type) => {
-        if(type==="box") boxChecked = !boxChecked;
         if(type==="heatmap") heatmapChecked = !heatmapChecked;
+        if(!heatmapChecked) setImage(targetImage);
+        if(heatmapChecked) setImage(gradCamImage);
 
-        if(!boxChecked&&!heatmapChecked) setImage(images.chest_default);
-        if(boxChecked&&!heatmapChecked) setImage(images.chest_box);
-        if(!boxChecked&&heatmapChecked) setImage(images.chest_heatmap);
-        if(boxChecked&&heatmapChecked) setImage(images.chest_both);
     }
 
 
     const handleFileOnChange = (event) => {
         event.preventDefault();
+        setLoading(1);
 
         let reader = new FileReader();
         let file = event.target.files[0];
         reader.onloadend = () => {
             setImage(reader.result);
-            console.log(file);
+            console.log(reader.result);
             dispatch(setImageAction(reader.result));
         }
 
         reader.readAsDataURL(file);
+        setLoading(0);
     }
 
     return (
@@ -109,7 +111,8 @@ const Content = () => {
             {image==="" ? (
                     <style.InputImage>
                         <input multiple hidden ref ={imageInput} type="file" accept="img/*" onChange={handleFileOnChange}/>
-                        <button style={{width : "200px" , margin : "10px" , fontWeight : "bold"}} onClick={onClickImageUpload}>이미지 업로드</button>
+                        <Button type={"dark"} style={{width : "200px" , margin : "10px" , fontWeight : "bold"}} loading={loading}
+                                onClick={onClickImageUpload}>이미지 업로드</Button>
                     </style.InputImage>
             ) : (
                 <style.InputImage>
@@ -132,14 +135,16 @@ const Content = () => {
                         }
 
                     </style.Info>
-
+                    {result[0] &&
                     <style.FilterContainer>
-                        <style.FilterItem type="checkbox" name="box" onChange={() => check("box")}/>Box
-                        <style.FilterItem type="checkbox" name="heatmap" onChange={() => check("heatmap")}/>Heatmap
+                        <style.FilterItem type="checkbox" name="heatmap" onChange={() => check("heatmap")}/>heatmap
                     </style.FilterContainer>
+                    }
+
                     <Classifier/>
                     <input multiple hidden ref ={imageInput} type="file" accept="img/*" onChange={handleFileOnChange}/>
-                    <button style={{width : "233px" , marginTop : "10px" , fontWeight : "bold"}} onClick={onClickImageUpload}>새로운 이미지 업로드</button>
+                    <Button type={"lightdark"} style={{width : "233px" , marginTop : "10px" , fontWeight : "bold"}} onClick={onClickImageUpload}
+                            loading={loading}>새로운 이미지 업로드</Button>
                 </style.InfoContainer>
             )}
 
