@@ -123,7 +123,7 @@ const Content = () => {
             {image!=="" && (
                 <style.InfoContainer>
                     <style.Info>
-                        {!unFoundFlag && result ?
+                        {!unFoundFlag && result[0] ?
                             (
                                 result.map((v , index)=>
                                     <Disease factor = {v} index = {index} key = {index}/>
