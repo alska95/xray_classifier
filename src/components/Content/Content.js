@@ -31,12 +31,12 @@ style.OutputImage = styled.img`
 `;
 
 style.InfoContainer = styled.div`
-    width: 200px;
+    width: 233px;
     height: 600px;
 `;
 
 style.Info = styled.div`
-    width: 222px;
+    width: 233px;
     height: 300px;
     border: 1px solid #000000;
     padding: 5px;
@@ -48,6 +48,7 @@ style.InfoItem = styled.label`
 `;
 
 style.FilterContainer = styled.div`
+    font-weight: bold;
     height: 50px;
 `;
 
@@ -123,7 +124,7 @@ const Content = () => {
             {image!=="" && (
                 <style.InfoContainer>
                     <style.Info>
-                        {!unFoundFlag && result[0] ?
+                        {!unFoundFlag && result ?
                             (
                                 result.map((v , index)=>
                                     <Disease factor = {v} index = {index} key = {index}/>
@@ -137,13 +138,13 @@ const Content = () => {
                     </style.Info>
                     {result[0] &&
                     <style.FilterContainer>
-                        <style.FilterItem type="checkbox" name="heatmap" onChange={() => check("heatmap")}/>heatmap
+                        <style.FilterItem type="checkbox" name="heatmap" onChange={() => check("heatmap")}/> Heatmap
                     </style.FilterContainer>
                     }
 
                     <Classifier/>
                     <input multiple hidden ref ={imageInput} type="file" accept="img/*" onChange={handleFileOnChange}/>
-                    <Button type={"lightdark"} style={{width : "233px" , marginTop : "10px" , fontWeight : "bold"}} onClick={onClickImageUpload}
+                    <Button type={"dark"} style={{width : "233px" , marginTop : "10px" , fontWeight : "bold"}} onClick={onClickImageUpload}
                             loading={loading}>새로운 이미지 업로드</Button>
                 </style.InfoContainer>
             )}

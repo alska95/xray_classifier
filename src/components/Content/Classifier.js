@@ -13,12 +13,6 @@ const ClassifyButton = {
     fontWeight: "bold",
 };
 
-const OutputImage = styled.img`
-    width: 600px;
-    height: 600px;
-    margin-right: 10px;
-    border: 1px solid black;
-`;
 
 const modelURL = 'https://cdn.jsdelivr.net/gh/stuart-park/temp@main/model/model.json'
 
