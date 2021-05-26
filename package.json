@@ -14,7 +14,6 @@
     "antd-button-color": "^1.0.4",
     "canvas": "^2.7.0",
     "cors": "^2.8.5",
-    "jimp": "^0.16.1",
     "next-redux-wrapper": "^6.0.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
