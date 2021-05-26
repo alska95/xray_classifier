@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import * as tf from '@tensorflow/tfjs';
-import styled from 'styled-components';
 import {setGradImageAction, setResultAction, setUnFoundAction} from "../../reducers";
 import {gradClassActivationMap} from "./gradCam/cam"
 import {createCanvas} from "canvas";
 import {Button} from 'antd';
+import {CaretRightOutlined} from '@ant-design/icons'
 
 
 const ClassifyButton = {
@@ -63,7 +63,6 @@ const Classifier = () => {
     const [classifierOnLoading , setClassifierOnLoading] = useState(0)
     const dispatch = useDispatch();
     const threshold = useSelector((state)=>state.index.threshold);
-    const gradCamImage = useSelector((state)=>state.index.gradImage);
     let imageFile = useSelector((state)=> state.index.image);
     let gradCam = "";
 
@@ -86,28 +85,25 @@ const Classifier = () => {
         const img = await preprocess(imageFile);
         const result = await model.predict(img);
 
-        console.log(result.toString());
-
         const rs = await result.toString().replace(/( )|(\[)|\]|(Tensor)/gi,'')
         let resultArray = await rs.split(',');
-        resultArray.pop();
+        await resultArray.pop();
+        await dispatch(setResultAction(resultArray));
 
-        dispatch(setResultAction(resultArray));
-        console.log(resultArray);
+
         const target = await checkUnFound(resultArray);
-
-        gradCam = await gradClassActivationMap(model  , target ,   img);
+        gradCam = await gradClassActivationMap(model  , target ,  img);
         gradCam = await ImageTensorToImage(gradCam);
         await dispatch(setGradImageAction(gradCam));
+
         setClassifierOnLoading(0);
     }
 
     return (
         <>
             <div style={{textAlign : "center"}}>
-                <Button type = {'dark'} style={ClassifyButton} onClick={startClassify} loading={classifierOnLoading} >분석 시작</Button>
+                <Button icon={<CaretRightOutlined />} type = {'dark'} style={ClassifyButton} onClick={startClassify} loading={classifierOnLoading} >분석 시작</Button>
             </div>
-{/*            {gradCamImage && <OutputImage src={gradCamImage}/>}*/}
         </>
     );
 };

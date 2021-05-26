@@ -2,7 +2,6 @@ import React from 'react';
 import styled from "styled-components";
 import {useSelector} from "react-redux";
 
-
 const colorStyle = [
     {color: "red"},
     {color: "green"},
@@ -12,6 +11,7 @@ const colorStyle = [
     {color: "pink"},
     {color: "black"},
 ]
+
 const label = [
     'Atelectasis',
     'Cardiomegaly',
@@ -39,8 +39,7 @@ const Disease = ({factor , index}) => {
     const fac = parseFloat(factor);
 
     const checkThreshold = () =>{
-        return fac > threshold[index] ?
-            true : false;
+        return fac > threshold[index];
     }
 
     return (

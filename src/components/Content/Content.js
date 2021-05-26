@@ -1,10 +1,11 @@
 import React, {useCallback, useRef, useState} from 'react';
 import styled from 'styled-components';
 import {useDispatch, useSelector} from "react-redux";
-import {setImageAction} from "../../reducers";
+import {setGradImageAction, setImageAction, setResultAction} from "../../reducers";
 import Classifier from "./Classifier";
 import Disease from './Disease'
 import { Button } from 'antd';
+import {InboxOutlined} from '@ant-design/icons'
 
 
 
@@ -18,7 +19,7 @@ style.Container = styled.div`
 style.InputImage = styled.div`
     width: 600px;
     height: 600px;
-    border: 1px solid #000000;
+    border: 1px solid dimgray;
     margin-right: 10px;
     display: flex;
     flex-direction: column;
@@ -38,83 +39,88 @@ style.InfoContainer = styled.div`
 style.Info = styled.div`
     width: 233px;
     height: 300px;
-    border: 1px solid #000000;
+    border: 2px solid dimgray;
     padding: 5px;
     margin-bottom: 10px;
 `;
 
 style.InfoItem = styled.label`
     display: block;
+    
 `;
 
 style.FilterContainer = styled.div`
+    color: black;
     font-weight: bold;
     height: 50px;
 `;
 
 style.FilterItem = styled.input`
-    color: black;
+    color: dimgray;
 `;
 
 const OutputImage = styled.img`
     width: 600px;
     height: 600px;
     margin-right: 10px;
-    border: 1px solid black;
+    border: 1px solid dimgray;
     object-fit: cover;
 `;
 
-
+const PressClassify = styled.div`
+    font-weight: bold;
+    text-align: center;
+    margin-top: 100px;
+`
 
 let heatmapChecked = false;
 
 
-
 const Content = () => {
-    const [loading , setLoading] = useState(0);
+    const [image, setImage] = useState("");
     const imageInput = useRef();
-    const onClickImageUpload = useCallback(() => {
-        imageInput.current.click();
-    }, []);
+
     const gradCamImage = useSelector((state)=>state.index.gradImage);
     const unFoundFlag = useSelector((state)=>state.index.unFoundFlag);
-    const dispatch = useDispatch();
     const result = useSelector((state)=>state.index.result);
-    const [image, setImage] = useState("");
-
     const targetImage = useSelector((state)=>state.index.image);
-    const check = (type) => {
-        if(type==="heatmap") heatmapChecked = !heatmapChecked;
-        if(!heatmapChecked) setImage(targetImage);
-        if(heatmapChecked) setImage(gradCamImage);
-
-    }
+    const dispatch = useDispatch();
 
 
     const handleFileOnChange = (event) => {
         event.preventDefault();
-        setLoading(1);
+
 
         let reader = new FileReader();
         let file = event.target.files[0];
         reader.onloadend = () => {
             setImage(reader.result);
-            console.log(reader.result);
             dispatch(setImageAction(reader.result));
         }
-
+        dispatch(setResultAction([]));
+        dispatch(setGradImageAction([]));
         reader.readAsDataURL(file);
-        setLoading(0);
     }
+
+    const check = () => {
+        heatmapChecked = !heatmapChecked;
+        if(!heatmapChecked) setImage(targetImage);
+        if(heatmapChecked) setImage(gradCamImage);
+
+    }
+
+    const onClickImageUpload = useCallback(() => {
+        imageInput.current.click();
+    }, []);
 
     return (
         <style.Container>
             {image==="" ? (
-                    <style.InputImage>
-                        <input multiple hidden ref ={imageInput} type="file" accept="img/*" onChange={handleFileOnChange}/>
-                        <Button type={"dark"} style={{width : "200px" , margin : "10px" , fontWeight : "bold"}} loading={loading}
-                                onClick={onClickImageUpload}>이미지 업로드</Button>
-                    </style.InputImage>
+                <style.InputImage>
+                    <input multiple hidden ref ={imageInput} type="file" accept="img/*" onChange={handleFileOnChange}/>
+                    <Button icon={<InboxOutlined />} type={"dark"} style={{width : "200px" , margin : "10px" , fontWeight : "bold"}}
+                            onClick={onClickImageUpload}>이미지 업로드</Button>
+                </style.InputImage>
             ) : (
                 <style.InputImage>
                     <OutputImage src = {image}/>
@@ -124,28 +130,30 @@ const Content = () => {
             {image!=="" && (
                 <style.InfoContainer>
                     <style.Info>
-                        {!unFoundFlag && result ?
+                        { result[0] ?
                             (
                                 result.map((v , index)=>
                                     <Disease factor = {v} index = {index} key = {index}/>
                                 )
                             ):
                             (
-                                <div style={{fontWeight : "bold"}}>unFound</div>
+                                !unFoundFlag ?
+                                    <PressClassify>Press Classify</PressClassify>
+                                    :
+                                    <div style={{fontWeight : "bold"}}>unFound</div>
                             )
                         }
 
                     </style.Info>
                     {result[0] &&
                     <style.FilterContainer>
-                        <style.FilterItem type="checkbox" name="heatmap" onChange={() => check("heatmap")}/> Heatmap
+                        <style.FilterItem type="checkbox" name="heatmap" onChange={()=> check()}/>Heatmap
                     </style.FilterContainer>
                     }
 
                     <Classifier/>
                     <input multiple hidden ref ={imageInput} type="file" accept="img/*" onChange={handleFileOnChange}/>
-                    <Button type={"dark"} style={{width : "233px" , marginTop : "10px" , fontWeight : "bold"}} onClick={onClickImageUpload}
-                            loading={loading}>새로운 이미지 업로드</Button>
+                    <Button icon={<InboxOutlined />} type={"dark"} style={{width : "233px" , marginTop : "10px" , fontWeight : "bold"}} onClick={onClickImageUpload}>새로운 이미지 업로드</Button>
                 </style.InfoContainer>
             )}
 
