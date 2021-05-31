@@ -133,7 +133,7 @@ const Content = () => {
             {image!=="" && (
                 <style.InfoContainer>
                     <style.Info>
-                        { gradCamImage[0] ?
+                        { result[0] &&!unFoundFlag?
                             (
                                 result.map((v , index)=>
                                     <Disease factor = {v} index = {index} key = {index}/>
