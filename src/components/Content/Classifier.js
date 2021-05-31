@@ -71,7 +71,7 @@ const Classifier = () => {
         let target = [];
         dispatch(setUnFoundAction(true));
         for(let i = 0 ; i < 14 ; i++){
-            if(ra[i] > threshold[i]*10) {
+            if(ra[i] > threshold[i]) {
                 target.push(i);
                 dispatch(setUnFoundAction(false));
             }
