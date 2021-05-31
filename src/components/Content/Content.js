@@ -89,17 +89,19 @@ const Content = () => {
 
     const handleFileOnChange = (event) => {
         event.preventDefault();
-
-
-        let reader = new FileReader();
-        let file = event.target.files[0];
-        reader.onloadend = () => {
-            setImage(reader.result);
-            dispatch(setImageAction(reader.result));
+        try{
+            let reader = new FileReader();
+            let file = event.target.files[0];
+            reader.onloadend = () => {
+                setImage(reader.result);
+                dispatch(setImageAction(reader.result));
+            }
+            reader.readAsDataURL(file);
+            dispatch(setResultAction([]));
+            dispatch(setGradImageAction([]));
+        }catch(err){
+            console.error(err);
         }
-        dispatch(setResultAction([]));
-        dispatch(setGradImageAction([]));
-        reader.readAsDataURL(file);
     }
 
     const check = () => {
