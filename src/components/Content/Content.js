@@ -1,7 +1,7 @@
 import React, {useCallback, useRef, useState} from 'react';
 import styled from 'styled-components';
 import {useDispatch, useSelector} from "react-redux";
-import {setGradImageAction, setImageAction, setResultAction} from "../../reducers";
+import {setGradImageAction, setImageAction, setResultAction, setUnFoundAction} from "../../reducers";
 import Classifier from "./Classifier";
 import Disease from './Disease'
 import { Button } from 'antd';
@@ -99,6 +99,7 @@ const Content = () => {
             reader.readAsDataURL(file);
             dispatch(setResultAction([]));
             dispatch(setGradImageAction([]));
+            dispatch(setUnFoundAction(false));
         }catch(err){
             console.error(err);
         }
@@ -132,7 +133,7 @@ const Content = () => {
             {image!=="" && (
                 <style.InfoContainer>
                     <style.Info>
-                        { result[0] ?
+                        { gradCamImage[0] ?
                             (
                                 result.map((v , index)=>
                                     <Disease factor = {v} index = {index} key = {index}/>
@@ -147,9 +148,9 @@ const Content = () => {
                         }
 
                     </style.Info>
-                    {result[0] &&
+                    {gradCamImage[0] &&
                     <style.FilterContainer>
-                        <style.FilterItem type="checkbox" name="heatmap" onChange={()=> check()}/>Heatmap
+                         <style.FilterItem type="checkbox" name="heatmap" onChange={()=> check()}/>Heatmap
                     </style.FilterContainer>
                     }
 
