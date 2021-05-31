@@ -63,7 +63,7 @@ const Classifier = () => {
     const [classifierOnLoading , setClassifierOnLoading] = useState(0)
     const dispatch = useDispatch();
 /*    const threshold = useSelector((state)=>state.index.threshold);*/
-    const threshold = 0.35;
+    const threshold = 0.4;
     let imageFile = useSelector((state)=> state.index.image);
     let gradCam = "";
 
