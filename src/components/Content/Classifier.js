@@ -71,7 +71,7 @@ const Classifier = () => {
         let target = [];
         dispatch(setUnFoundAction(true));
         for(let i = 0 ; i < 14 ; i++){
-            if(ra[i] > threshold[i]) {
+            if(ra[i] > threshold[i]*10) {
                 target.push(i);
                 dispatch(setUnFoundAction(false));
             }
@@ -88,14 +88,20 @@ const Classifier = () => {
         const rs = await result.toString().replace(/( )|(\[)|\]|(Tensor)/gi,'')
         let resultArray = await rs.split(',');
         await resultArray.pop();
-        await dispatch(setResultAction(resultArray));
+
 
 
         const target = await checkUnFound(resultArray);
-        gradCam = await gradClassActivationMap(model  , target ,  img);
-        gradCam = await ImageTensorToImage(gradCam);
-        await dispatch(setGradImageAction(gradCam));
-
+        try{
+            if(target[0]){
+                await dispatch(setResultAction(resultArray));
+                gradCam = await gradClassActivationMap(model  , target ,  img);
+                gradCam = await ImageTensorToImage(gradCam);
+                await dispatch(setGradImageAction(gradCam));
+            }
+        }catch(err){
+            console.error(err);
+        }
         setClassifierOnLoading(0);
     }
 
