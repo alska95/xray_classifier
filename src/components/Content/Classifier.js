@@ -62,7 +62,8 @@ async function preprocess(img)
 const Classifier = () => {
     const [classifierOnLoading , setClassifierOnLoading] = useState(0)
     const dispatch = useDispatch();
-    const threshold = useSelector((state)=>state.index.threshold);
+/*    const threshold = useSelector((state)=>state.index.threshold);*/
+    const threshold = 0.35;
     let imageFile = useSelector((state)=> state.index.image);
     let gradCam = "";
 
@@ -71,7 +72,7 @@ const Classifier = () => {
         let target = [];
         dispatch(setUnFoundAction(true));
         for(let i = 0 ; i < 14 ; i++){
-            if(ra[i] > threshold[i]) {
+            if(ra[i] > threshold) {
                 target.push(i);
                 dispatch(setUnFoundAction(false));
             }
@@ -89,18 +90,16 @@ const Classifier = () => {
         let resultArray = await rs.split(',');
         await resultArray.pop();
         await dispatch(setResultAction(resultArray));
-
-
+        console.log(resultArray);
         const target = await checkUnFound(resultArray);
         try{
-            if(target[0]){
-                gradCam = await gradClassActivationMap(model  , target ,  img);
-                gradCam = await ImageTensorToImage(gradCam);
-                await dispatch(setGradImageAction(gradCam));
-            }
+            gradCam = await gradClassActivationMap(model  , target ,  img);
+            gradCam = await ImageTensorToImage(gradCam);
+            await dispatch(setGradImageAction(gradCam));
         }catch(err){
             console.error(err);
         }
+
         setClassifierOnLoading(0);
     }
 
