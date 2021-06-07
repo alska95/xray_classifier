@@ -62,8 +62,7 @@ async function preprocess(img)
 const Classifier = () => {
     const [classifierOnLoading , setClassifierOnLoading] = useState(0)
     const dispatch = useDispatch();
-/*    const threshold = useSelector((state)=>state.index.threshold);*/
-    const threshold = 0.4;
+    const threshold = useSelector((state)=>state.index.threshold);
     let imageFile = useSelector((state)=> state.index.image);
     let gradCam = "";
 
@@ -72,7 +71,7 @@ const Classifier = () => {
         let target = [];
         dispatch(setUnFoundAction(true));
         for(let i = 0 ; i < 14 ; i++){
-            if(ra[i] > threshold) {
+            if(ra[i] > threshold[i]) {
                 target.push(i);
                 dispatch(setUnFoundAction(false));
             }
@@ -89,6 +88,7 @@ const Classifier = () => {
         const rs = await result.toString().replace(/( )|(\[)|\]|(Tensor)/gi,'')
         let resultArray = await rs.split(',');
         await resultArray.pop();
+
         await dispatch(setResultAction(resultArray));
         console.log(resultArray);
         const target = await checkUnFound(resultArray);
