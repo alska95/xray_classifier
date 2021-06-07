@@ -13,7 +13,6 @@ const ClassifyButton = {
     fontWeight: "bold",
 };
 
-/*const modelURL = 'https://cdn.jsdelivr.net/gh/stuart-park/temp@main/model/model.json';*/
 const modelURL = 'https://cdn.jsdelivr.net/gh/alska95/xray_classifier@master/src/components/Content/js_model/model.json';
 
 
