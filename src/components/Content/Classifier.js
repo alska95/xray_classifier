@@ -13,7 +13,8 @@ const ClassifyButton = {
     fontWeight: "bold",
 };
 
-const modelURL = 'https://cdn.jsdelivr.net/gh/alska95/xray_classifier@master/src/components/Content/js_model/model.json';
+const modelURL = 'https://cdn.jsdelivr.net/gh/stuart-park/Model_1@main/model/model.json';
+/*const modelURL = 'https://cdn.jsdelivr.net/gh/alska95/xray_classifier@master/src/components/Content/js_model/model.json';*/
 
 
 async function ImageTensorToImage(imageTensor) {
