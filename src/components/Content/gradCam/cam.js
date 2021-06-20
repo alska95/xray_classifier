@@ -4,7 +4,7 @@ const tf = require('@tensorflow/tfjs');
 const utils = require('./utils');
 
 function gradClassActivationMap(model, classIndex, x, overlayFactor = 2.0) {
-    // Try to locate the last conv layer of the model.
+    // 마지막 Activation layer을 얻어온다.
     let layerIndex = model.layers.length-1;
     while (layerIndex >= 0) {
         if (model.layers[layerIndex].getClassName().startsWith('Activation')) {

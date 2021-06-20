@@ -4,8 +4,11 @@ import {useDispatch, useSelector} from "react-redux";
 import {setGradImageAction, setImageAction, setResultAction, setUnFoundAction} from "../../reducers";
 import Classifier from "./Classifier";
 import Disease from './Disease'
-import { Button } from 'antd';
-import {InboxOutlined} from '@ant-design/icons'
+import { Button , Menu , Dropdown } from 'antd';
+import {InboxOutlined , UserOutlined , DownOutlined} from '@ant-design/icons'
+import Atelctasis from '../../images/Atelectasis.jpeg'
+import Cardiomegaly from '../../images/Cardiomegaly.jpg'
+import Effusion from '../../images/Effusion (1).jpeg'
 
 
 
@@ -77,6 +80,30 @@ let heatmapChecked = false;
 
 
 const Content = () => {
+
+    const menu = (
+        <Menu>
+            <Menu.Item key="1" icon={<InboxOutlined />}
+                       onClick={()=>onClickChangeImage(Atelctasis)}>
+                Atelectasis X-ray
+            </Menu.Item>
+            <Menu.Item key="2" icon={<InboxOutlined />}
+                onClick={()=>onClickChangeImage(Cardiomegaly)}>
+                Cardiomegaly X-ray
+            </Menu.Item>
+            <Menu.Item key="3" icon={<InboxOutlined />}
+                onClick={()=>onClickChangeImage(Effusion)}>
+                Effusion X-ray
+            </Menu.Item>
+        </Menu>
+    );
+
+    const onClickChangeImage = (img) =>{
+        setImage(img);
+        dispatch(setImageAction(img));
+    }
+
+
     const [image, setImage] = useState("");
     const imageInput = useRef();
 
@@ -123,7 +150,14 @@ const Content = () => {
                     <input multiple hidden ref ={imageInput} type="file" accept="img/*" onChange={handleFileOnChange}/>
                     <Button icon={<InboxOutlined />} type={"dark"} style={{width : "200px" , margin : "10px" , fontWeight : "bold"}}
                             onClick={onClickImageUpload}>이미지 업로드</Button>
+
+                    <Dropdown overlay={menu}>
+                        <Button icon={<InboxOutlined />} style={{width : "200px" , margin : "10px" , fontWeight : "bold"}}>
+                            셈플 이미지 <DownOutlined />
+                        </Button>
+                    </Dropdown>
                 </style.InputImage>
+
             ) : (
                 <style.InputImage>
                     <OutputImage src = {image}/>
@@ -157,6 +191,11 @@ const Content = () => {
                     <Classifier/>
                     <input multiple hidden ref ={imageInput} type="file" accept="img/*" onChange={handleFileOnChange}/>
                     <Button icon={<InboxOutlined />} type={"dark"} style={{width : "233px" , marginTop : "10px" , fontWeight : "bold"}} onClick={onClickImageUpload}>새로운 이미지 업로드</Button>
+                    <Dropdown overlay={menu}>
+                        <Button icon={<InboxOutlined />} style={{width : "233px" , marginTop : "10px" , fontWeight : "bold"}}>
+                            셈플 이미지 <DownOutlined />
+                        </Button>
+                    </Dropdown>
                 </style.InfoContainer>
             )}
 
