@@ -1,13 +1,13 @@
+
+
+# X-ray Classifier
+
+[서비스 링크](http://ec2-3-133-106-136.us-east-2.compute.amazonaws.com:3000/)
+
+## 서비스 시연
+
 ![ezgif com-gif-maker](https://user-images.githubusercontent.com/49012728/122695013-3a3f4480-d27a-11eb-9ba0-5e30bd785a94.gif)
 
-
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
 
 ### `npm start`
 

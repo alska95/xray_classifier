@@ -155,7 +155,7 @@ const Content = () => {
                             onClick={onClickImageUpload}>이미지 업로드</Button>
 
                     <Dropdown overlay={menu}>
-                        <Button icon={<InboxOutlined />} style={{width : "200px" , margin : "10px" , fontWeight : "bold"}}>
+                        <Button icon={<InboxOutlined />} style={{width : "200px"  , margin : "10px" ,   marginTop: "0px" ,fontWeight : "bold"}}>
                             셈플 이미지 <DownOutlined />
                         </Button>
                     </Dropdown>
