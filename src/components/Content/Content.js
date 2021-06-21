@@ -101,6 +101,9 @@ const Content = () => {
     const onClickChangeImage = (img) =>{
         setImage(img);
         dispatch(setImageAction(img));
+        dispatch(setResultAction([]));
+        dispatch(setGradImageAction([]));
+        dispatch(setUnFoundAction(false));
     }
 
 
