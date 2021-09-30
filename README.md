@@ -4,7 +4,7 @@
 
 :link: [서비스 링크](http://ec2-3-133-106-136.us-east-2.compute.amazonaws.com:3000/)
 
-## 서비스 시연 :male-doctor: 
+## 서비스 시연 
  
 ![ezgif com-gif-maker](https://user-images.githubusercontent.com/49012728/122695013-3a3f4480-d27a-11eb-9ba0-5e30bd785a94.gif)
 
