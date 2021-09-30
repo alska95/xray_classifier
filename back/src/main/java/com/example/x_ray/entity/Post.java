@@ -14,11 +14,13 @@ public class Post {
 
     private String content;
 
+    private String result;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "post_id")
+    @OneToMany(mappedBy = "post")
     private List<Comment> comments;
 
     @OneToOne

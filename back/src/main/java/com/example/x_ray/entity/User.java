@@ -17,7 +17,7 @@ public class User {
     private String email;
 
 
-    @OneToMany(mappedBy = "image_id")
+    @OneToMany(mappedBy = "user")
     private List<Image> images;
 
 }
