@@ -1,10 +1,12 @@
 package com.example.x_ray.controller;
 
 
-import com.example.x_ray.dto.imagedto.ImageDto;
-import com.example.x_ray.service.ImageService;
+import com.example.x_ray.dto.image.ImageDto;
+import com.example.x_ray.dto.image.ResponseImageDto;
+import com.example.x_ray.service.image.ImageService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -30,7 +32,7 @@ public class ImageController {
 
 
     @PostMapping("/image")
-    public String uploadImage(MultipartHttpServletRequest multipartHttpServletRequest){
+    public ResponseEntity<ResponseImageDto> uploadImage(MultipartHttpServletRequest multipartHttpServletRequest){
         String src = multipartHttpServletRequest.getParameter("src");
         log.info("image src = [{}]" , src);
         List<MultipartFile> images = multipartHttpServletRequest.getFiles("file");
@@ -54,11 +56,18 @@ public class ImageController {
             }
         }
         ImageDto imageDto = new ImageDto(fileNames[0] , fileNames[1], date);
-        return imageService.saveImageName(imageDto);
+        imageService.saveImageName(imageDto);
+        ResponseImageDto responseImageDto = new ResponseImageDto(imageDto.getOriginalImageFileName() , imageDto.getHeatmapImageFileName());
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseImageDto);
     }
 
-//    @GetMapping("/image")
-//    public String[] getImage(){
-//        return imageService.getImageName();
-//    }
+    @GetMapping("/image/{userNickName}")
+    public ResponseImageDto getImage(@PathVariable String userNickName){
+        ImageDto image = imageService.getImageByNickName(userNickName);
+        ResponseImageDto responseImageDto = new ResponseImageDto(
+                image.getOriginalImageFileName(),
+                image.getHeatmapImageFileName()
+        );
+        return responseImageDto;
+    }
 }

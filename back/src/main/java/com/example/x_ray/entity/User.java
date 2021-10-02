@@ -2,6 +2,7 @@ package com.example.x_ray.entity;
 
 
 import lombok.Data;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,7 +15,10 @@ public class User {
     @GeneratedValue
     @Column(name = "user_id")
     private Long id;
+
+    @Column(nullable = false, unique = true)
     private String nickName;
+
     private String password;
     private String email;
     private Date date;

@@ -1,14 +1,11 @@
-package com.example.x_ray.dto.imagedto;
+package com.example.x_ray.dto.image;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
 @AllArgsConstructor
-public class ImageDto {
+public class ResponseImageDto {
     private String originalImageFileName;
     private String heatmapImageFileName;
-    private Date createdDate;
 }

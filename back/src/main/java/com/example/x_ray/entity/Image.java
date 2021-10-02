@@ -11,7 +11,7 @@ import java.util.Date;
 public class Image {
     @Id @GeneratedValue
     @Column(name = "image_id")
-    private Long Id;
+    private Long id;
 
     private String originalImageFileName;
     private String heatmapImageFileName;

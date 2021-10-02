@@ -1,13 +1,16 @@
-package com.example.x_ray.repository;
+package com.example.x_ray.repository.image;
 
-import com.example.x_ray.dto.imagedto.ImageDto;
-import com.example.x_ray.dto.imagedto.UserDto;
+import com.example.x_ray.dto.image.ImageDto;
+import com.example.x_ray.dto.image.RequestImageDto;
+import com.example.x_ray.dto.user.UserDto;
 import com.example.x_ray.entity.Image;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+@Repository
 public class ImageRepositoryImpl implements ImageRepository{
 
     @PersistenceContext
@@ -23,7 +26,9 @@ public class ImageRepositoryImpl implements ImageRepository{
     }
 
     @Override
-    public List<Image> getImages(UserDto userDto) {
-        return em.createQuery("select i from Image i where i.user.id =: id").getResultList();
+    public Image getImage(String userNickName) {
+        return em.createQuery("select i from Image i where i.user.nickName =: userNickName", Image.class)
+                .setParameter("userNickName" , userNickName)
+                .getResultList().get(0);
     }
 }

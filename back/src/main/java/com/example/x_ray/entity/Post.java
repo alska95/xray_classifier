@@ -27,5 +27,11 @@ public class Post {
     @JoinColumn(name = "image_id")
     private Image image;
 
-
+    public Post(String content, String result, User user, List<Comment> comments, Image image) {
+        this.content = content;
+        this.result = result;
+        this.user = user;
+        this.comments = comments;
+        this.image = image;
+    }
 }
