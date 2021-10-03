@@ -1,6 +1,7 @@
 package com.example.x_ray.entity;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.validator.constraints.UniqueElements;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Data
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue
@@ -27,4 +29,15 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Post> posts;
 
+    public User(String nickName, String password, String email, Date date, List<Post> posts) {
+        this.nickName = nickName;
+        this.password = password;
+        this.email = email;
+        this.date = date;
+        this.posts = posts;
+    }
+
+    public User() {
+
+    }
 }
