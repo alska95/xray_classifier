@@ -6,6 +6,9 @@ import com.example.x_ray.repository.post.PostRepository;
 import com.example.x_ray.service.image.ImageService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class PostServiceImpl implements PostService{
@@ -19,17 +22,23 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public PostDto getPostByNickName(String userNickName) {
-        Post post = postRepository.getPost(userNickName);
-        PostDto postDto = new PostDto(
-/*                post.getContent(),
+    public List<PostDto> getPostByNickName(String userNickName) {
+        List<Post> posts = postRepository.getPost(userNickName);
+        List<PostDto> postDtos = new ArrayList<>();
+        posts.stream().forEach(v->{
+            PostDto postDto = new PostDto(
+                            /*                post.getContent(),
                 post.getResult(),
                 imageService.getImageByNickName(userNickName),
                 userService.findUser(),
                 commentService.findComment(),*/
-        );
+            );
+            postDtos.add(postDto);
+        });
 
-        return postDto;
+
+
+        return postDtos;
     }
 
     @Override

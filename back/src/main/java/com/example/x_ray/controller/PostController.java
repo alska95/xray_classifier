@@ -10,6 +10,9 @@ import com.example.x_ray.service.user.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 public class PostController {
 
@@ -38,18 +41,22 @@ public class PostController {
     }
 
     @GetMapping("/post/{userNickName}")
-    public ResponsePostDto findPost(@PathVariable String userNickName){
-        PostDto postDto = postService.getPostByNickName(userNickName);
-        ResponsePostDto responsePostDto =
-                new ResponsePostDto(
-                        postDto.getUser().getNickName(),
-                        postDto.getImage().getOriginalImageFileName(),
-                        postDto.getImage().getHeatmapImageFileName(),
-                        postDto.getContent(),
-                        postDto.getDiagnosisResult(),
-                        null
-                );
-        return responsePostDto;
+    public List<ResponsePostDto> findPost(@PathVariable String userNickName){
+        List<PostDto> postDtos = postService.getPostByNickName(userNickName);
+        List<ResponsePostDto> responsePostDtos = postDtos.stream().map( v-> new ResponsePostDto(
+                v.getUser().getNickName(),
+                v.getImage().getOriginalImageFileName(),
+                v.getImage().getHeatmapImageFileName(),
+                v.getContent(),
+                v.getDiagnosisResult(),
+                null
+                )
+        ).collect(Collectors.toList());
+
+/*                new ResponsePostDto(
+
+                );*/
+        return responsePostDtos;
 
     }
 }

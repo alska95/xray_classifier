@@ -33,6 +33,7 @@ public class ImageController {
 
     @PostMapping("/image")
     public ResponseEntity<ResponseImageDto> uploadImage(MultipartHttpServletRequest multipartHttpServletRequest){
+        String userNickName = multipartHttpServletRequest.getParameter("userNickName");
         String src = multipartHttpServletRequest.getParameter("src");
         log.info("image src = [{}]" , src);
         List<MultipartFile> images = multipartHttpServletRequest.getFiles("file");
@@ -55,7 +56,7 @@ public class ImageController {
                 e.printStackTrace();;
             }
         }
-        ImageDto imageDto = new ImageDto(fileNames[0] , fileNames[1], date);
+        ImageDto imageDto = new ImageDto(userNickName, fileNames[0] , fileNames[1], date);
         imageService.saveImageName(imageDto);
         ResponseImageDto responseImageDto = new ResponseImageDto(imageDto.getOriginalImageFileName() , imageDto.getHeatmapImageFileName());
         return ResponseEntity.status(HttpStatus.CREATED).body(responseImageDto);
