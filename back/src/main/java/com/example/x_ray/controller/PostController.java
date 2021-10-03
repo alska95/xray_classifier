@@ -2,15 +2,15 @@ package com.example.x_ray.controller;
 
 import com.example.x_ray.dto.post.PostDto;
 import com.example.x_ray.dto.post.RequestPostDto;
+import com.example.x_ray.dto.post.ResponsePostDto;
 import com.example.x_ray.service.comment.CommentService;
 import com.example.x_ray.service.image.ImageService;
 import com.example.x_ray.service.post.PostService;
 import com.example.x_ray.service.user.UserService;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 public class PostController {
 
     final PostService postService;
@@ -32,9 +32,24 @@ public class PostController {
                 requestPostDto.getDiagnosisResult(),
                 imageService.getImageByNickName(requestPostDto.getUserNickName()),
                 userService.findUserByNickName(requestPostDto.getUserNickName()),
-                commentService.getCommentByNickName(requestPostDto.getUserNickName())
+                null
         );
         postService.savePost(postDto);
+    }
+
+    @GetMapping("/post/{userNickName}")
+    public ResponsePostDto findPost(@PathVariable String userNickName){
+        PostDto postDto = postService.getPostByNickName(userNickName);
+        ResponsePostDto responsePostDto =
+                new ResponsePostDto(
+                        postDto.getUser().getNickName(),
+                        postDto.getImage().getOriginalImageFileName(),
+                        postDto.getImage().getHeatmapImageFileName(),
+                        postDto.getContent(),
+                        postDto.getDiagnosisResult(),
+                        null
+                );
+        return responsePostDto;
 
     }
 }

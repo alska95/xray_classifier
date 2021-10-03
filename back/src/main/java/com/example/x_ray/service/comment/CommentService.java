@@ -5,5 +5,5 @@ import com.example.x_ray.dto.comment.CommentDto;
 import java.util.List;
 
 public interface CommentService {
-    public List<CommentDto> getCommentByNickName(String nickName);
+    public List<CommentDto> getCommentByPostId(String postId) ;
 }

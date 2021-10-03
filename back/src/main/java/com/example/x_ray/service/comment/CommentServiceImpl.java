@@ -8,7 +8,7 @@ import java.util.List;
 @Service
 public class CommentServiceImpl implements CommentService{
     @Override
-    public List<CommentDto> getCommentByNickName(String nickName) {
+    public List<CommentDto> getCommentByPostId(String postId) {
         return null;
     }
 }

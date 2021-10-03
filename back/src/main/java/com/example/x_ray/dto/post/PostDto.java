@@ -19,4 +19,6 @@ public class PostDto {
     private ImageDto image;
     private UserDto user;
     private List<CommentDto> comments;
+
+    public PostDto(){}
 }
