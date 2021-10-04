@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -40,12 +41,14 @@ public class ImageController {
         log.info("images size = [{}]" , images.size());
 
         Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+        String dateString = format.format(date);
         String fileNames[] = new String[2]; // 0: original 1: heatmap
 
         String path = fileDir;
 
         for(int i = 0 ; i < 2 ; i++){
-            fileNames[i] = path+images.get(i).getOriginalFilename()+date.toString();
+            fileNames[i] = path+dateString+images.get(i).getOriginalFilename();
             long fileSize = images.get(i).getSize();
             log.info("fileNames [{}] = [{}]", i , fileNames[i]);
             try{

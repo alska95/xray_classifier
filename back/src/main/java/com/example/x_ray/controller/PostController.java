@@ -28,6 +28,10 @@ public class PostController {
         this.commentService = commentService;
     }
 
+    @PutMapping("/post")
+    public void updatePost(@RequestBody RequestPostDto requestPostDto){
+
+    }
     @PostMapping("/post")
     public void addNewPost(@RequestBody RequestPostDto requestPostDto){
         PostDto postDto = new PostDto(
