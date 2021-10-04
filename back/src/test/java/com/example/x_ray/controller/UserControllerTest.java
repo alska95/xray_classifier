@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.http.client.MockClientHttpRequest;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -23,7 +24,6 @@ public class UserControllerTest {
     @Autowired
     private UserController userController;
 
-    public MockHttpServletRequest request;
 
 
 
@@ -43,6 +43,7 @@ public class UserControllerTest {
                 nickName,
                 password
         );
+        MockHttpServletRequest request = new MockHttpServletRequest();
         ResponseUserDto responseUserDto1 = userController.loginUser(requestLoginDto ,request);
         ResponseUserDto responseUserDto2 = new ResponseUserDto(
                 nickName,
