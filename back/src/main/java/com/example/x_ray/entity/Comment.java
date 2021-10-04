@@ -26,6 +26,12 @@ public class Comment {
     private Post post;
 
 
+    public Comment(String content, User user, Post post) {
+        this.content = content;
+        this.user = user;
+        this.post = post;
+    }
+
     public Comment() {
 
     }

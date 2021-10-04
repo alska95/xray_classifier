@@ -51,6 +51,15 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
+    public Post getPostByPostId(Long postId) {
+
+        return em.createQuery("select p from Post p where p.id =: postId" , Post.class)
+                .setParameter("postId", postId)
+                .getResultList()
+                .get(0);
+    }
+
+    @Override
     public Post getPostByImageName(PostDto postDto){
 
         return  em.createQuery("select p from Post p where " +

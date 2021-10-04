@@ -9,4 +9,5 @@ public interface PostService {
     public List<PostDto> getPostByNickName(String userNickName);
     public PostDto savePost(PostDto postDto);
     public PostDto updatePost(PostDto postDto);
+
 }
