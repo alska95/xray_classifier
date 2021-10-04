@@ -81,9 +81,9 @@ public class ImageController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseImageDto);
     }
 
-    @GetMapping("/image/{userNickName}")
-    public ResponseImageDto getImage(@PathVariable String userNickName){
-        ImageDto image = imageService.getImageByImageName(userNickName);
+    @GetMapping("/image/{originalImageName}")
+    public ResponseImageDto getImage(@PathVariable String originalImageName){
+        ImageDto image = imageService.getImageByImageName(originalImageName);
         ResponseImageDto responseImageDto = new ResponseImageDto(
                 image.getOriginalImageFileName(),
                 image.getHeatmapImageFileName()

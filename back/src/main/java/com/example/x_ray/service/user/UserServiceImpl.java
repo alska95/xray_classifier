@@ -8,6 +8,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 
 @Slf4j
 @Service
@@ -56,5 +59,16 @@ public class UserServiceImpl implements UserService{
             return null;
         }
 
+    }
+
+    @Override
+    @Transactional
+    public List<UserDto> findAllUsers(){
+        return  userRepository.findAll().stream().map(v->
+                new UserDto(
+                        v.getNickName(),
+                        v.getEmail(),
+                        v.getPassword()
+                )).collect(Collectors.toList());
     }
 }

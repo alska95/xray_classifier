@@ -8,12 +8,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository{
 
     @PersistenceContext
     private EntityManager em;
+
 
 
     @Override
@@ -33,5 +35,11 @@ public class UserRepositoryImpl implements UserRepository{
         return em.createQuery("select u from User u where u.nickName like : nickName" , User.class)
                 .setParameter("nickName", nickName)
                 .getResultList().get(0);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return em.createQuery("select u from User u", User.class)
+                .getResultList();
     }
 }

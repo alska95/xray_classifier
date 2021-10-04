@@ -30,6 +30,7 @@ public class UserControllerTest {
     @Test
     @Rollback(true)
     public void 회원가입후로그인() {
+        //given
         String nickName = "황경하";
         String email =  "abc@naver.com";
         String password = "1234";
@@ -44,7 +45,11 @@ public class UserControllerTest {
                 password
         );
         MockHttpServletRequest request = new MockHttpServletRequest();
+
+        //when
         ResponseUserDto responseUserDto1 = userController.loginUser(requestLoginDto ,request);
+
+        //then
         ResponseUserDto responseUserDto2 = new ResponseUserDto(
                 nickName,
                 email

@@ -1,17 +1,12 @@
 package com.example.x_ray.repository.post;
 
 import com.example.x_ray.dto.post.PostDto;
-import com.example.x_ray.dto.post.ResponsePostDto;
-import com.example.x_ray.entity.Comment;
 import com.example.x_ray.entity.Image;
 import com.example.x_ray.entity.Post;
 import com.example.x_ray.entity.User;
 import com.example.x_ray.repository.image.ImageRepository;
-import com.example.x_ray.repository.image.ImageRepositoryImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.List;
@@ -31,7 +26,7 @@ public class PostRepositoryImpl implements PostRepository {
 
 
     @Override
-    public void save(PostDto postDto) {
+    public Post save(PostDto postDto) {
         User user = em.createQuery("select u from User u where u.nickName =: nickName", User.class)
                 .setParameter("nickName", postDto.getUser().getNickName())
                 .getResultList()
@@ -44,6 +39,7 @@ public class PostRepositoryImpl implements PostRepository {
                 image
         );
         em.persist(post);
+        return post;
     }
 
     @Override
@@ -55,7 +51,7 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public Post getCertainPost(PostDto postDto){
+    public Post getPostByImageName(PostDto postDto){
 
         return  em.createQuery("select p from Post p where " +
                 "p.image.originalImageFileName =: originalImageFileName", Post.class)
@@ -66,7 +62,7 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public Post updatePost(PostDto updatePostDto){
-        Post certainPost = getCertainPost(updatePostDto);
+        Post certainPost = getPostByImageName(updatePostDto);
         log.info("post.getContent() = [{}]", updatePostDto.getContent());
         log.info("certainPost = [{}]", certainPost.getId());
         certainPost.setContent(updatePostDto.getContent());

@@ -30,15 +30,11 @@ public class PostServiceImpl implements PostService{
         this.commentService = commentService;
     }
 
-    @Transactional
-    @Override
-    public List<PostDto> getPostByNickName(String userNickName) {
-        List<Post> posts = postRepository.getPost(userNickName);
-        List<PostDto> postDtos = new ArrayList<>();
 
-        posts.stream().forEach(v->{
+    public PostDto postToPostDtoMapper(Post v) {
+        {
             ImageDto imageDto = new ImageDto(
-                    v.getImage().getHeatmapImageFileName(),
+                    v.getImage().getOriginalImageFileName(),
                     v.getImage().getHeatmapImageFileName(),
                     v.getImage().getCreatedDate()
             );
@@ -48,28 +44,40 @@ public class PostServiceImpl implements PostService{
                     v.getUser().getPassword()
             );
             PostDto postDto = new PostDto(
-                v.getContent(),
-                v.getResult(),
-                imageDto,
-                userDto,
-                null
+                    v.getContent(),
+                    v.getResult(),
+                    imageDto,
+                    userDto,
+                    null
             );
-            postDtos.add(postDto);
+            return postDto;
+        }
+    }
+    @Transactional
+    @Override
+    public List<PostDto> getPostByNickName(String userNickName) {
+        List<Post> posts = postRepository.getPost(userNickName);
+        List<PostDto> postDtos = new ArrayList<>();
+
+        posts.stream().forEach(v->{
+            postDtos.add(postToPostDtoMapper(v));
         });
-
-
 
         return postDtos;
     }
     @Transactional
     @Override
-    public void savePost(PostDto postDto) {
-        postRepository.save(postDto);
+    public PostDto savePost(PostDto postDto) {
+        Post savedPost = postRepository.save(postDto);
+        PostDto savedPostDto = postToPostDtoMapper(savedPost);
+        return savedPostDto;
     }
 
     @Transactional
     @Override
-    public void updatePost(PostDto postDto) {
-        postRepository.updatePost(postDto);
+    public PostDto updatePost(PostDto postDto) {
+        Post updatedPost = postRepository.updatePost(postDto);
+        PostDto updatedPostDto = postToPostDtoMapper(updatedPost);
+        return updatedPostDto;
     }
 }

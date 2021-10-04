@@ -37,6 +37,7 @@ public class ImageControllerTest {
 
     @Test
     public void 분석완료후이미지와게시물등록() throws IOException {
+        //given
         MockHttpServletRequest loginRequest = new MockHttpServletRequest();
         userController.loginUser(
                 new RequestLoginDto(
@@ -55,11 +56,17 @@ public class ImageControllerTest {
                 "file", "Fibrosis (1).jpg",
                 "jpg",fileInputStream2
         );
+
         request.addFile(heatMapFile);
         request.addParameter("src", "is working?");
         request.addParameter("userNickName", "hwang");
 
+
+        //when
         ResponseEntity<ResponseImageDto> responseEntity = imageController.uploadImage(request);
+
+        //then
         Assertions.assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
     }
 }

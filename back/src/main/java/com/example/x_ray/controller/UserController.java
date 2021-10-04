@@ -8,9 +8,12 @@ import com.example.x_ray.dto.user.UserDto;
 import com.example.x_ray.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.w3c.dom.stylesheets.LinkStyle;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -60,6 +63,15 @@ public class UserController {
                 userDto.getNickName(),
                 userDto.getEmail()
         );
+    }
+
+    @GetMapping("/users")
+    public List<ResponseUserDto> findAllUser(){
+        List<UserDto> allUsers = userService.findAllUsers();
+        return allUsers.stream().map(v -> new ResponseUserDto(
+                v.getNickName(),
+                v.getEmail()
+        )).collect(Collectors.toList());
     }
 
 }

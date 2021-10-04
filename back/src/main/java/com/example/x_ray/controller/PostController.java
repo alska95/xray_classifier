@@ -7,6 +7,8 @@ import com.example.x_ray.service.comment.CommentService;
 import com.example.x_ray.service.image.ImageService;
 import com.example.x_ray.service.post.PostService;
 import com.example.x_ray.service.user.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,39 +29,49 @@ public class PostController {
         this.commentService = commentService;
     }
 
-    @PutMapping("/post")
-    public void updatePost(@RequestBody RequestPostDto requestPostDto){
-        PostDto postDto = new PostDto(
-                requestPostDto.getContent(),
-                requestPostDto.getDiagnosisResult(),
-                imageService.getImageByImageName(requestPostDto.getOriginalImageName()),
-                userService.findUserByNickName(requestPostDto.getUserNickName()),
-                null
-        );
-        postService.updatePost(postDto);
-    }
-    @PostMapping("/post")
-    public void addNewPost(@RequestBody RequestPostDto requestPostDto){
-        PostDto postDto = new PostDto(
-                requestPostDto.getContent(),
-                requestPostDto.getDiagnosisResult(),
-                imageService.getImageByImageName(requestPostDto.getOriginalImageName()),
-                userService.findUserByNickName(requestPostDto.getUserNickName()),
-                null
-        );
-        postService.savePost(postDto);
-    }
-    @GetMapping("/post/{userNickName}")
-    public List<ResponsePostDto> findPostByUserNickName(@PathVariable String userNickName){
-        List<PostDto> postDtos = postService.getPostByNickName(userNickName);
-        List<ResponsePostDto> responsePostDtos = postDtos.stream().map( v-> new ResponsePostDto(
+    public ResponsePostDto postDtoToResponseMapper(PostDto v){
+        return new ResponsePostDto(
                 v.getUser().getNickName(),
                 v.getImage().getOriginalImageFileName(),
                 v.getImage().getHeatmapImageFileName(),
                 v.getContent(),
                 v.getDiagnosisResult(),
                 null
-                )
+        );
+    }
+
+    @PutMapping("/post")
+    public ResponseEntity<ResponsePostDto> updatePost(@RequestBody RequestPostDto requestPostDto){
+        PostDto postDto = new PostDto(
+                requestPostDto.getContent(),
+                requestPostDto.getDiagnosisResult(),
+                imageService.getImageByImageName(requestPostDto.getOriginalImageName()),
+                userService.findUserByNickName(requestPostDto.getUserNickName()),
+                null
+        );
+        PostDto updatedPost = postService.updatePost(postDto);
+        ResponsePostDto updatedResponse = postDtoToResponseMapper(updatedPost);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedResponse);
+    }
+
+    @PostMapping("/post")
+    public ResponseEntity<ResponsePostDto> addNewPost(@RequestBody RequestPostDto requestPostDto){
+        PostDto postDto = new PostDto(
+                requestPostDto.getContent(),
+                requestPostDto.getDiagnosisResult(),
+                imageService.getImageByImageName(requestPostDto.getOriginalImageName()),
+                userService.findUserByNickName(requestPostDto.getUserNickName()),
+                null
+        );
+        PostDto savedPostDto = postService.savePost(postDto);
+        ResponsePostDto savedResponse = postDtoToResponseMapper(savedPostDto);
+        return ResponseEntity.status(HttpStatus.OK).body(savedResponse);
+    }
+
+    @GetMapping("/post/{userNickName}")
+    public List<ResponsePostDto> findPostByUserNickName(@PathVariable String userNickName){
+        List<PostDto> postDtos = postService.getPostByNickName(userNickName);
+        List<ResponsePostDto> responsePostDtos = postDtos.stream().map( v-> postDtoToResponseMapper(v)
         ).collect(Collectors.toList());
 
         return responsePostDtos;
