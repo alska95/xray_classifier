@@ -1,9 +1,13 @@
 package com.example.x_ray.service.post;
 
+import com.example.x_ray.dto.image.ImageDto;
 import com.example.x_ray.dto.post.PostDto;
+import com.example.x_ray.dto.user.UserDto;
 import com.example.x_ray.entity.Post;
 import com.example.x_ray.repository.post.PostRepository;
+import com.example.x_ray.service.comment.CommentService;
 import com.example.x_ray.service.image.ImageService;
+import com.example.x_ray.service.user.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,10 +20,14 @@ public class PostServiceImpl implements PostService{
 
     final PostRepository postRepository;
     final ImageService imageService;
+    final UserService userService;
+    final CommentService commentService;
 
-    public PostServiceImpl(PostRepository postRepository, ImageService imageService) {
+    public PostServiceImpl(PostRepository postRepository, ImageService imageService, UserService userService, CommentService commentService) {
         this.postRepository = postRepository;
         this.imageService = imageService;
+        this.userService = userService;
+        this.commentService = commentService;
     }
 
     @Transactional
@@ -27,13 +35,24 @@ public class PostServiceImpl implements PostService{
     public List<PostDto> getPostByNickName(String userNickName) {
         List<Post> posts = postRepository.getPost(userNickName);
         List<PostDto> postDtos = new ArrayList<>();
+
         posts.stream().forEach(v->{
+            ImageDto imageDto = new ImageDto(
+                    v.getImage().getHeatmapImageFileName(),
+                    v.getImage().getHeatmapImageFileName(),
+                    v.getImage().getCreatedDate()
+            );
+            UserDto userDto = new UserDto(
+                    v.getUser().getNickName(),
+                    v.getUser().getEmail(),
+                    v.getUser().getPassword()
+            );
             PostDto postDto = new PostDto(
-                            /*                post.getContent(),
-                post.getResult(),
-                imageService.getImageByNickName(userNickName),
-                userService.findUser(),
-                commentService.findComment(),*/
+                v.getContent(),
+                v.getResult(),
+                imageDto,
+                userDto,
+                null
             );
             postDtos.add(postDto);
         });
@@ -46,5 +65,11 @@ public class PostServiceImpl implements PostService{
     @Override
     public void savePost(PostDto postDto) {
         postRepository.save(postDto);
+    }
+
+    @Transactional
+    @Override
+    public void updatePost(PostDto postDto) {
+        postRepository.updatePost(postDto);
     }
 }

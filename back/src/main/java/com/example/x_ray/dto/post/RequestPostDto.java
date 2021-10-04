@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 public class RequestPostDto {
     private String userNickName;
-    private String imageId;
+    private String originalImageName;
     private String content;
     private String diagnosisResult;
     private List<Comment> comments;

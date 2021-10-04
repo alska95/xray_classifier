@@ -8,6 +8,7 @@ import com.example.x_ray.entity.Post;
 import com.example.x_ray.entity.User;
 import com.example.x_ray.repository.image.ImageRepository;
 import com.example.x_ray.repository.image.ImageRepositoryImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.*;
 import java.util.List;
 
+@Slf4j
 @Repository
 public class PostRepositoryImpl implements PostRepository {
 
@@ -52,9 +54,23 @@ public class PostRepositoryImpl implements PostRepository {
                 .getResultList();
     }
 
-    @Transactional
     @Override
-    public Post getCertainPost(){
-        return null;
+    public Post getCertainPost(PostDto postDto){
+
+        return  em.createQuery("select p from Post p where " +
+                "p.image.originalImageFileName =: originalImageFileName", Post.class)
+                .setParameter("originalImageFileName", postDto.getImage().getOriginalImageFileName())
+                .getResultList()
+                .get(0);
+    }
+
+    @Override
+    public Post updatePost(PostDto updatePostDto){
+        Post certainPost = getCertainPost(updatePostDto);
+        log.info("post.getContent() = [{}]", updatePostDto.getContent());
+        log.info("certainPost = [{}]", certainPost.getId());
+        certainPost.setContent(updatePostDto.getContent());
+        certainPost.setComments(null);//수정필요
+        return certainPost;
     }
 }

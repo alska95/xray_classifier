@@ -7,7 +7,6 @@ import com.example.x_ray.service.comment.CommentService;
 import com.example.x_ray.service.image.ImageService;
 import com.example.x_ray.service.post.PostService;
 import com.example.x_ray.service.user.UserService;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,22 +29,28 @@ public class PostController {
 
     @PutMapping("/post")
     public void updatePost(@RequestBody RequestPostDto requestPostDto){
-
+        PostDto postDto = new PostDto(
+                requestPostDto.getContent(),
+                requestPostDto.getDiagnosisResult(),
+                imageService.getImageByImageName(requestPostDto.getOriginalImageName()),
+                userService.findUserByNickName(requestPostDto.getUserNickName()),
+                null
+        );
+        postService.updatePost(postDto);
     }
     @PostMapping("/post")
     public void addNewPost(@RequestBody RequestPostDto requestPostDto){
         PostDto postDto = new PostDto(
                 requestPostDto.getContent(),
                 requestPostDto.getDiagnosisResult(),
-                imageService.getImageByNickName(requestPostDto.getUserNickName()),
+                imageService.getImageByImageName(requestPostDto.getOriginalImageName()),
                 userService.findUserByNickName(requestPostDto.getUserNickName()),
                 null
         );
         postService.savePost(postDto);
     }
-
     @GetMapping("/post/{userNickName}")
-    public List<ResponsePostDto> findPost(@PathVariable String userNickName){
+    public List<ResponsePostDto> findPostByUserNickName(@PathVariable String userNickName){
         List<PostDto> postDtos = postService.getPostByNickName(userNickName);
         List<ResponsePostDto> responsePostDtos = postDtos.stream().map( v-> new ResponsePostDto(
                 v.getUser().getNickName(),
@@ -57,10 +62,6 @@ public class PostController {
                 )
         ).collect(Collectors.toList());
 
-/*                new ResponsePostDto(
-
-                );*/
         return responsePostDtos;
-
     }
 }

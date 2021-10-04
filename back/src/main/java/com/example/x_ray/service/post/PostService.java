@@ -8,4 +8,5 @@ import java.util.List;
 public interface PostService {
     public List<PostDto> getPostByNickName(String userNickName);
     public void savePost(PostDto postDto);
+    public void updatePost(PostDto postDto);
 }

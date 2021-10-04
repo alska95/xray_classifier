@@ -1,6 +1,7 @@
 package com.example.x_ray.controller;
 
 import com.example.x_ray.dto.image.ResponseImageDto;
+import com.example.x_ray.dto.user.RequestLoginDto;
 import org.assertj.core.api.Assertions;
 
 import org.junit.Test;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockMultipartHttpServletRequest;
 import org.springframework.test.annotation.Rollback;
@@ -35,7 +37,12 @@ public class ImageControllerTest {
 
     @Test
     public void 분석완료후이미지와게시물등록() throws IOException {
-
+        MockHttpServletRequest loginRequest = new MockHttpServletRequest();
+        userController.loginUser(
+                new RequestLoginDto(
+                        "hwang" , "hwang"
+                ), loginRequest
+        );
         MockMultipartHttpServletRequest request = new MockMultipartHttpServletRequest();
         FileInputStream fileInputStream = new FileInputStream(new File( "I:\\programming\\xray_classifier\\image\\Effusion (2).jpg"));
         MockMultipartFile originalFile = new MockMultipartFile(

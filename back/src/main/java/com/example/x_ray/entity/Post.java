@@ -34,4 +34,8 @@ public class Post {
         this.comments = comments;
         this.image = image;
     }
+
+    public Post() {
+
+    }
 }

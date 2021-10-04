@@ -1,11 +1,13 @@
 package com.example.x_ray.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
 
 @Data
 @Entity
+@AllArgsConstructor
 public class Comment {
 
     @Id @GeneratedValue
@@ -24,4 +26,7 @@ public class Comment {
     private Post post;
 
 
+    public Comment() {
+
+    }
 }

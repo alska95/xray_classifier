@@ -83,7 +83,7 @@ public class ImageController {
 
     @GetMapping("/image/{userNickName}")
     public ResponseImageDto getImage(@PathVariable String userNickName){
-        ImageDto image = imageService.getImageByNickName(userNickName);
+        ImageDto image = imageService.getImageByImageName(userNickName);
         ResponseImageDto responseImageDto = new ResponseImageDto(
                 image.getOriginalImageFileName(),
                 image.getHeatmapImageFileName()
