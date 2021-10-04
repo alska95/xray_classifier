@@ -31,9 +31,9 @@ public class ImageRepositoryImpl implements ImageRepository{
     }
 
     @Override
-    public Image getImage(String userNickName) {
-        return em.createQuery("select i from Image i where i.user.nickName =: userNickName", Image.class)
-                .setParameter("userNickName" , userNickName)
+    public Image getImage(String originalImageName) {
+        return em.createQuery("select i from Image i where i.originalImageFileName =: originalImageName", Image.class)
+                .setParameter("originalImageName" , originalImageName)
                 .getResultList().get(0);
     }
 }

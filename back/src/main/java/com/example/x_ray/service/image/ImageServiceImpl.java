@@ -24,8 +24,8 @@ public class ImageServiceImpl implements ImageService{
 
     @Transactional
     @Override
-    public ImageDto getImageByNickName(String userNickName) {
-        Image image = imageRepository.getImage(userNickName);
+    public ImageDto getImageByNickName(String originalImageName) {
+        Image image = imageRepository.getImage(originalImageName);
         ImageDto dto  = new ImageDto(
                 image.getUser().getNickName(),
                 image.getOriginalImageFileName(),

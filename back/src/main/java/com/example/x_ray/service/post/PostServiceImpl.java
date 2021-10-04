@@ -5,6 +5,7 @@ import com.example.x_ray.entity.Post;
 import com.example.x_ray.repository.post.PostRepository;
 import com.example.x_ray.service.image.ImageService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class PostServiceImpl implements PostService{
         this.imageService = imageService;
     }
 
+    @Transactional
     @Override
     public List<PostDto> getPostByNickName(String userNickName) {
         List<Post> posts = postRepository.getPost(userNickName);
@@ -40,7 +42,7 @@ public class PostServiceImpl implements PostService{
 
         return postDtos;
     }
-
+    @Transactional
     @Override
     public void savePost(PostDto postDto) {
         postRepository.save(postDto);

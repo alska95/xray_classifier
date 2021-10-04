@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ImageRepository {
     public void saveImages(ImageDto imageDto);
-    public Image getImage(String userNickName);
+    public Image getImage(String originalImageName);
 }

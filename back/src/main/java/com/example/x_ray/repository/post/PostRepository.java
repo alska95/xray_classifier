@@ -10,4 +10,5 @@ import java.util.List;
 public interface PostRepository {
     public void save(PostDto postDto);
     public List<Post> getPost(String userNickName);
+    public Post getCertainPost();
 }

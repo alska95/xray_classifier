@@ -10,6 +10,7 @@ import com.example.x_ray.repository.image.ImageRepository;
 import com.example.x_ray.repository.image.ImageRepositoryImpl;
 import org.hibernate.validator.constraints.UniqueElements;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.List;
@@ -26,13 +27,14 @@ public class PostRepositoryImpl implements PostRepository {
         this.imageRepository = imageRepository;
     }
 
+
     @Override
     public void save(PostDto postDto) {
         User user = em.createQuery("select u from User u where u.nickName =: nickName", User.class)
                 .setParameter("nickName", postDto.getUser().getNickName())
                 .getResultList()
                 .get(0);
-        Image image = imageRepository.getImage(postDto.getUser().getNickName());
+        Image image = imageRepository.getImage(postDto.getImage().getOriginalImageFileName());
 
         Post post = new Post(
                 postDto.getContent() , postDto.getDiagnosisResult() ,
@@ -45,8 +47,14 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public List<Post> getPost(String userNickName) {
 
-        return   em.createQuery("select p from Post p where p.user.nickName =: userNickName", Post.class)
+        return  em.createQuery("select p from Post p where p.user.nickName =: userNickName", Post.class)
                 .setParameter("userNickName", userNickName)
                 .getResultList();
+    }
+
+    @Transactional
+    @Override
+    public Post getCertainPost(){
+        return null;
     }
 }

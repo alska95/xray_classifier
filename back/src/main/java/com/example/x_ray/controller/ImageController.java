@@ -3,7 +3,10 @@ package com.example.x_ray.controller;
 
 import com.example.x_ray.dto.image.ImageDto;
 import com.example.x_ray.dto.image.ResponseImageDto;
+import com.example.x_ray.dto.post.PostDto;
 import com.example.x_ray.service.image.ImageService;
+import com.example.x_ray.service.post.PostService;
+import com.example.x_ray.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +28,12 @@ import java.util.List;
 public class ImageController {
 
     final ImageService imageService;
-    public ImageController(ImageService imageService) {
+    final PostService postService;
+    final UserService userService;
+    public ImageController(ImageService imageService, PostService postService, UserService userService) {
         this.imageService = imageService;
+        this.postService = postService;
+        this.userService = userService;
     }
     private String fileDir= "I:\\programming\\xray_classifier\\image\\";
 
@@ -59,8 +66,17 @@ public class ImageController {
                 e.printStackTrace();;
             }
         }
+
         ImageDto imageDto = new ImageDto(userNickName, fileNames[0] , fileNames[1], date);
         imageService.saveImageName(imageDto);
+        PostDto postDto = new PostDto(
+                "",
+                "",
+                imageDto,
+                userService.findUserByNickName(userNickName),
+                null
+        );
+        postService.savePost(postDto);
         ResponseImageDto responseImageDto = new ResponseImageDto(imageDto.getOriginalImageFileName() , imageDto.getHeatmapImageFileName());
         return ResponseEntity.status(HttpStatus.CREATED).body(responseImageDto);
     }
