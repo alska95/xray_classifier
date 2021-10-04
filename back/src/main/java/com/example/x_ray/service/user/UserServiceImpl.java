@@ -3,10 +3,13 @@ package com.example.x_ray.service.user;
 import com.example.x_ray.dto.user.UserDto;
 import com.example.x_ray.entity.User;
 import com.example.x_ray.repository.user.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService{
 
@@ -19,12 +22,15 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    @Transactional
     public UserDto createUser(UserDto userDto) {
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userRepository.createUser(userDto);
         return userDto;
     }
 
     @Override
+    @Transactional
     public UserDto findUserByNickName(String nickName) {
         User user = userRepository.findUser(nickName);
         return new UserDto(
@@ -35,13 +41,20 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    @Transactional
     public UserDto validateLogin(UserDto userDto) {
+        log.info("nickname = [{}]" , userDto.getNickName());
         UserDto targetUser = findUserByNickName(userDto.getNickName());
-        if(targetUser == null)
+        if(targetUser == null){
+            log.info("no User Available");
             return null;
+        }
         if(passwordEncoder.matches(userDto.getPassword(), targetUser.getPassword())){
             return targetUser;
-        }else
+        }else{
+            log.info("password misMatch");
             return null;
+        }
+
     }
 }

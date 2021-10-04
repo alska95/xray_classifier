@@ -25,11 +25,12 @@ public class UserRepositoryImpl implements UserRepository{
                 new Date(),
                 null
         );
+        em.persist(user);
         return user;
     }
 
     public User findUser(String nickName){
-        return em.createQuery("select u from User u where u.nickName =: nickName" , User.class)
+        return em.createQuery("select u from User u where u.nickName like : nickName" , User.class)
                 .setParameter("nickName", nickName)
                 .getResultList().get(0);
     }

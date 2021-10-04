@@ -5,8 +5,11 @@ import com.example.x_ray.dto.user.RequestSignInDto;
 import com.example.x_ray.dto.user.ResponseUserDto;
 import com.example.x_ray.dto.user.UserDto;
 import com.example.x_ray.service.user.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+
+@Slf4j
 @RestController
 public class UserController {
 
@@ -27,15 +30,21 @@ public class UserController {
     }
 
     @PostMapping("/user/login")
-    public void loginUser(@RequestBody RequestLoginDto requestLoginDto){
+    public ResponseUserDto loginUser(@RequestBody RequestLoginDto requestLoginDto){
         UserDto userDto = new UserDto(
                 requestLoginDto.getUserNickName(),
                 requestLoginDto.getPassword()
         );
         UserDto loginUser = userService.validateLogin(userDto);
         if(loginUser != null){
+            log.info("loginUser = [{}], loginEmail = [{}]", loginUser.getNickName() , loginUser.getEmail());
+            return new ResponseUserDto(
+                    loginUser.getNickName(),
+                    loginUser.getEmail()
+            );
             //세션 생성
         }
+        return null;
     }
 
     @GetMapping("/user/{userNickName}")
