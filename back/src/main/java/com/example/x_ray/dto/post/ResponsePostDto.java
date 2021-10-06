@@ -9,6 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class ResponsePostDto {
+    private Long postId;
     private String userNickName;
     private String originalImageName;
     private String heatmapImageName;

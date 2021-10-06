@@ -44,6 +44,7 @@ public class PostServiceImpl implements PostService{
                     v.getUser().getPassword()
             );
             PostDto postDto = new PostDto(
+                    v.getId(),
                     v.getContent(),
                     v.getResult(),
                     imageDto,

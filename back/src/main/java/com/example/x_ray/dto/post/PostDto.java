@@ -14,6 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class PostDto {
+    private Long postId;
     private String content;
     private String diagnosisResult;
     private ImageDto image;
@@ -21,4 +22,10 @@ public class PostDto {
 //    private List<CommentDto> comments;
 
     public PostDto(){}
+    public PostDto(String content, String diagnosisResult, ImageDto image, UserDto user){
+        this.content = content;
+        this.diagnosisResult = diagnosisResult;
+        this.image = image;
+        this.user = user;
+    }
 }

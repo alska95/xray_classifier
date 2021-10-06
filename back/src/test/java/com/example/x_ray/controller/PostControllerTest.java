@@ -55,6 +55,7 @@ public class PostControllerTest {
         ImageDto image = imageService.getImageByImageName(originalImageName);
         String heatmapImageFileName = image.getHeatmapImageFileName();
         ResponsePostDto expectedResponse = new ResponsePostDto(
+                responseEntity.getBody().getPostId(),
                 userName,
                 originalImageName,
                 heatmapImageFileName,

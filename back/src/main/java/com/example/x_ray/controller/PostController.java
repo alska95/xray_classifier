@@ -31,6 +31,7 @@ public class PostController {
 
     public ResponsePostDto postDtoToResponseMapper(PostDto v){
         return new ResponsePostDto(
+                v.getPostId(),
                 v.getUser().getNickName(),
                 v.getImage().getOriginalImageFileName(),
                 v.getImage().getHeatmapImageFileName(),
