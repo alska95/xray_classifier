@@ -73,8 +73,7 @@ public class ImageController {
                 "",
                 "",
                 imageDto,
-                userService.findUserByNickName(userNickName),
-                null
+                userService.findUserByNickName(userNickName)
         );
         postService.savePost(postDto);
         ResponseImageDto responseImageDto = new ResponseImageDto(imageDto.getOriginalImageFileName() , imageDto.getHeatmapImageFileName());

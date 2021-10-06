@@ -45,8 +45,7 @@ public class PostControllerTest {
                 userName,
                 originalImageName,
                 content,
-                result,
-                null
+                result
         );
 
         //when
@@ -88,8 +87,7 @@ public class PostControllerTest {
                 userName,
                 originalImageName,
                 content,
-                result,
-                null
+                result
         );
         postController.addNewPost(createdPostDto);
         //when
@@ -100,8 +98,7 @@ public class PostControllerTest {
                 userName,
                 originalImageName,
                 newContent,
-                result,
-                null
+                result
         );
         ResponseEntity<ResponsePostDto> updateResponseEntity = postController.updatePost(updateRequestPostDto);
 

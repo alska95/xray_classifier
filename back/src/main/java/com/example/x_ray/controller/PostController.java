@@ -46,8 +46,7 @@ public class PostController {
                 requestPostDto.getContent(),
                 requestPostDto.getDiagnosisResult(),
                 imageService.getImageByImageName(requestPostDto.getOriginalImageName()),
-                userService.findUserByNickName(requestPostDto.getUserNickName()),
-                null
+                userService.findUserByNickName(requestPostDto.getUserNickName())
         );
         PostDto updatedPost = postService.updatePost(postDto);
         ResponsePostDto updatedResponse = postDtoToResponseMapper(updatedPost);
@@ -60,8 +59,7 @@ public class PostController {
                 requestPostDto.getContent(),
                 requestPostDto.getDiagnosisResult(),
                 imageService.getImageByImageName(requestPostDto.getOriginalImageName()),
-                userService.findUserByNickName(requestPostDto.getUserNickName()),
-                null
+                userService.findUserByNickName(requestPostDto.getUserNickName())
         );
         PostDto savedPostDto = postService.savePost(postDto);
         ResponsePostDto savedResponse = postDtoToResponseMapper(savedPostDto);

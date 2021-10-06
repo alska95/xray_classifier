@@ -75,7 +75,7 @@ public class PostRepositoryImpl implements PostRepository {
         log.info("post.getContent() = [{}]", updatePostDto.getContent());
         log.info("certainPost = [{}]", certainPost.getId());
         certainPost.setContent(updatePostDto.getContent());
-        certainPost.setComments(null);//수정필요
+//        certainPost.setComments(null);//수정필요 comment update는 comment로만.
         return certainPost;
     }
 }

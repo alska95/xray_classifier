@@ -13,5 +13,5 @@ public class RequestPostDto {
     private String originalImageName;
     private String content;
     private String diagnosisResult;
-    private List<Comment> comments;
+//    private List<Comment> comments;
 }

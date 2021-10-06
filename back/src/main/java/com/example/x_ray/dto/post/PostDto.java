@@ -18,7 +18,7 @@ public class PostDto {
     private String diagnosisResult;
     private ImageDto image;
     private UserDto user;
-    private List<CommentDto> comments;
+//    private List<CommentDto> comments;
 
     public PostDto(){}
 }

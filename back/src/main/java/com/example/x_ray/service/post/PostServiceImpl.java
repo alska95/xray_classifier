@@ -47,8 +47,7 @@ public class PostServiceImpl implements PostService{
                     v.getContent(),
                     v.getResult(),
                     imageDto,
-                    userDto,
-                    null
+                    userDto
             );
             return postDto;
         }
