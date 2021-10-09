@@ -5,7 +5,7 @@ import {setGradImageAction, setPostComponentAction, setResultAction, setUnFoundA
 import {gradClassActivationMap} from "./gradCam/cam"
 import {createCanvas} from "canvas";
 import {Button} from 'antd';
-import {CaretRightOutlined} from '@ant-design/icons'
+import {CaretRightOutlined} from '@ant-design/icons';
 
 
 const ClassifyButton = {
@@ -57,7 +57,22 @@ async function preprocess(img)
     return batched
 }
 
+async function simpleOriginalImage(img) {
+    let im = new Image();
+    im.src = img;
+    im.width = 224;
+    im.height = 224;
+    return ;
+}
 
+async function dataURLtoBlob(dataurl) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while(n--){
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], {type:mime});
+}
 
 const Classifier = () => {
     const [classifierOnLoading , setClassifierOnLoading] = useState(0)
@@ -96,12 +111,25 @@ const Classifier = () => {
             gradCam = await gradClassActivationMap(model  , target ,  img);
             gradCam = await ImageTensorToImage(gradCam);
             await dispatch(setGradImageAction(gradCam));
-            const postComponent = {
+/*            const postComponent = {
                 "gradCamImage" : gradCam,
                 "originalImage" : img,
                 "diagnosisResult" : resultArray
-            };
-            await dispatch(setPostComponentAction(postComponent));
+            };*/
+            var urlO = 'data:image/jpg;base64,'+imageFile;
+            var tmpBlobO = await dataURLtoBlob(imageFile);
+            var urlH = 'data:image/jpg;base64,'+gradCam;
+            var tmpBlobH = await dataURLtoBlob(gradCam);
+            const formData = new FormData();
+/*            const gradCamBlob = new Blob([tmpBlobO]);
+            const originalBlob = new Blob([urlH], {type:"image/jpg"});*/
+            var originalFile = new File([tmpBlobO] , "Original");
+            var heatMapFile = new File([tmpBlobH] , "HeatMap");
+            formData.append('file', originalFile , "original.jpg");
+            formData.append('file', heatMapFile, "gradCam.jpg");
+            formData.append('src', "is working");
+            formData.append('userNickName' , "hwang"); //수정 필요
+            await dispatch(setPostComponentAction(formData));
         }catch(err){
             console.error(err);
         }

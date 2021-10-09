@@ -23,7 +23,7 @@ function* addEmptyPost(action){
     }
 }
 
-function* watchAddEmptyPost(action){
+function* watchAddEmptyPost(){
     yield takeLatest(SET_EMPTY_POST, addEmptyPost);
 
 }
