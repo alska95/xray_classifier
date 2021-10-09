@@ -67,6 +67,13 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(savedResponse);
     }
 
+    @PostMapping("/post/{postId}")
+    public ResponseEntity<ResponsePostDto> getPostById(@PathVariable Long postId){
+        PostDto postById = postService.getPostById(postId);
+        ResponsePostDto responsePostDto = postDtoToResponseMapper(postById);
+        return ResponseEntity.status(HttpStatus.OK).body(responsePostDto);
+    }
+
     @GetMapping("/post/{userNickName}")
     public List<ResponsePostDto> findPostByUserNickName(@PathVariable String userNickName){
         List<PostDto> postDtos = postService.getPostByNickName(userNickName);

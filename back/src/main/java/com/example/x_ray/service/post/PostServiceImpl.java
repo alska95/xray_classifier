@@ -80,4 +80,10 @@ public class PostServiceImpl implements PostService{
         PostDto updatedPostDto = postToPostDtoMapper(updatedPost);
         return updatedPostDto;
     }
+
+    @Override
+    public PostDto getPostById(Long id){
+        Post postByPostId = postRepository.getPostByPostId(id);
+        return postToPostDtoMapper(postByPostId);
+    }
 }
