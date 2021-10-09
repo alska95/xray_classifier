@@ -24,11 +24,15 @@ const initialState = {
     ],
 };
 
-const SET_IMAGE = 'SET_IMAGE';
-const SET_RESULT = 'SET_RESULT';
-const SET_UNFOUND = 'SET_UNFOUND';
-const SET_GRAD_IMAGE = 'SET_GRAD_IMAGE';
-const SET_EMPTY_POST = 'SET_GRAD_IMAGE';
+export const SET_IMAGE = 'SET_IMAGE';
+export const SET_RESULT = 'SET_RESULT';
+export const SET_UNFOUND = 'SET_UNFOUND';
+export const SET_GRAD_IMAGE = 'SET_GRAD_IMAGE';
+
+
+
+export const SET_EMPTY_POST = 'SET_GRAD_IMAGE';
+export const SET_EMPTY_POST_SUCCESS = 'SET_EMPTY_POST_SUCCESS'; //구현 예정
 
 export const setPostComponentAction = (data) =>({
     type:SET_EMPTY_POST,
