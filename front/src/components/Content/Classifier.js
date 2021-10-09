@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import * as tf from '@tensorflow/tfjs';
-import {setGradImageAction, setResultAction, setUnFoundAction} from "../../reducers";
+import {setGradImageAction, setPostComponentAction, setResultAction, setUnFoundAction} from "../../reducers";
 import {gradClassActivationMap} from "./gradCam/cam"
 import {createCanvas} from "canvas";
 import {Button} from 'antd';
@@ -96,6 +96,12 @@ const Classifier = () => {
             gradCam = await gradClassActivationMap(model  , target ,  img);
             gradCam = await ImageTensorToImage(gradCam);
             await dispatch(setGradImageAction(gradCam));
+            const postComponent = {
+                "gradCamImage" : gradCam,
+                "originalImage" : img,
+                "diagnosisResult" : resultArray
+            };
+            await dispatch(setPostComponentAction(postComponent));
         }catch(err){
             console.error(err);
         }

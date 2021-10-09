@@ -1,6 +1,7 @@
 import {combineReducers} from "redux";
 
 const initialState = {
+    postComponent :[],
     image : [],
     result : [],
     gradImage : [],
@@ -27,6 +28,12 @@ const SET_IMAGE = 'SET_IMAGE';
 const SET_RESULT = 'SET_RESULT';
 const SET_UNFOUND = 'SET_UNFOUND';
 const SET_GRAD_IMAGE = 'SET_GRAD_IMAGE';
+const SET_EMPTY_POST = 'SET_GRAD_IMAGE';
+
+export const setPostComponentAction = (data) =>({
+    type:SET_EMPTY_POST,
+    data,
+})
 
 export const setImageAction = (data)=>({
     type:SET_IMAGE,
@@ -50,6 +57,11 @@ export const setResultAction = (data)=>({
 const rootReducer = combineReducers({
     index:(state=initialState , action)=>{
         switch(action.type){
+            case SET_EMPTY_POST:
+                return{
+                    ...state,
+                    postComponent: action.data,
+                }
             case SET_IMAGE:
                 return{
                     ...state,
