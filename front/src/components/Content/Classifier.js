@@ -116,9 +116,7 @@ const Classifier = () => {
                 "originalImage" : img,
                 "diagnosisResult" : resultArray
             };*/
-            var urlO = 'data:image/jpg;base64,'+imageFile;
             var tmpBlobO = await dataURLtoBlob(imageFile);
-            var urlH = 'data:image/jpg;base64,'+gradCam;
             var tmpBlobH = await dataURLtoBlob(gradCam);
             const formData = new FormData();
 /*            const gradCamBlob = new Blob([tmpBlobO]);
@@ -129,6 +127,7 @@ const Classifier = () => {
             formData.append('file', heatMapFile, "gradCam.jpg");
             formData.append('src', "is working");
             formData.append('userNickName' , "hwang"); //수정 필요
+            formData.append('result', resultArray);
             await dispatch(setPostComponentAction(formData));
         }catch(err){
             console.error(err);

@@ -4,6 +4,9 @@ import {takeLatest} from "@redux-saga/core/effects";
 import {
     SET_EMPTY_POST,
     SET_EMPTY_POST_SUCCESS,
+    LOAD_POSTS_REQUEST,
+    LOAD_POSTS_SUCCESS,
+    LOAD_POSTS_FAILURE,
 } from "../reducers/index"
 axios.defaults.baseURL = 'http://localhost:8080'
 axios.defaults.withCredentials = true;
@@ -23,12 +26,32 @@ function* addEmptyPost(action){
     }
 }
 
+function loadPostAPI(data){
+    return axios.get('/post');
+}
+
+function* loadAllPost(){
+    try{
+        const result = yield call(loadPostAPI);
+        yield put({
+            type:LOAD_POSTS_SUCCESS,
+            data:result.data,
+        })
+    }catch (err){
+        yield put({
+            type: LOAD_POSTS_FAILURE,
+            error: err.response.data,
+        })
+    }
+}
+
 function* watchAddEmptyPost(){
     yield takeLatest(SET_EMPTY_POST, addEmptyPost);
-
+    yield takeLatest(LOAD_POSTS_REQUEST, loadAllPost);
 }
 export default function* rootSaga(){
     yield all([
+        fork(watchAddEmptyPost),
         fork(watchAddEmptyPost),
     ]);
 }

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface PostRepository {
     public Post save(PostDto postDto);
-    public List<Post> getPost(String userNickName);
+    public List<Post> getPostByUserName(String userNickName);
     public Post getPostByPostId(Long postId);
     public Post getPostByImageName(PostDto postDto);
     public Post updatePost(PostDto updatePostDto);

@@ -56,7 +56,7 @@ public class PostServiceImpl implements PostService{
     @Transactional
     @Override
     public List<PostDto> getPostByNickName(String userNickName) {
-        List<Post> posts = postRepository.getPost(userNickName);
+        List<Post> posts = postRepository.getPostByUserName(userNickName);
         List<PostDto> postDtos = new ArrayList<>();
 
         posts.stream().forEach(v->{

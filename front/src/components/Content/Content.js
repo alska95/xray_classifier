@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setGradImageAction, setImageAction, setResultAction, setUnFoundAction} from "../../reducers";
 import Classifier from "./Classifier";
 import Disease from './Disease'
-import { Button , Menu , Dropdown } from 'antd';
+import {Button, Menu, Dropdown, Card} from 'antd';
 import {InboxOutlined , UserOutlined , DownOutlined} from '@ant-design/icons'
 import Atelctasis from '../../images/Atelectasis.jpeg'
 import Cardiomegaly from '../../images/Cardiomegaly.jpg'
@@ -15,7 +15,7 @@ import Effusion from '../../images/Effusion (1).jpeg'
 const style = {};
 
 style.Container = styled.div`
-    display: flex;
+    display: inline-block;
     padding: 10px;
 `;
 
@@ -74,6 +74,13 @@ const PressClassify = styled.div`
     font-weight: bold;
     text-align: center;
     margin-top: 100px;
+`
+
+const MainContentContainer = styled.div`
+    display: flex;
+`
+const PostContainer = styled.div`
+
 `
 
 let heatmapChecked = false;
@@ -148,61 +155,71 @@ const Content = () => {
 
     return (
         <style.Container>
-            {image==="" ? (
-                <style.InputImage>
-                    <input multiple hidden ref ={imageInput} type="file" accept="img/*" onChange={handleFileOnChange}/>
-                    <Button icon={<InboxOutlined />} type={"dark"} style={{width : "200px" , margin : "10px" , fontWeight : "bold"}}
-                            onClick={onClickImageUpload}>이미지 업로드</Button>
+            <MainContentContainer>
+                {image==="" ? (
+                    <style.InputImage>
+                        <input multiple hidden ref ={imageInput} type="file" accept="img/*" onChange={handleFileOnChange}/>
+                        <Button icon={<InboxOutlined />} type={"dark"} style={{width : "200px" , margin : "10px" , fontWeight : "bold"}}
+                                onClick={onClickImageUpload}>이미지 업로드</Button>
 
-                    <Dropdown overlay={menu}>
-                        <Button icon={<InboxOutlined />} style={{width : "200px"  , margin : "10px" ,   marginTop: "0px" ,fontWeight : "bold"}}>
-                            셈플 이미지 <DownOutlined />
-                        </Button>
-                    </Dropdown>
-                </style.InputImage>
+                        <Dropdown overlay={menu}>
+                            <Button icon={<InboxOutlined />} style={{width : "200px"  , margin : "10px" ,   marginTop: "0px" ,fontWeight : "bold"}}>
+                                셈플 이미지 <DownOutlined />
+                            </Button>
+                        </Dropdown>
+                    </style.InputImage>
 
-            ) : (
-                <style.InputImage>
-                    <OutputImage src = {image}/>
-                </style.InputImage>
+                ) : (
+                    <style.InputImage>
+                        <OutputImage src = {image}/>
+                    </style.InputImage>
 
-            )}
-            {image!=="" && (
-                <style.InfoContainer>
-                    <style.Info>
-                        { result[0] &&!unFoundFlag?
-                            (
-                                result.map((v , index)=>
-                                    <Disease factor = {v} index = {index} key = {index}/>
+                )}
+                {image!=="" && (
+                    <style.InfoContainer>
+
+                        <style.Info>
+                            { result[0] &&!unFoundFlag?
+                                (
+                                    result.map((v , index)=>
+                                        <Disease factor = {v} index = {index} key = {index}/>
+                                    )
+                                ):
+                                (
+                                    !unFoundFlag ?
+                                        <PressClassify>Press Classify</PressClassify>
+                                        :
+                                        <div style={{fontWeight : "bold"}}>unFound</div>
                                 )
-                            ):
-                            (
-                                !unFoundFlag ?
-                                    <PressClassify>Press Classify</PressClassify>
-                                    :
-                                    <div style={{fontWeight : "bold"}}>unFound</div>
-                            )
+                            }
+
+                        </style.Info>
+                        {gradCamImage[0] &&
+                        <style.FilterContainer>
+                            <style.FilterItem type="checkbox" name="heatmap" onChange={()=> check()}/>Heatmap
+                        </style.FilterContainer>
                         }
 
-                    </style.Info>
-                    {gradCamImage[0] &&
-                    <style.FilterContainer>
-                         <style.FilterItem type="checkbox" name="heatmap" onChange={()=> check()}/>Heatmap
-                    </style.FilterContainer>
-                    }
+                        <Classifier/>
+                        <input multiple hidden ref ={imageInput} type="file" accept="img/*" onChange={handleFileOnChange}/>
+                        <Button icon={<InboxOutlined />} type={"dark"} style={{width : "233px" , marginTop : "10px" , fontWeight : "bold"}} onClick={onClickImageUpload}>새로운 이미지 업로드</Button>
+                        <Dropdown overlay={menu}>
+                            <Button icon={<InboxOutlined />} style={{width : "233px" , marginTop : "10px" , fontWeight : "bold"}}>
+                                셈플 이미지 <DownOutlined />
+                            </Button>
+                        </Dropdown>
+                    </style.InfoContainer>
+                )}
 
-                    <Classifier/>
-                    <input multiple hidden ref ={imageInput} type="file" accept="img/*" onChange={handleFileOnChange}/>
-                    <Button icon={<InboxOutlined />} type={"dark"} style={{width : "233px" , marginTop : "10px" , fontWeight : "bold"}} onClick={onClickImageUpload}>새로운 이미지 업로드</Button>
-                    <Dropdown overlay={menu}>
-                        <Button icon={<InboxOutlined />} style={{width : "233px" , marginTop : "10px" , fontWeight : "bold"}}>
-                            셈플 이미지 <DownOutlined />
-                        </Button>
-                    </Dropdown>
-                </style.InfoContainer>
-            )}
+            </MainContentContainer>
+            <PostContainer>
+                <Card>
+                    asdfa
+                </Card>
+            </PostContainer>
 
         </style.Container>
+
     );
 }
 

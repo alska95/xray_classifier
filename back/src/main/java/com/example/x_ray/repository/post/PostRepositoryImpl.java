@@ -43,7 +43,7 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public List<Post> getPost(String userNickName) {
+    public List<Post> getPostByUserName(String userNickName) {
 
         return  em.createQuery("select p from Post p where p.user.nickName =: userNickName", Post.class)
                 .setParameter("userNickName", userNickName)
