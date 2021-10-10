@@ -22,7 +22,7 @@ function* addEmptyPost(action){
             data:result.data,
         })
     }catch (err){
-
+        console.log(err);
     }
 }
 

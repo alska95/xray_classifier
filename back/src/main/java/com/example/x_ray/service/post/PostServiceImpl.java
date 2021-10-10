@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -85,5 +86,12 @@ public class PostServiceImpl implements PostService{
     public PostDto getPostById(Long id){
         Post postByPostId = postRepository.getPostByPostId(id);
         return postToPostDtoMapper(postByPostId);
+    }
+
+    @Override
+    public List<PostDto> getAllPosts() {
+        List<Post> allPosts = postRepository.getAllPosts();
+        List<PostDto> postDtoList = allPosts.stream().map(v -> postToPostDtoMapper(v)).collect(Collectors.toList());
+        return postDtoList;
     }
 }

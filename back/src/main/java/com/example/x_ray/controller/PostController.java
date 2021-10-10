@@ -82,4 +82,12 @@ public class PostController {
 
         return responsePostDtos;
     }
+
+    @GetMapping("/posts")
+    public List<ResponsePostDto> findAllPosts(){
+        List<PostDto> allPosts = postService.getAllPosts();
+        List<ResponsePostDto> responsePostDtos = allPosts.stream().map( v-> postDtoToResponseMapper(v))
+                .collect(Collectors.toList());
+        return responsePostDtos;
+    }
 }

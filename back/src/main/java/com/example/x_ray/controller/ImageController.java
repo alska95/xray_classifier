@@ -46,6 +46,8 @@ public class ImageController {
         log.info("image src = [{}]" , src);
         List<MultipartFile> images = multipartHttpServletRequest.getFiles("file");
         log.info("images size = [{}]" , images.size());
+        String resultList = multipartHttpServletRequest.getParameter("result");
+        log.info("diagnosis result =[{}]", resultList);
 
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -71,7 +73,7 @@ public class ImageController {
         imageService.saveImageName(imageDto);
         PostDto postDto = new PostDto(
                 "",
-                "",
+                resultList,
                 imageDto,
                 userService.findUserByNickName(userNickName)
         );
