@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import {Popover} from "antd";
+import Button from "antd-button-color";
+import SignInForm from "./SignInForm";
 
 const style = {};
 
@@ -19,6 +22,9 @@ const Header = () => {
     return (
         <style.Header>
             <style.Title>X-ray Classifier</style.Title>
+            <Popover placement="topLeft" title={"회원가입"} content={<SignInForm/>} trigger="click">
+                <Button style={{fontWeight: "bold" ,marginLeft : "5%"}}>회원가입</Button>
+            </Popover>
         </style.Header>
     )
 };

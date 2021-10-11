@@ -1,7 +1,13 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import * as tf from '@tensorflow/tfjs';
-import {setGradImageAction, setPostComponentAction, setResultAction, setUnFoundAction} from "../../reducers";
+import {
+    loadPostAction,
+    setGradImageAction,
+    setPostComponentAction,
+    setResultAction,
+    setUnFoundAction
+} from "../../reducers";
 import {gradClassActivationMap} from "./gradCam/cam"
 import {createCanvas} from "canvas";
 import {Button} from 'antd';
@@ -123,6 +129,7 @@ const Classifier = () => {
             formData.append('result', resultArray);
             console.log("form Data = " + formData);
             await dispatch(setPostComponentAction(formData));
+            await dispatch(loadPostAction());
         }catch(err){
             console.error(err);
         }

@@ -98,7 +98,7 @@ const Content = () => {
             type:LOAD_POSTS_REQUEST,
         })
     },[])
-    const mainPosts = useSelector((state)=>state.index.mainPosts).reverse();
+    const mainPosts = useSelector((state)=>state.index.mainPosts);
     const menu = (
         <Menu>
             <Menu.Item key="1" icon={<InboxOutlined />}
@@ -221,12 +221,9 @@ const Content = () => {
                         </Dropdown>
                     </style.InfoContainer>
                 )}
-            <div>
-                회원가입ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ
-            </div>
             </MainContentContainer>
             <PostContainer>
-                {mainPosts.reverse().map((post)=><PostCard key = {post.postId} post={post}/>)}
+                {mainPosts.map((post)=><PostCard key = {post.postId} post={post}/>)}
             </PostContainer>
 
         </style.Container>

@@ -5,6 +5,13 @@ const initialState = {
     loadPostsError: [],
     loadPostsLoading: false,
     loadPostsDone: true,
+
+    signInUserInformation:[],
+    signInError: false,
+    signInLoading: false,
+    signInDone: false,
+    signInSuccess : false,
+
     mainPosts : [],
     postComponent :[],
     image : [],
@@ -42,11 +49,20 @@ export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
 export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE';
 
+export const SIGN_IN_REQUEST = 'SIGN_IN_REQUEST';
+export const SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS';
+export const SIGN_IN_FAILURE = 'SIGN_IN_FAILURE';
+
+
 
 export const loadPostAction = () => ({
     type:LOAD_POSTS_REQUEST,
 })
 
+export const signInAction = (data) => ({
+    type:SIGN_IN_REQUEST,
+    data,
+})
 export const setPostComponentAction = (data) =>({
     type:SET_EMPTY_POST,
     data,
@@ -74,6 +90,30 @@ export const setResultAction = (data)=>({
 const rootReducer = combineReducers({
     index:(state=initialState , action)=>{
         switch(action.type){
+            case SIGN_IN_SUCCESS:
+                return{
+                    ...state,
+                    signInUserInformation: action.data,
+                    signInLoading: false,
+                    signInDone: true,
+                    signInError: false,
+                    signInSuccess: true,
+                }
+            case SIGN_IN_REQUEST:
+                return{
+                    ...state,
+                    signInLoading: true,
+                    signInDone: false,
+                    signInSuccess: false,
+                }
+            case SIGN_IN_FAILURE:
+                return{
+                    ...state,
+                    signInError: action.error,
+                    signInLoading: false,
+                    signInDone: true,
+                    signInSuccess: false,
+                }
             case LOAD_POSTS_SUCCESS:
                 return{
                     ...state,
