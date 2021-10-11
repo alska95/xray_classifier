@@ -78,6 +78,10 @@ const Classifier = () => {
     const dispatch = useDispatch();
     const threshold = useSelector((state)=>state.index.threshold);
     let imageFile = useSelector((state)=> state.index.image);
+    const logInUser = useSelector((state)=>state.index.logInUser);
+    /*
+{nickName:'hwang',email:'abc@naver.com'}
+* */
     let gradCam = "";
 
 
@@ -125,7 +129,7 @@ const Classifier = () => {
             formData.append('file', originalFile , "original.jpg");
             formData.append('file', heatMapFile, "gradCam.jpg");
             formData.append('src', "is working");
-            formData.append('userNickName' , "hwang"); //수정 필요
+            formData.append('userNickName' , logInUser.nickName); //수정 필요
             formData.append('result', resultArray);
             console.log("form Data = " + formData);
             await dispatch(setPostComponentAction(formData));

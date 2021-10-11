@@ -6,10 +6,35 @@ import {
     SET_EMPTY_POST_SUCCESS,
     LOAD_POSTS_REQUEST,
     LOAD_POSTS_SUCCESS,
-    LOAD_POSTS_FAILURE, SIGN_IN_REQUEST, SIGN_IN_SUCCESS, SIGN_IN_FAILURE,
+    LOAD_POSTS_FAILURE,
+    SIGN_IN_REQUEST,
+    SIGN_IN_SUCCESS,
+    SIGN_IN_FAILURE,
+    LOG_IN_SUCCESS,
+    LOG_IN_FAILURE,
+    LOG_IN_REQUEST,
 } from "../reducers/index"
 axios.defaults.baseURL = 'http://localhost:8080'
 axios.defaults.withCredentials = true;
+
+function loginAPI(data){
+    return axios.post('/user/login', data)
+}
+function* login(action){
+    try{
+        const result = yield call(loginAPI, action.data);
+        yield put({
+            type:LOG_IN_SUCCESS,
+            data:result.data,
+        })
+
+    }catch (err){
+        yield put({
+            type:LOG_IN_FAILURE,
+            data:err.response.data,
+        })
+    }
+}
 
 function addEmptyPostAPI(data){
     return axios.post('/image', data);
@@ -74,6 +99,7 @@ function* watchAddEmptyPost(){
     yield takeLatest(SET_EMPTY_POST, addEmptyPost);
     yield takeLatest(LOAD_POSTS_REQUEST, loadAllPost);
     yield takeLatest(SIGN_IN_REQUEST, signIn);
+    yield takeLatest(LOG_IN_REQUEST, login);
 }
 export default function* rootSaga(){
     yield all([

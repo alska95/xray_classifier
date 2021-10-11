@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 import {useDispatch, useSelector} from "react-redux";
 import {
-    LOAD_POSTS_REQUEST,
+    LOAD_POSTS_REQUEST, LOG_IN_REQUEST,
     setGradImageAction,
     setImageAction,
     setResultAction,
@@ -14,6 +14,7 @@ import {Button, Menu, Dropdown, Card} from 'antd';
 import {InboxOutlined , UserOutlined , DownOutlined} from '@ant-design/icons'
 import {Atelctasis, Cardiomegaly, Effusion} from '../../images/images'
 import PostCard from './PostCard'
+import LoginForm from "./LoginForm";
 
 
 
@@ -98,6 +99,7 @@ const Content = () => {
             type:LOAD_POSTS_REQUEST,
         })
     },[])
+
     const mainPosts = useSelector((state)=>state.index.mainPosts);
     const menu = (
         <Menu>
@@ -132,6 +134,7 @@ const Content = () => {
     const unFoundFlag = useSelector((state)=>state.index.unFoundFlag);
     const result = useSelector((state)=>state.index.result);
     const targetImage = useSelector((state)=>state.index.image);
+    const isLoggedIn = useSelector((state)=>state.index.logInUser);
     const dispatch = useDispatch();
 
 
@@ -164,9 +167,11 @@ const Content = () => {
         imageInput.current.click();
     }, []);
 
+
     return (
         <style.Container>
-            <MainContentContainer>
+            {isLoggedIn ?
+                <MainContentContainer>
                 {image==="" ? (
                     <style.InputImage>
                         <input multiple hidden ref ={imageInput} type="file" accept="img/*" onChange={handleFileOnChange}/>
@@ -222,6 +227,9 @@ const Content = () => {
                     </style.InfoContainer>
                 )}
             </MainContentContainer>
+            :
+            <LoginForm/>}
+
             <PostContainer>
                 {mainPosts.map((post)=><PostCard key = {post.postId} post={post}/>)}
             </PostContainer>

@@ -36,7 +36,7 @@ const PostCard = ({post})=>{
 
 
     return(
-        <div style={{margin : 20 , width : "80%"} }>
+        <div style={{margin : 20 , width : "100%"} }>
             <Card style={{background : "#343a40"}}
                 cover={
                     <Card style={{background : "#343a40" , textAlign : "center"}} >

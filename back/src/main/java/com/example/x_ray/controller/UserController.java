@@ -8,7 +8,6 @@ import com.example.x_ray.dto.user.UserDto;
 import com.example.x_ray.service.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -25,11 +24,20 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-    public ResponseUserDto userDtoToResponsesUserDtoMapper(UserDto userDto){
+    public ResponseUserDto userDtoToResponseMapper(UserDto userDto){
         return new ResponseUserDto(
                 userDto.getNickName(),
                 userDto.getEmail()
         );
+    }
+    @GetMapping("/login-status")
+    public ResponseUserDto checkLogin(HttpServletRequest request){
+        HttpSession session = request.getSession();
+         UserDto loginUser = (UserDto) session.getAttribute(ConstVariable.LOGIN_MEMBER);
+        if(session == null || session.getAttribute(ConstVariable.LOGIN_MEMBER)== null)
+            return null;
+        else
+            return userDtoToResponseMapper(loginUser);
     }
     @PostMapping("/user")
     public ResponseUserDto createUser(@RequestBody RequestSignInDto requestSignInDto){
@@ -39,7 +47,7 @@ public class UserController {
                 requestSignInDto.getPassword()
         );
         UserDto responseUser = userService.createUser(userDto);
-        return userDtoToResponsesUserDtoMapper(responseUser);
+        return userDtoToResponseMapper(responseUser);
     }
 
     @PostMapping("/user/login")
@@ -54,7 +62,7 @@ public class UserController {
             //세션 생성
             HttpSession session = request.getSession();
             session.setAttribute(ConstVariable.LOGIN_MEMBER, loginUser);
-            return userDtoToResponsesUserDtoMapper(loginUser);
+            return userDtoToResponseMapper(loginUser);
         }
         return null;
     }
@@ -62,13 +70,13 @@ public class UserController {
     @GetMapping("/user/{userNickName}")
     public ResponseUserDto findUser(@PathVariable String userNickName){
         UserDto userDto = userService.findUserByNickName(userNickName);
-        return userDtoToResponsesUserDtoMapper(userDto);
+        return userDtoToResponseMapper(userDto);
     }
 
     @GetMapping("/users")
     public List<ResponseUserDto> findAllUser(){
         List<UserDto> allUsers = userService.findAllUsers();
-        return allUsers.stream().map(v -> userDtoToResponsesUserDtoMapper(v)).collect(Collectors.toList());
+        return allUsers.stream().map(v -> userDtoToResponseMapper(v)).collect(Collectors.toList());
     }
 
 }

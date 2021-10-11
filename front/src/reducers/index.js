@@ -6,11 +6,19 @@ const initialState = {
     loadPostsLoading: false,
     loadPostsDone: true,
 
-    signInUserInformation:[],
+    signInUserInformation: null,
     signInError: false,
     signInLoading: false,
     signInDone: false,
     signInSuccess : false,
+
+    logInUser:null,
+    /*
+    {nickName:'hwang',email:'abc@naver.com'}
+    * */
+    logInError: false,
+    logInLoading: false,
+    logInDone: false,
 
     mainPosts : [],
     postComponent :[],
@@ -53,7 +61,14 @@ export const SIGN_IN_REQUEST = 'SIGN_IN_REQUEST';
 export const SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS';
 export const SIGN_IN_FAILURE = 'SIGN_IN_FAILURE';
 
+export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
+export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
+export const LOG_IN_FAILURE = 'LOG_IN_FAILURE';
 
+export const logInAction = (data) => ({
+    type: LOG_IN_REQUEST,
+    data,
+})
 
 export const loadPostAction = () => ({
     type:LOAD_POSTS_REQUEST,
@@ -90,6 +105,27 @@ export const setResultAction = (data)=>({
 const rootReducer = combineReducers({
     index:(state=initialState , action)=>{
         switch(action.type){
+            case LOG_IN_FAILURE:
+                return{
+                    ...state,
+                    logInError: action.error,
+                    logInLoading: false,
+                    logInDone: true,
+                }
+            case LOG_IN_SUCCESS:
+                return{
+                    ...state,
+                    logInUser: action.data,
+                    logInLoading: false,
+                    logInDone: true,
+                }
+            case LOG_IN_REQUEST:
+                return{
+                    ...state,
+                    logInLoading: true,
+                    logInDone: false,
+                }
+
             case SIGN_IN_SUCCESS:
                 return{
                     ...state,

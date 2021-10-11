@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Form, Input, Checkbox, Button } from 'antd';
+import  { Alert,Form, Input, Checkbox, Button } from 'antd';
 import styled from 'styled-components';
 import {useDispatch, useSelector} from "react-redux";
 
@@ -18,12 +18,15 @@ const SignInForm = () => {
         return [value, handler, setter];
     };
 
+    const onChangeNickName=(e)=>{
+        setNickName(e.target.value);
+    }
     const dispatch = useDispatch();
-    const { signInLoading, signInDone, signInError,  signInSuccess} = useSelector((state) => state.index);
+    const { signInLoading, signInUserInformation, signInError,  signInSuccess} = useSelector((state) => state.index);
 
 
     const [email, onChangeEmail] = useInput('');
-    const [nickname, onChangeNickname] = useInput('');
+    const [nickname, setNickName] = useState('');
     const [password, onChangePassword] = useInput('');
 
     const [passwordCheck, setPasswordCheck] = useState('');
@@ -35,6 +38,7 @@ const SignInForm = () => {
 
     const [term, setTerm] = useState('');
     const [termError, setTermError] = useState(false);
+
     const onChangeTerm = useCallback((e) => {
         setTerm(e.target.checked);
         setTermError(false);
@@ -55,6 +59,7 @@ const SignInForm = () => {
         }));
     }, [email, password, passwordCheck, term]);
 
+
     return (
         <div>
             <Form onFinish={onSubmit}>
@@ -66,7 +71,7 @@ const SignInForm = () => {
                 <div>
                     <label htmlFor="user-nick">아이디</label>
                     <br />
-                    <Input name="user-nick" value={nickname} required onChange={onChangeNickname} />
+                    <Input name="user-nick" value={nickname} required onChange={onChangeNickName} />
                     <div style={{color: "red"}}>
                         {signInError && "중복되는 아이디 입니다."}
                     </div>
@@ -98,9 +103,18 @@ const SignInForm = () => {
                 </div>
                 <div style={{ marginTop: 10 }}>
                     <Button type="primary" htmlType="submit" loading={signInLoading}>가입하기</Button>
-                    {signInSuccess && <div style={{fontWeight: "bold" ,fontSize : "20px"}}>
-                        <p></p>
-                            회원가입 완료!</div>}
+                    {signInSuccess &&(
+                        signInUserInformation.nickName != "duplicated user" ?
+                            <div style={{fontWeight: "bold" ,fontSize : "20px"}}>
+                                <p></p>
+                                <Alert type="success" message="회원가입 완료!" banner closable={true}/>
+                            </div>
+                            :
+                            <div style={{fontWeight: "bold" ,fontSize : "20px"}}>
+                                <p></p>
+                                <Alert type="error" message="유저 아이디가 중복됩니다! 비밀번호도 변경해 주세요." banner closable={true}/>
+                            </div>
+                    )}
                 </div>
             </Form>
         </div>
