@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -44,8 +45,14 @@ public class PostRepositoryImpl implements PostRepository {
 
     @Override
     public List<Post> getAllPosts() {
-        return em.createQuery("select p from Post p", Post.class)
+        List<Post> resultList = em.createQuery("select p from Post p", Post.class)
                 .getResultList();
+        List<Post> reversedList = new ArrayList<>();
+        for(int i = resultList.size()-1 ; i >= 0 ; i--){
+            reversedList.add(resultList.get(i));
+        }
+        log.info("reversedList size = [{}]" , reversedList.size());
+        return reversedList;
     }
 
     @Override
