@@ -26,8 +26,8 @@ function* addEmptyPost(action){
     }
 }
 
-function loadPostAPI(data){
-    return axios.get('/post');
+function loadPostAPI(){
+    return axios.get('/posts');
 }
 
 function* loadAllPost(){

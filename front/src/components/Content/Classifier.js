@@ -139,7 +139,7 @@ const Classifier = () => {
     return (
         <>
             <div style={{textAlign : "center"}}>
-                <Button icon={<CaretRightOutlined />} type = {'dark'} style={ClassifyButton} onClick={startClassify} loading={classifierOnLoading} >분석 시작</Button>
+                <Button icon={<CaretRightOutlined />} type = {'dark'} style={ClassifyButton} onClick={()=>startClassify()} loading={classifierOnLoading} >분석 시작</Button>
             </div>
         </>
     );

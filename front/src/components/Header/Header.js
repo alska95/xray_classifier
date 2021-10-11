@@ -6,7 +6,7 @@ const style = {};
 style.Header = styled.header`
     display: flex;
     padding: 10px;
-    background-color: #000000;
+    background-color: #343a40;
 `;
 
 style.Title = styled.label`

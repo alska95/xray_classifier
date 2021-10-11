@@ -35,7 +35,7 @@ export const SET_RESULT = 'SET_RESULT';
 export const SET_UNFOUND = 'SET_UNFOUND';
 export const SET_GRAD_IMAGE = 'SET_GRAD_IMAGE';
 
-export const SET_EMPTY_POST = 'SET_GRAD_IMAGE';
+export const SET_EMPTY_POST = 'SET_EMPTY_POST';
 export const SET_EMPTY_POST_SUCCESS = 'SET_EMPTY_POST_SUCCESS'; //구현 예정
 
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
@@ -43,9 +43,8 @@ export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
 export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE';
 
 
-export const loadPostAction = (data) => ({
+export const loadPostAction = () => ({
     type:LOAD_POSTS_REQUEST,
-    data,
 })
 
 export const setPostComponentAction = (data) =>({

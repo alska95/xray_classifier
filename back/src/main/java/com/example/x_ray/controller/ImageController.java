@@ -35,7 +35,7 @@ public class ImageController {
         this.postService = postService;
         this.userService = userService;
     }
-    private String fileDir= "I:\\programming\\xray_classifier\\image\\";
+    private String saveDir = "I:\\programming\\xray_classifier\\front\\public\\img\\";
 
 
 
@@ -53,11 +53,13 @@ public class ImageController {
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
         String dateString = format.format(date);
         String fileNames[] = new String[2]; // 0: original 1: heatmap
+        String dbSaveNames[] = new String[2];
 
-        String path = fileDir;
+        String path = saveDir;
 
         for(int i = 0 ; i < 2 ; i++){
             fileNames[i] = path+dateString+images.get(i).getOriginalFilename();
+            dbSaveNames[i] = "/img/" + dateString+images.get(i).getOriginalFilename();
             long fileSize = images.get(i).getSize();
             log.info("fileNames [{}] = [{}]", i , fileNames[i]);
             try{
@@ -69,7 +71,7 @@ public class ImageController {
             }
         }
 
-        ImageDto imageDto = new ImageDto(userNickName, fileNames[0] , fileNames[1], date);
+        ImageDto imageDto = new ImageDto(userNickName, dbSaveNames[0] , dbSaveNames[1], date);
         imageService.saveImageName(imageDto);
         PostDto postDto = new PostDto(
                 "",

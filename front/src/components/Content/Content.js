@@ -1,7 +1,13 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 import {useDispatch, useSelector} from "react-redux";
-import {setGradImageAction, setImageAction, setResultAction, setUnFoundAction} from "../../reducers";
+import {
+    LOAD_POSTS_REQUEST,
+    setGradImageAction,
+    setImageAction,
+    setResultAction,
+    setUnFoundAction
+} from "../../reducers";
 import Classifier from "./Classifier";
 import Disease from './Disease'
 import {Button, Menu, Dropdown, Card} from 'antd';
@@ -9,6 +15,7 @@ import {InboxOutlined , UserOutlined , DownOutlined} from '@ant-design/icons'
 import Atelctasis from '../../images/Atelectasis.jpeg'
 import Cardiomegaly from '../../images/Cardiomegaly.jpg'
 import Effusion from '../../images/Effusion (1).jpeg'
+import PostCard from './PostCard'
 
 
 
@@ -87,7 +94,12 @@ let heatmapChecked = false;
 
 
 const Content = () => {
-
+    useEffect(()=>{
+        dispatch({
+            type:LOAD_POSTS_REQUEST,
+        })
+    },[])
+    const mainPosts = useSelector((state)=>state.index.mainPosts).reverse();
     const menu = (
         <Menu>
             <Menu.Item key="1" icon={<InboxOutlined />}
@@ -213,9 +225,7 @@ const Content = () => {
 
             </MainContentContainer>
             <PostContainer>
-                <Card>
-                    asdfa
-                </Card>
+                {mainPosts.reverse().map((post)=><PostCard key = {post.postId} post={post}/>)}
             </PostContainer>
 
         </style.Container>
