@@ -3,13 +3,13 @@ import styled from "styled-components";
 import {useSelector} from "react-redux";
 
 const colorStyle = [
-    {color: "red"},
+    {color: "lightsalmon"},
     {color: "green"},
     {color: "blue"},
-    {color: "gray"},
+    {color: "lightseagreen"},
     {color: "purple"},
     {color: "pink"},
-    {color: "black"},
+    {color: "white"},
 ]
 
 const label = [

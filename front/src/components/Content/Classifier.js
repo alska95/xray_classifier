@@ -57,13 +57,6 @@ async function preprocess(img)
     return batched
 }
 
-async function simpleOriginalImage(img) {
-    let im = new Image();
-    im.src = img;
-    im.width = 224;
-    im.height = 224;
-    return ;
-}
 
 async function dataURLtoBlob(dataurl) {
     var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
@@ -128,6 +121,7 @@ const Classifier = () => {
             formData.append('src', "is working");
             formData.append('userNickName' , "hwang"); //수정 필요
             formData.append('result', resultArray);
+            console.log("form Data = " + formData);
             await dispatch(setPostComponentAction(formData));
         }catch(err){
             console.error(err);

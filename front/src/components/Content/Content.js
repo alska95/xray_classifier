@@ -12,9 +12,7 @@ import Classifier from "./Classifier";
 import Disease from './Disease'
 import {Button, Menu, Dropdown, Card} from 'antd';
 import {InboxOutlined , UserOutlined , DownOutlined} from '@ant-design/icons'
-import Atelctasis from '../../images/Atelectasis.jpeg'
-import Cardiomegaly from '../../images/Cardiomegaly.jpg'
-import Effusion from '../../images/Effusion (1).jpeg'
+import {Atelctasis, Cardiomegaly, Effusion} from '../../images/images'
 import PostCard from './PostCard'
 
 
@@ -60,7 +58,7 @@ style.InfoItem = styled.label`
 `;
 
 style.FilterContainer = styled.div`
-    color: black;
+    color: white;
     font-weight: bold;
     height: 50px;
 `;
@@ -81,9 +79,11 @@ const PressClassify = styled.div`
     font-weight: bold;
     text-align: center;
     margin-top: 100px;
+    color : white;
 `
 
 const MainContentContainer = styled.div`
+    margin: 20px;
     display: flex;
 `
 const PostContainer = styled.div`
@@ -91,7 +91,6 @@ const PostContainer = styled.div`
 `
 
 let heatmapChecked = false;
-
 
 const Content = () => {
     useEffect(()=>{
@@ -208,7 +207,7 @@ const Content = () => {
                         </style.Info>
                         {gradCamImage[0] &&
                         <style.FilterContainer>
-                            <style.FilterItem type="checkbox" name="heatmap" onChange={()=> check()}/>Heatmap
+                            <style.FilterItem type="checkbox" name="heatmap" onChange={()=> check()}/> Heatmap
                         </style.FilterContainer>
                         }
 
@@ -222,7 +221,9 @@ const Content = () => {
                         </Dropdown>
                     </style.InfoContainer>
                 )}
-
+            <div>
+                회원가입ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ
+            </div>
             </MainContentContainer>
             <PostContainer>
                 {mainPosts.reverse().map((post)=><PostCard key = {post.postId} post={post}/>)}

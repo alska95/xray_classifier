@@ -14,22 +14,26 @@ heatmapImageName(pin):"I:\programming\xray_classifier\image\Fibrosis (1).jpg"
 content(pin):""
 diagnosisResult(pin):""
 comments(pin):null*/
-const ImageStyle = {
+const ImageStyleO = {
     width: "224px",
     height: "224px",
-    marginLeft : "28px"
+}
+const ImageStyleH = {
+    width: "224px",
+    height: "224px",
+    marginLeft: "20px"
 }
 const PostCard = ({post})=>{
     const dispatch = useDispatch();
 
 
     return(
-        <div style={{margin : 20 } }>
+        <div style={{margin : 20 , width : "80%"} }>
             <Card style={{background : "#343a40"}}
                 cover={
-                    <Card style={{background : "#343a40"}} >
-                        <Image style={ImageStyle} src={process.env.PUBLIC_URL+post.originalImageName}/>
-                        <Image style={ImageStyle} src={process.env.PUBLIC_URL+post.heatmapImageName}/>
+                    <Card style={{background : "#343a40" , textAlign : "center"}} >
+                        <Image style={ImageStyleO} src={process.env.PUBLIC_URL+post.originalImageName}/>
+                        <Image style={ImageStyleH} src={process.env.PUBLIC_URL+post.heatmapImageName}/>
                     </Card>
                 }
             >

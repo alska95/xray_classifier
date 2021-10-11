@@ -7,7 +7,7 @@ import 'antd-button-color/dist/css/style.css';
 
 function App() {
   return (
-    <div style={{backgroundColor : "#343A54"}}>
+    <div style={{backgroundColor : "#111120"}}>
       <Header />
       <Content />
     </div>
