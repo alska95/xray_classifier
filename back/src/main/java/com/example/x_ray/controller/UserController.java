@@ -79,4 +79,13 @@ public class UserController {
         return allUsers.stream().map(v -> userDtoToResponseMapper(v)).collect(Collectors.toList());
     }
 
+    @GetMapping("/user/logout")
+    public void logoutUser(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if(session!=null){
+            session.invalidate();
+        }
+    }
+
+
 }

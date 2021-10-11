@@ -1,6 +1,6 @@
 package com.example.x_ray.controller;
 
-import com.example.x_ray.dto.image.ResponseImageDto;
+import com.example.x_ray.dto.post.ResponsePostDto;
 import com.example.x_ray.dto.user.RequestLoginDto;
 import org.assertj.core.api.Assertions;
 
@@ -13,14 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockMultipartHttpServletRequest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
@@ -63,7 +61,7 @@ public class ImageControllerTest {
 
 
         //when
-        ResponseEntity<ResponseImageDto> responseEntity = imageController.uploadImage(request);
+        ResponseEntity<ResponsePostDto> responseEntity = imageController.uploadImageAndPost(request);
 
         //then
         Assertions.assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);

@@ -4,6 +4,7 @@ package com.example.x_ray.controller;
 import com.example.x_ray.dto.image.ImageDto;
 import com.example.x_ray.dto.image.ResponseImageDto;
 import com.example.x_ray.dto.post.PostDto;
+import com.example.x_ray.dto.post.ResponsePostDto;
 import com.example.x_ray.service.image.ImageService;
 import com.example.x_ray.service.post.PostService;
 import com.example.x_ray.service.user.UserService;
@@ -40,7 +41,7 @@ public class ImageController {
 
 
     @PostMapping("/image")
-    public ResponseEntity<ResponseImageDto> uploadImage(MultipartHttpServletRequest multipartHttpServletRequest){
+    public ResponseEntity<ResponsePostDto> uploadImageAndPost(MultipartHttpServletRequest multipartHttpServletRequest){
         String userNickName = multipartHttpServletRequest.getParameter("userNickName");
         String src = multipartHttpServletRequest.getParameter("src");
         log.info("image src = [{}]" , src);
@@ -79,9 +80,17 @@ public class ImageController {
                 imageDto,
                 userService.findUserByNickName(userNickName)
         );
-        postService.savePost(postDto);
-        ResponseImageDto responseImageDto = new ResponseImageDto(imageDto.getOriginalImageFileName() , imageDto.getHeatmapImageFileName());
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseImageDto);
+        PostDto savedPostDto = postService.savePost(postDto);
+        ResponsePostDto responsePostDto = new ResponsePostDto(
+                savedPostDto.getPostId(),
+                savedPostDto.getUser().getNickName(),
+                savedPostDto.getImage().getOriginalImageFileName(),
+                savedPostDto.getImage().getHeatmapImageFileName(),
+                savedPostDto.getContent(),
+                savedPostDto.getDiagnosisResult(),
+                null
+        );
+        return ResponseEntity.status(HttpStatus.CREATED).body(responsePostDto);
     }
 
     @GetMapping("/image/{originalImageName}")
