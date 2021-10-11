@@ -19,6 +19,13 @@ public class UserServiceImpl implements UserService{
     final BCryptPasswordEncoder passwordEncoder;
     final UserRepository userRepository;
 
+    public UserDto entityToDto(User user){
+        return new UserDto(
+                user.getNickName(),
+                user.getEmail(),
+                user.getPassword()
+        );
+    }
     public UserServiceImpl(BCryptPasswordEncoder passwordEncoder, UserRepository userRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
@@ -28,19 +35,15 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public UserDto createUser(UserDto userDto) {
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        userRepository.createUser(userDto);
-        return userDto;
+        User user = userRepository.createUser(userDto);
+        return entityToDto(user);
     }
 
     @Override
     @Transactional
     public UserDto findUserByNickName(String nickName) {
         User user = userRepository.findUser(nickName);
-        return new UserDto(
-                user.getNickName(),
-                user.getEmail(),
-                user.getPassword()
-        );
+        return entityToDto(user);
     }
 
     @Override
@@ -65,10 +68,6 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public List<UserDto> findAllUsers(){
         return  userRepository.findAll().stream().map(v->
-                new UserDto(
-                        v.getNickName(),
-                        v.getEmail(),
-                        v.getPassword()
-                )).collect(Collectors.toList());
+                entityToDto(v)).collect(Collectors.toList());
     }
 }

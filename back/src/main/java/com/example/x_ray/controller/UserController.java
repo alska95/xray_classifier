@@ -25,15 +25,21 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
+    public ResponseUserDto userDtoToResponsesUserDtoMapper(UserDto userDto){
+        return new ResponseUserDto(
+                userDto.getNickName(),
+                userDto.getEmail()
+        );
+    }
     @PostMapping("/user")
-    public void createUser(@RequestBody RequestSignInDto requestSignInDto){
+    public ResponseUserDto createUser(@RequestBody RequestSignInDto requestSignInDto){
         UserDto userDto = new UserDto(
                 requestSignInDto.getNickName(),
                 requestSignInDto.getEmail(),
                 requestSignInDto.getPassword()
         );
-        userService.createUser(userDto);
+        UserDto responseUser = userService.createUser(userDto);
+        return userDtoToResponsesUserDtoMapper(responseUser);
     }
 
     @PostMapping("/user/login")
@@ -48,10 +54,7 @@ public class UserController {
             //세션 생성
             HttpSession session = request.getSession();
             session.setAttribute(ConstVariable.LOGIN_MEMBER, loginUser);
-            return new ResponseUserDto(
-                    loginUser.getNickName(),
-                    loginUser.getEmail()
-            );
+            return userDtoToResponsesUserDtoMapper(loginUser);
         }
         return null;
     }
@@ -59,19 +62,13 @@ public class UserController {
     @GetMapping("/user/{userNickName}")
     public ResponseUserDto findUser(@PathVariable String userNickName){
         UserDto userDto = userService.findUserByNickName(userNickName);
-        return new ResponseUserDto(
-                userDto.getNickName(),
-                userDto.getEmail()
-        );
+        return userDtoToResponsesUserDtoMapper(userDto);
     }
 
     @GetMapping("/users")
     public List<ResponseUserDto> findAllUser(){
         List<UserDto> allUsers = userService.findAllUsers();
-        return allUsers.stream().map(v -> new ResponseUserDto(
-                v.getNickName(),
-                v.getEmail()
-        )).collect(Collectors.toList());
+        return allUsers.stream().map(v -> userDtoToResponsesUserDtoMapper(v)).collect(Collectors.toList());
     }
 
 }
