@@ -14,4 +14,5 @@ public interface PostRepository {
     public Post getPostByPostId(Long postId);
     public Post getPostByImageName(PostDto postDto);
     public Post updatePost(PostDto updatePostDto);
+    public Post deletePostById(Long id);
 }

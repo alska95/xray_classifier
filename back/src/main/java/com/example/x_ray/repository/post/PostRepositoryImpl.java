@@ -91,4 +91,11 @@ public class PostRepositoryImpl implements PostRepository {
 //        certainPost.setComments(null);//수정필요 comment update는 comment로만.
         return certainPost;
     }
+
+    @Override
+    public Post deletePostById(Long id){
+        Post postByPostId = getPostByPostId(id);
+        em.remove(postByPostId);
+        return postByPostId;
+    }
 }

@@ -90,4 +90,11 @@ public class PostController {
                 .collect(Collectors.toList());
         return responsePostDtos;
     }
+
+    @DeleteMapping("/post/{postId}")
+    public ResponsePostDto deleteByPostId(@PathVariable Long postId){
+        PostDto deletedPost = postService.deleteByPostId(postId);
+        ResponsePostDto responsePostDto = postDtoToResponseMapper(deletedPost);
+        return responsePostDto;
+    }
 }

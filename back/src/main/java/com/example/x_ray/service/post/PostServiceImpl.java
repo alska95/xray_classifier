@@ -94,4 +94,11 @@ public class PostServiceImpl implements PostService{
         List<PostDto> postDtoList = allPosts.stream().map(v -> postToPostDtoMapper(v)).collect(Collectors.toList());
         return postDtoList;
     }
+
+    @Transactional
+    @Override
+    public PostDto deleteByPostId(Long id){
+        Post post = postRepository.deletePostById(id);
+        return postToPostDtoMapper(post);
+    }
 }
