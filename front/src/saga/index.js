@@ -2,7 +2,7 @@ import axios from 'axios';
 import {all,fork,take,put ,call} from 'redux-saga/effects';
 import {takeLatest} from "@redux-saga/core/effects";
 import {
-    SET_EMPTY_POST,
+    SET_EMPTY_POST_REQUEST,
     SET_EMPTY_POST_SUCCESS,
     LOAD_POSTS_REQUEST,
     LOAD_POSTS_SUCCESS,
@@ -13,9 +13,88 @@ import {
     LOG_IN_SUCCESS,
     LOG_IN_FAILURE,
     LOG_IN_REQUEST,
+    LOG_OUT_SUCCESS,
+    LOG_OUT_FAILURE,
+    LOG_OUT_REQUEST,
+    UPDATE_POST_SUCCESS,
+    UPDATE_POST_FAILURE,
+    UPDATE_POST_REQUEST,
+    LOG_IN_CHECK_SUCCESS,
+    LOG_IN_CHECK_FAILURE, LOG_IN_CHECK_REQUEST, DELETE_POST_SUCCESS, DELETE_POST_FAILURE, DELETE_POST_REQUEST
 } from "../reducers/index"
 axios.defaults.baseURL = 'http://localhost:8080'
 axios.defaults.withCredentials = true;
+
+function deletePostAPI(data){
+    return axios.delete('/post/' + data.postId)
+}
+
+function* deletePost(action){
+    try{
+        const result = yield call(deletePostAPI, action.data);
+        yield put({
+            type: DELETE_POST_SUCCESS,
+        })
+    }catch (err){
+        yield put({
+            type: DELETE_POST_FAILURE,
+        })
+    }
+}
+function loginCheckAPI(){
+    return axios.get('/login-status')
+}
+function* loginCheck(action){
+    try{
+        const result = yield call(loginCheckAPI, action.data);
+        yield put({
+            type:LOG_IN_CHECK_SUCCESS,
+            data:result.data,
+        })
+    }catch (err){
+        yield put({
+            type: LOG_IN_CHECK_FAILURE,
+            data:err,
+        })
+    }
+}
+function updatePostAPI(data){
+    return axios.put('/post', data , {
+        headers: new Headers({
+            'Content-Type': 'application/json',
+        })
+    })
+}
+function* updatePost(action){
+    try{
+        const result = yield call(updatePostAPI, action.data );
+        yield put({
+            type:UPDATE_POST_SUCCESS,
+            data:result.data,
+        })
+    }catch (err){
+        yield put({
+            type:UPDATE_POST_FAILURE,
+            data:err.response.data,
+        })
+    }
+}
+function logoutAPI(data){
+    return axios.get('/user/logout', data)
+}
+function* logout(){
+    try{
+        yield call(logoutAPI);
+            yield put({
+                type:LOG_OUT_SUCCESS,
+            })
+    }catch (err){
+        yield put({
+            type:LOG_OUT_FAILURE,
+            data:err.response.data,
+        })
+    }
+}
 
 function loginAPI(data){
     return axios.post('/user/login', data)
@@ -23,10 +102,18 @@ function loginAPI(data){
 function* login(action){
     try{
         const result = yield call(loginAPI, action.data);
-        yield put({
-            type:LOG_IN_SUCCESS,
-            data:result.data,
-        })
+        if(result.data == null || result.data == ''){
+            yield put({
+                type:LOG_IN_FAILURE,
+                data:result.data,
+            })
+        }else{
+            yield put({
+                type:LOG_IN_SUCCESS,
+                data:result.data,
+            })
+        }
+
 
     }catch (err){
         yield put({
@@ -96,10 +183,14 @@ function* signIn(action){
 }
 
 function* watchAddEmptyPost(){
-    yield takeLatest(SET_EMPTY_POST, addEmptyPost);
+    yield takeLatest(DELETE_POST_REQUEST, deletePost)
+    yield takeLatest(SET_EMPTY_POST_REQUEST, addEmptyPost);
     yield takeLatest(LOAD_POSTS_REQUEST, loadAllPost);
     yield takeLatest(SIGN_IN_REQUEST, signIn);
     yield takeLatest(LOG_IN_REQUEST, login);
+    yield takeLatest(LOG_OUT_REQUEST, logout);
+    yield takeLatest(UPDATE_POST_REQUEST, updatePost);
+    yield takeLatest(LOG_IN_CHECK_REQUEST, loginCheck);
 }
 export default function* rootSaga(){
     yield all([

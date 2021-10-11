@@ -132,6 +132,7 @@ const Classifier = () => {
             formData.append('userNickName' , logInUser.nickName); //수정 필요
             formData.append('result', resultArray);
             console.log("form Data = " + formData);
+
             await dispatch(setPostComponentAction(formData));
             await dispatch(loadPostAction());
         }catch(err){

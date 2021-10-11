@@ -6,6 +6,10 @@ const initialState = {
     loadPostsLoading: false,
     loadPostsDone: true,
 
+    deletePostError : null,
+    deletePostLoading:false,
+    deletePostDone:true,
+
     signInUserInformation: null,
     signInError: false,
     signInLoading: false,
@@ -19,9 +23,14 @@ const initialState = {
     logInError: false,
     logInLoading: false,
     logInDone: false,
+    logInFailure : false,
+
+    loginCheckError: null,
+    loginCheckLoading:false,
+    loginCheckDone:true,
 
     mainPosts : [],
-    postComponent :[],
+    postComponent :null,
     image : [],
     result : [],
 
@@ -50,8 +59,16 @@ export const SET_RESULT = 'SET_RESULT';
 export const SET_UNFOUND = 'SET_UNFOUND';
 export const SET_GRAD_IMAGE = 'SET_GRAD_IMAGE';
 
-export const SET_EMPTY_POST = 'SET_EMPTY_POST';
-export const SET_EMPTY_POST_SUCCESS = 'SET_EMPTY_POST_SUCCESS'; //구현 예정
+export const SET_EMPTY_POST_REQUEST = 'SET_EMPTY_POST';
+export const SET_EMPTY_POST_SUCCESS = 'SET_EMPTY_POST_SUCCESS';
+
+export const UPDATE_POST_REQUEST = 'UPDATE_POST_REQUEST';
+export const UPDATE_POST_SUCCESS = 'UPDATE_POST_SUCCESS';
+export const UPDATE_POST_FAILURE = 'UPDATE_POST_FAILURE';
+
+export const DELETE_POST_REQUEST = 'DELETE_POST_REQUEST';
+export const DELETE_POST_SUCCESS = 'DELETE_POST_SUCCESS';
+export const DELETE_POST_FAILURE = 'DELETE_POST_FAILURE';
 
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
@@ -64,6 +81,30 @@ export const SIGN_IN_FAILURE = 'SIGN_IN_FAILURE';
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
 export const LOG_IN_FAILURE = 'LOG_IN_FAILURE';
+
+export const LOG_OUT_REQUEST = 'LOG_OUT_REQUEST';
+export const LOG_OUT_SUCCESS = 'LOG_OUT_SUCCESS';
+export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
+
+export const LOG_IN_CHECK_REQUEST = 'LOG_IN_CHECK_REQUEST';
+export const LOG_IN_CHECK_SUCCESS = 'LOG_IN_CHECK_SUCCESS';
+export const LOG_IN_CHECK_FAILURE = 'LOG_IN_CHECK_FAILURE';
+
+
+export const deletePostAction = (data) => ({
+    type : DELETE_POST_REQUEST,
+    data
+})
+export const loginCheckAction = () => ({
+    type : LOG_IN_CHECK_REQUEST,
+})
+export const updatePostAction = (data) =>({
+    type : UPDATE_POST_REQUEST,
+    data
+})
+export const logOutAction = () => ({
+    type: LOG_OUT_REQUEST
+})
 
 export const logInAction = (data) => ({
     type: LOG_IN_REQUEST,
@@ -79,7 +120,7 @@ export const signInAction = (data) => ({
     data,
 })
 export const setPostComponentAction = (data) =>({
-    type:SET_EMPTY_POST,
+    type:SET_EMPTY_POST_REQUEST,
     data,
 })
 
@@ -105,6 +146,85 @@ export const setResultAction = (data)=>({
 const rootReducer = combineReducers({
     index:(state=initialState , action)=>{
         switch(action.type){
+            case DELETE_POST_FAILURE:
+                return{
+                    ...state,
+                    deletePostError : action.error,
+                    deletePostLoading:false,
+                    deletePostDone:true,
+                }
+            case DELETE_POST_SUCCESS:
+                return{
+                    ...state,
+                    deletePostLoading:false,
+                    deletePostDone:true,
+                }
+            case DELETE_POST_REQUEST:
+                return{
+                    ...state,
+                    deletePostLoading:true,
+                    deletePostDone:false,
+                }
+            case LOG_IN_CHECK_FAILURE:
+                return{
+                    ...state,
+                    logInUser: null,
+                    loginCheckError: action.error,
+                    loginCheckLoading:false,
+                    loginCheckDone:true,
+                }
+            case LOG_IN_CHECK_SUCCESS:
+                return{
+                    ...state,
+                    logInUser: action.data,
+                    loginCheckLoading:false,
+                    loginCheckDone:true,
+                }
+            case LOG_IN_CHECK_REQUEST:
+                return{
+                    ...state,
+                    loginCheckLoading:true,
+                    loginCheckDone:false,
+                }
+            case UPDATE_POST_SUCCESS:
+                return{
+                    ...state,
+                    postComponent :action.data,
+                    updatePostLoading: false,
+                    updatePostDone: true,
+                }
+            case UPDATE_POST_REQUEST:
+                return{
+                    ...state,
+                    updatePostLoading: true,
+                    updatePostDone: false,
+                }
+            case UPDATE_POST_FAILURE:
+                return{
+                    ...state,
+                }
+
+            case LOG_OUT_FAILURE:
+                return{
+                    ...state,
+                    logOutError: action.error,
+                    logOutLoading: false,
+                    logOutDone: true,
+                }
+            case LOG_OUT_SUCCESS:
+                return{
+                    ...state,
+                    logInUser: null,
+                    logOutLoading: false,
+                    logOutDone: true,
+                }
+            case LOG_OUT_REQUEST:
+                return{
+                    ...state,
+                    logOutLoading: true,
+                    logOutDone: false,
+                }
+
             case LOG_IN_FAILURE:
                 return{
                     ...state,
@@ -124,6 +244,7 @@ const rootReducer = combineReducers({
                     ...state,
                     logInLoading: true,
                     logInDone: false,
+                    logInFailure : true,
                 }
 
             case SIGN_IN_SUCCESS:
@@ -170,7 +291,11 @@ const rootReducer = combineReducers({
                     loadPostsLoading: false,
                     loadPostsDone: true,
                 }
-            case SET_EMPTY_POST:
+            case SET_EMPTY_POST_REQUEST:
+                return{
+                    ...state,
+                }
+            case SET_EMPTY_POST_SUCCESS:
                 return{
                     ...state,
                     postComponent: action.data,

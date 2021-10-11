@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from 'react';
 import styled from 'styled-components';
 import {useDispatch, useSelector} from "react-redux";
 import {
-    LOAD_POSTS_REQUEST, LOG_IN_REQUEST,
+    LOAD_POSTS_REQUEST, LOG_IN_CHECK_REQUEST, LOG_IN_REQUEST,
     setGradImageAction,
     setImageAction,
     setResultAction,
@@ -10,11 +10,15 @@ import {
 } from "../../reducers";
 import Classifier from "./Classifier";
 import Disease from './Disease'
-import {Button, Menu, Dropdown, Card} from 'antd';
-import {InboxOutlined , UserOutlined , DownOutlined} from '@ant-design/icons'
+import {Button, Menu, Dropdown, Card, Popover} from 'antd';
+import {InboxOutlined, UserOutlined, DownOutlined,
+    UserAddOutlined, FileAddOutlined, GithubOutlined,
+    AreaChartOutlined} from '@ant-design/icons'
 import {Atelctasis, Cardiomegaly, Effusion} from '../../images/images'
 import PostCard from './PostCard'
 import LoginForm from "./LoginForm";
+import SignInForm from "../Header/SignInForm";
+import PostCreateForm from "./PostCreateForm";
 
 
 
@@ -100,6 +104,12 @@ const Content = () => {
         })
     },[])
 
+    useEffect(()=>{
+        dispatch({
+            type:LOG_IN_CHECK_REQUEST,
+        })
+    },[])
+
     const mainPosts = useSelector((state)=>state.index.mainPosts);
     const menu = (
         <Menu>
@@ -135,6 +145,7 @@ const Content = () => {
     const result = useSelector((state)=>state.index.result);
     const targetImage = useSelector((state)=>state.index.image);
     const isLoggedIn = useSelector((state)=>state.index.logInUser);
+    const postComponent = useSelector((state)=>state.index.postComponent);
     const dispatch = useDispatch();
 
 
@@ -213,6 +224,7 @@ const Content = () => {
                         {gradCamImage[0] &&
                         <style.FilterContainer>
                             <style.FilterItem type="checkbox" name="heatmap" onChange={()=> check()}/> Heatmap
+
                         </style.FilterContainer>
                         }
 
@@ -224,8 +236,20 @@ const Content = () => {
                                 셈플 이미지 <DownOutlined />
                             </Button>
                         </Dropdown>
+                        {postComponent != null &&
+                        <Popover placement="topRight" title={<div><FileAddOutlined /> 게시물 작성</div>} defaultVisible={true} content={<PostCreateForm/>} trigger="click">
+                            <Button style={{fontWeight: "bold" ,marginTop : "10px"}}><FileAddOutlined />게시물 작성</Button>
+                        </Popover>
+                        }
                     </style.InfoContainer>
                 )}
+                <div style={{ marginLeft : "100px", color:"white"}}>
+                    About Service
+                    <p></p>
+                    <Button target={"_blank"} style={{color:"white"}} href={"https://github.com/alska95/xray_classifier"} type={"text"}><GithubOutlined  style={{fontSize : "30px"}}/> Sever, Client Code</Button>
+                    <p></p>
+                    <Button target={"_blank"} style={{color:"white"}} href={"https://www.kaggle.com/kyeonghahwangg/capstone"} type={"text"}><AreaChartOutlined  style={{fontSize : "30px"}}/> Model Code</Button>
+                </div>
             </MainContentContainer>
             :
             <LoginForm/>}

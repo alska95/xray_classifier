@@ -1,11 +1,14 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from 'styled-components'
-import {Avatar, Button, Card, Image} from "antd";
-import {useDispatch} from "react-redux";
+import {Alert, Avatar, Button, Card, Image, Popover} from "antd";
+import {useDispatch, useSelector} from "react-redux";
 
 
-import {loadPostAction} from "../../reducers";
+import {deletePostAction, loadPostAction} from "../../reducers";
 import Disease from "./Disease";
+import {FileAddOutlined , DeleteOutlined} from "@ant-design/icons";
+import PostCreateForm from "./PostCreateForm";
+import PostEditForm from "./PostEditForm";
 
 /*
 [{"postId":205,
@@ -33,29 +36,67 @@ function getResultArray(diagnosisResult){
 }
 const PostCard = ({post})=>{
     const dispatch = useDispatch();
+    const logInUser = useSelector((state)=>state.index.logInUser)
+    const [deletedStatus, setDeletedStatus] = useState(false);
+    /*
+    * nickName(pin):"hwang"
+email(pin):"abc@naver.com"*/
 
 
+    const onClickDelete = () =>{
+        setDeletedStatus(true);
+        dispatch(deletePostAction(post))
+    }
     return(
         <div style={{margin : 20 , width : "100%"} }>
             <Card style={{background : "#343a40"}}
                 cover={
                     <Card style={{background : "#343a40" , textAlign : "center"}} >
                         <Image style={ImageStyleO} src={process.env.PUBLIC_URL+post.originalImageName}/>
-                        <Image style={ImageStyleH} src={process.env.PUBLIC_URL+post.heatmapImageName}/>{
-                        getResultArray(post.diagnosisResult).map((v, index)=><Disease factor = {v} index = {index} key = {index}/>
-                        )
-                    }
+                        <Image style={ImageStyleH} src={process.env.PUBLIC_URL+post.heatmapImageName}/>
+                        {
+                            getResultArray(post.diagnosisResult).map((v, index)=><Disease factor = {v} index = {index} key = {index}/>
+                            )
+                        }
                     </Card>
 
                 }
             >
                 <Card>
                     <Card.Meta
-                        avatar={<Avatar>{post.userNickName}</Avatar>}
+                        avatar={<Avatar size={64} style={{backgroundColor : "#343a40"}}>{post.userNickName}</Avatar>}
                         title={post.userNickName}
-                        description={"아야아야아야아야"}
+                        description={post.content == "" ?
+                        "소감을 입력해 주세요!":
+                        post.content}
                     />
                 </Card>
+                {logInUser != null && logInUser.nickName == post.userNickName &&
+                <Popover placement="topRight" title={<div><FileAddOutlined /> 게시물 수정</div>} content={<PostEditForm post = {post}/>} trigger="click">
+                    <Button style={{fontWeight: "bold" ,marginTop : "10px"}}>게시물 수정</Button>
+                </Popover>}
+
+                {logInUser != null &&logInUser.nickName == post.userNickName &&
+                <Popover placement="topRight"
+                         content={
+                             <div>
+                                 <Button type={"danger"} onClick={onClickDelete}><DeleteOutlined />
+                                     정말 삭제 하시겠습니까?
+                                 </Button>
+                                 {deletedStatus &&
+                                 <div style={{fontWeight: "bold" ,fontSize : "20px"}}>
+                                     <p></p>
+                                     <Alert type="error" message="삭제 되었습니다! 새로고침 후에 적용됩니다." banner/>
+                                 </div>
+                                 }
+                             </div>
+
+                         }
+                         trigger="click">
+
+                    <Button style={{fontWeight: "bold" ,marginTop : "10px"}}>게시물 삭제</Button>
+                </Popover>}
+
 
             </Card>
 
