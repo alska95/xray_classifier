@@ -1,5 +1,6 @@
 package com.example.x_ray.service.post;
 
+import com.example.x_ray.dto.comment.CommentDto;
 import com.example.x_ray.dto.image.ImageDto;
 import com.example.x_ray.dto.post.PostDto;
 import com.example.x_ray.dto.user.UserDto;
@@ -44,13 +45,24 @@ public class PostServiceImpl implements PostService{
                     v.getUser().getEmail(),
                     v.getUser().getPassword()
             );
+            List<CommentDto> commentDtos = null;
+            if(v.getComments() != null){
+                commentDtos = v.getComments().stream().map(c-> new CommentDto(
+                        c.getContent(),
+                        c.getUser().getNickName(),
+                        c.getId()
+                )).collect(Collectors.toList());
+            }
+
             PostDto postDto = new PostDto(
                     v.getId(),
                     v.getContent(),
                     v.getResult(),
                     imageDto,
-                    userDto
+                    userDto,
+                    commentDtos
             );
+
             return postDto;
         }
     }

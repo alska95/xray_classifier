@@ -1,5 +1,6 @@
 package com.example.x_ray.dto.post;
 
+import com.example.x_ray.dto.comment.CommentDto;
 import com.example.x_ray.entity.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,5 +16,5 @@ public class ResponsePostDto {
     private String heatmapImageName;
     private String content;
     private String diagnosisResult;
-    private List<Comment> comments;
+    private List<CommentDto> comments;
 }

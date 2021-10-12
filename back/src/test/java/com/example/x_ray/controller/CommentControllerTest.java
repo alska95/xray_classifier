@@ -5,6 +5,9 @@ import com.example.x_ray.dto.comment.ResponseCommentDto;
 import com.example.x_ray.dto.image.ImageDto;
 import com.example.x_ray.dto.post.RequestPostDto;
 import com.example.x_ray.dto.post.ResponsePostDto;
+import com.example.x_ray.entity.Comment;
+import com.example.x_ray.repository.comment.CommentRepository;
+import com.example.x_ray.repository.post.PostRepository;
 import com.example.x_ray.service.image.ImageService;
 import com.example.x_ray.service.post.PostService;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +39,12 @@ public class CommentControllerTest {
     private PostController postController;
     @Autowired
     private ImageService imageService;
+
+    @Autowired
+    private PostRepository postRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
 
     @Test
@@ -84,5 +93,14 @@ public class CommentControllerTest {
         ResponseEntity<ResponseCommentDto> responseCommentDtoResponseEntity = commentController.addComment(requestCommentDto);
         Assertions.assertThat(responseCommentDtoResponseEntity.getBody().getContent()).isEqualTo(commentContent);
         Assertions.assertThat(responseCommentDtoResponseEntity.getBody().getUserNickName()).isEqualTo(commentUser);
+//        log.info("check comment = [{}] " , postRepository.getPostByPostId(17L).getComments().get(0).getContent());
+
+//        List<Comment> postComments = postRepository.getPostByPostId(selectedPost.getBody().getPostId()).getComments();
+//        log.info("postComments = [{}]" , postComments.get(0));
+//        List<Comment> addedComments = commentRepository.getCommentsByPostId(selectedPost.getBody().getPostId());
+//        log.info("added comments = [{}]" , addedComments.get(0).getContent());
+//        Assertions.assertThat(postComments).isEqualTo(addedComments);
+
+
     }
 }

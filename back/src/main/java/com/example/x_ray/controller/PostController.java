@@ -1,5 +1,6 @@
 package com.example.x_ray.controller;
 
+import com.example.x_ray.dto.comment.CommentDto;
 import com.example.x_ray.dto.post.PostDto;
 import com.example.x_ray.dto.post.RequestPostDto;
 import com.example.x_ray.dto.post.ResponsePostDto;
@@ -37,7 +38,7 @@ public class PostController {
                 v.getImage().getHeatmapImageFileName(),
                 v.getContent(),
                 v.getDiagnosisResult(),
-                null
+                v.getComments()
         );
     }
 
@@ -67,7 +68,7 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(savedResponse);
     }
 
-    @PostMapping("/post/{postId}")
+    @GetMapping("/post/id/{postId}")
     public ResponseEntity<ResponsePostDto> getPostById(@PathVariable Long postId){
         PostDto postById = postService.getPostById(postId);
         ResponsePostDto responsePostDto = postDtoToResponseMapper(postById);
