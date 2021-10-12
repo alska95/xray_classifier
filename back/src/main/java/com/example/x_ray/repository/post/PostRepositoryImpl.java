@@ -4,9 +4,11 @@ import com.example.x_ray.dto.post.PostDto;
 import com.example.x_ray.entity.Image;
 import com.example.x_ray.entity.Post;
 import com.example.x_ray.entity.User;
+import com.example.x_ray.repository.comment.CommentRepository;
 import com.example.x_ray.repository.image.ImageRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -20,9 +22,11 @@ public class PostRepositoryImpl implements PostRepository {
     private EntityManager em;
 
     final ImageRepository imageRepository;
+    final CommentRepository commentRepository;
 
-    public PostRepositoryImpl(ImageRepository imageRepository) {
+    public PostRepositoryImpl(ImageRepository imageRepository, CommentRepository commentRepository) {
         this.imageRepository = imageRepository;
+        this.commentRepository = commentRepository;
     }
 
 
@@ -63,6 +67,7 @@ public class PostRepositoryImpl implements PostRepository {
                 .getResultList();
     }
 
+    @Transactional
     @Override
     public Post getPostByPostId(Long postId) {
 
@@ -92,10 +97,13 @@ public class PostRepositoryImpl implements PostRepository {
         return certainPost;
     }
 
+    @Transactional
     @Override
-    public Post deletePostById(Long id){
-        Post postByPostId = getPostByPostId(id);
-        em.remove(postByPostId);
-        return postByPostId;
+    public void deletePostById(Long id){
+        Post post = getPostByPostId(id);
+        post.setComments(null);
+        commentRepository.deleteCommentsByPostId(id);
+        log.info("post = [{}] " ,post.getComments());
+        em.remove(post);
     }
 }
