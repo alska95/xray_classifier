@@ -18,15 +18,16 @@ const SignInForm = () => {
         return [value, handler, setter];
     };
 
-    const onChangeNickName=(e)=>{
-        setNickName(e.target.value);
-    }
+
     const dispatch = useDispatch();
     const { signInLoading, signInUserInformation, signInError,  signInSuccess} = useSelector((state) => state.index);
 
 
     const [email, onChangeEmail] = useInput('');
     const [nickname, setNickName] = useState('');
+    const onChangeNickName=useCallback((e)=>{
+        setNickName(e.target.value);
+    },[nickname])
     const [password, onChangePassword] = useInput('');
 
     const [passwordCheck, setPasswordCheck] = useState('');
@@ -57,7 +58,8 @@ const SignInForm = () => {
             "nickName" : nickname,
             "password" : password
         }));
-    }, [email, password, passwordCheck, term]);
+        setNickName('');
+    }, [email, password, passwordCheck, term , nickname]);
 
 
     return (
@@ -112,7 +114,7 @@ const SignInForm = () => {
                             :
                             <div style={{fontWeight: "bold" ,fontSize : "20px"}}>
                                 <p></p>
-                                <Alert type="error" message="유저 아이디가 중복됩니다! 비밀번호도 변경해 주세요." banner closable={true}/>
+                                <Alert type="error" message="유저 아이디가 중복됩니다!" banner closable={true}/>
                             </div>
                     )}
                 </div>

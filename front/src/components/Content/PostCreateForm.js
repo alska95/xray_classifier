@@ -53,7 +53,7 @@ const PostCreateForm = () => {
             "originalImageName" : postComponent.originalImageName,
             "diagnosisResult" : postComponent.diagnosisResult
         }));
-        await dispatch(loadPostAction());
+        setTimeout(function (){dispatch(loadPostAction())}, 200);
     };
 
 

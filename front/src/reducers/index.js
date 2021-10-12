@@ -90,7 +90,23 @@ export const LOG_IN_CHECK_REQUEST = 'LOG_IN_CHECK_REQUEST';
 export const LOG_IN_CHECK_SUCCESS = 'LOG_IN_CHECK_SUCCESS';
 export const LOG_IN_CHECK_FAILURE = 'LOG_IN_CHECK_FAILURE';
 
+export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
+export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
+export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
 
+export const DELETE_COMMENT_REQUEST = 'DELETE_COMMENT_REQUEST';
+export const DELETE_COMMENT_SUCCESS = 'DELETE_COMMENT_SUCCESS';
+export const DELETE_COMMENT_FAILURE = 'DELETE_COMMENT_FAILURE';
+
+export const deleteCommentAction = (data) => ({
+    type: DELETE_COMMENT_REQUEST,
+    data,
+})
+
+export const addCommentAction = (data) => ({
+    type : ADD_COMMENT_REQUEST,
+    data,
+})
 export const deletePostAction = (data) => ({
     type : DELETE_POST_REQUEST,
     data
@@ -146,6 +162,46 @@ export const setResultAction = (data)=>({
 const rootReducer = combineReducers({
     index:(state=initialState , action)=>{
         switch(action.type){
+            case DELETE_COMMENT_FAILURE:
+                return{
+                    ...state,
+                    deleteCommentError: action.err,
+                    deleteCommentLoading:false,
+                    deleteCommentDone:true,
+                }
+            case DELETE_COMMENT_SUCCESS:
+                return{
+                    ...state,
+                    deleteCommentLoading:false,
+                    deleteCommentDone:true,
+                }
+            case DELETE_COMMENT_FAILURE:
+                return{
+                    ...state,
+                    deleteCommentError: action.err,
+                    deleteCommentLoading:false,
+                    deleteCommentDone:true,
+                }
+            case ADD_COMMENT_FAILURE:
+                return{
+                    ...state,
+                    addCommentError: action.err,
+                    addCommentLoading:false,
+                    addCommentDone:true,
+                }
+            case ADD_COMMENT_SUCCESS:
+                return{
+                    ...state,
+                    addCommentLoading:false,
+                    addCommentDone:true,
+                }
+            case ADD_COMMENT_REQUEST:
+                return{
+                    ...state,
+                    addCommentLoading:true,
+                    addCommentDone:false,
+                }
+
             case DELETE_POST_FAILURE:
                 return{
                     ...state,

@@ -31,7 +31,7 @@ const Header = () => {
     return (
         <style.Header>
             <style.Title>X-ray Classifier</style.Title>
-            {logInUser != null ?
+            { logInUser != null ?
                 <Button style={{fontWeight: "bold" ,marginLeft : "5%"}} onClick={logoutClick}><UserDeleteOutlined />로그아웃</Button>
                 :
                 <Popover placement="topLeft" title={<div><UserAddOutlined /> 회원가입</div>}  content={<SignInForm/>} trigger="click">

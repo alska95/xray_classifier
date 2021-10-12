@@ -20,11 +20,46 @@ import {
     UPDATE_POST_FAILURE,
     UPDATE_POST_REQUEST,
     LOG_IN_CHECK_SUCCESS,
-    LOG_IN_CHECK_FAILURE, LOG_IN_CHECK_REQUEST, DELETE_POST_SUCCESS, DELETE_POST_FAILURE, DELETE_POST_REQUEST
+    LOG_IN_CHECK_FAILURE,
+    LOG_IN_CHECK_REQUEST,
+    DELETE_POST_SUCCESS,
+    DELETE_POST_FAILURE,
+    DELETE_POST_REQUEST,
+    ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE, ADD_COMMENT_REQUEST, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_REQUEST
 } from "../reducers/index"
 axios.defaults.baseURL = 'http://localhost:8080'
 axios.defaults.withCredentials = true;
 
+function deleteCommentAPI(data){
+    return axios.data('/comment', data);
+}
+function* deleteComment(action){
+    try{
+        const result = yield call(addCommentAPI, action.data);
+        yield put({
+            type:DELETE_COMMENT_SUCCESS,
+        })
+    }catch (err){
+        yield put({
+            type:DELETE_POST_FAILURE,
+        })
+    }
+}
+function addCommentAPI(data){
+    return axios.post('/comment', data)
+}
+function* addComment(action){
+    try{
+        const result = yield call(addCommentAPI, action.data);
+        yield put({
+            type:ADD_COMMENT_SUCCESS,
+        })
+    }catch (err){
+        yield put({
+            type:ADD_COMMENT_FAILURE,
+        })
+    }
+}
 function deletePostAPI(data){
     return axios.delete('/post/' + data.postId)
 }
@@ -47,10 +82,17 @@ function loginCheckAPI(){
 function* loginCheck(action){
     try{
         const result = yield call(loginCheckAPI, action.data);
-        yield put({
-            type:LOG_IN_CHECK_SUCCESS,
-            data:result.data,
-        })
+        if(result.data == ""){
+            yield put({
+                type:LOG_IN_CHECK_SUCCESS,
+                data:null,
+            })
+        }else{
+            yield put({
+                type:LOG_IN_CHECK_SUCCESS,
+                data:result.data,
+            })
+        }
     }catch (err){
         yield put({
             type: LOG_IN_CHECK_FAILURE,
@@ -191,6 +233,8 @@ function* watchAddEmptyPost(){
     yield takeLatest(LOG_OUT_REQUEST, logout);
     yield takeLatest(UPDATE_POST_REQUEST, updatePost);
     yield takeLatest(LOG_IN_CHECK_REQUEST, loginCheck);
+    yield takeLatest(ADD_COMMENT_REQUEST, addComment);
+    yield takeLatest(DELETE_COMMENT_REQUEST, deleteComment);
 }
 export default function* rootSaga(){
     yield all([

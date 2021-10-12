@@ -98,11 +98,7 @@ const PostContainer = styled.div`
 let heatmapChecked = false;
 
 const Content = () => {
-    useEffect(()=>{
-        dispatch({
-            type:LOAD_POSTS_REQUEST,
-        })
-    },[])
+
 
     useEffect(()=>{
         dispatch({
@@ -111,6 +107,11 @@ const Content = () => {
     },[])
 
     const mainPosts = useSelector((state)=>state.index.mainPosts);
+    useEffect(()=>{
+        dispatch({
+            type:LOAD_POSTS_REQUEST,
+        })
+    },[])
     const menu = (
         <Menu>
             <Menu.Item key="1" icon={<InboxOutlined />}

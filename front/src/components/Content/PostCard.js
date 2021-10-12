@@ -6,9 +6,11 @@ import {useDispatch, useSelector} from "react-redux";
 
 import {deletePostAction, loadPostAction} from "../../reducers";
 import Disease from "./Disease";
-import {FileAddOutlined , DeleteOutlined} from "@ant-design/icons";
+import {FileAddOutlined , DeleteOutlined, CommentOutlined} from "@ant-design/icons";
 import PostCreateForm from "./PostCreateForm";
 import PostEditForm from "./PostEditForm";
+import CommentEditForm from "./CommentEditForm";
+import CommentCard from "./CommentCard";
 
 /*
 [{"postId":205,
@@ -46,6 +48,7 @@ email(pin):"abc@naver.com"*/
     const onClickDelete = () =>{
         setDeletedStatus(true);
         dispatch(deletePostAction(post))
+        setTimeout(function (){dispatch(loadPostAction())}, 200);
     }
     return(
         <div style={{margin : 20 , width : "100%"} }>
@@ -86,7 +89,7 @@ email(pin):"abc@naver.com"*/
                                  {deletedStatus &&
                                  <div style={{fontWeight: "bold" ,fontSize : "20px"}}>
                                      <p></p>
-                                     <Alert type="error" message="삭제 되었습니다! 새로고침 후에 적용됩니다." banner/>
+                                     <Alert type="error" message="삭제 되었습니다!" banner/>
                                  </div>
                                  }
                              </div>
@@ -96,10 +99,16 @@ email(pin):"abc@naver.com"*/
 
                     <Button style={{fontWeight: "bold" ,marginTop : "10px"}}>게시물 삭제</Button>
                 </Popover>}
+                {logInUser != null &&logInUser.nickName == post.userNickName &&
+                <Popover placement="topRight" title={<div><CommentOutlined /> 댓글 달기</div>} content={<CommentEditForm post = {post}/>} trigger="click">
+                    <Button style={{fontWeight: "bold" ,marginTop : "10px"}}> 댓글 달기</Button>
+                </Popover>}
+
 
 
             </Card>
-
+            {post.comments !=null &&
+                post.comments.map((v)=><CommentCard comment={v}/>)}
         </div>
     )
 }

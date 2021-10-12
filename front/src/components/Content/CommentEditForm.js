@@ -3,13 +3,10 @@ import {Alert, Form, Input, Checkbox, Button, Card, Image} from 'antd';
 import styled from 'styled-components';
 import {useDispatch, useSelector} from "react-redux";
 
-import {loadPostAction, SIGN_IN_REQUEST, signInAction, updatePostAction} from '../../reducers/index';
+import {addCommentAction, loadPostAction, SIGN_IN_REQUEST, signInAction, updatePostAction} from '../../reducers/index';
 import Disease from "./Disease";
 import {SaveOutlined} from "@ant-design/icons"
 
-const ErrorMessage = styled.div`
-  color: red;
-`;
 
 const ImageStyleO = {
     width: "224px",
@@ -28,7 +25,7 @@ function getResultArray(diagnosisResult){
     return resultArray;
 }
 
-const PostEditForm = ({post}) => {
+const CommentEditForm = ({post}) => {
     const useInput = (initValue = null) => {
         const [value, setter] = useState(initValue);
         const handler = useCallback((e) => {
@@ -46,11 +43,10 @@ const PostEditForm = ({post}) => {
     const onSubmit = useCallback(() => {
         setSavedStatus(true);
         console.log(content)
-        dispatch(updatePostAction({
+        dispatch(addCommentAction({
             "content" : content,
             "userNickName" : post.userNickName,
-            "originalImageName" : post.originalImageName,
-            "diagnosisResult" : post.diagnosisResult
+            "postId" : post.postId
         }));
         setTimeout(function (){dispatch(loadPostAction())}, 200);
     }, [content, savedStatus]);
@@ -68,25 +64,18 @@ const PostEditForm = ({post}) => {
     return (
         <div>
             <Form onFinish={onSubmit}>
-                <Card style={{ textAlign : "center"}} >
-                    <Image style={ImageStyleO} src={process.env.PUBLIC_URL+post.originalImageName}/>
-                    <Image style={ImageStyleH} src={process.env.PUBLIC_URL+post.heatmapImageName}/>
-                    {
-                        getResultArray(post.diagnosisResult).map((v, index)=><Disease factor = {v} index = {index} key = {index}/>)
-                    }
-                </Card>
-                <div>
+                <Card>
                     <p></p>
-                    <label htmlFor="user-content" style={{fontWeight : "bold"}} placeholder={"내용을 입력하세요."}>분석 결과에 대한 소감을 수정해 주세요!</label>
+                    <label htmlFor="user-content" style={{fontWeight : "bold"}} placeholder={"내용을 입력하세요."}>댓글을 달아 주세요!</label>
                     <br />
                     <Input style={{height : "85px"}} name="user-content" type="content" value={content} required onChange={onChangecontent} />
-                </div>
+                </Card>
                 <p></p>
                 <Button htmlType="submit" type={"dark"} > <SaveOutlined /> 저장</Button>
                 {savedStatus &&
                 <div style={{fontWeight: "bold" ,fontSize : "20px"}}>
                     <p></p>
-                    <Alert type="success" message="수정되었습니다! " banner />
+                    <Alert type="success" message="등록되었습니다! " banner />
                 </div>}
 
             </Form>
@@ -94,4 +83,4 @@ const PostEditForm = ({post}) => {
     );
 };
 
-export default PostEditForm;
+export default CommentEditForm;
