@@ -14,7 +14,14 @@ import javax.persistence.ManyToOne;
 @AllArgsConstructor
 public class CommentDto {
 
+    private Long commentId;
     private String content;
     private String userNickName;
     private Long postId;
+
+    public CommentDto(String content, String userNickName ,Long postId){
+        this.postId = postId;
+        this.content = content;
+        this.userNickName = userNickName;
+    }
 }

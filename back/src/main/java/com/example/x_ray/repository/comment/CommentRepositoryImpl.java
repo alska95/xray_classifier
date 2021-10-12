@@ -7,6 +7,7 @@ import com.example.x_ray.entity.User;
 import com.example.x_ray.repository.post.PostRepository;
 import com.example.x_ray.repository.user.UserRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,28 +17,39 @@ import java.util.List;
 public class CommentRepositoryImpl implements CommentRepository{
 
 
-    final PostRepository postRepository;
     final UserRepository userRepository;
 
     @PersistenceContext
     private EntityManager em;
 
-    public CommentRepositoryImpl(PostRepository postRepository, UserRepository userRepository) {
-        this.postRepository = postRepository;
+    public CommentRepositoryImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
     public List<Comment> getCommentsByPostId(Long postId) {
-        return em.createQuery("select c from Comment c where Post.id =: commentsPostId", Comment.class)
+        return em.createQuery("select c from Comment c where c.post.id =: commentsPostId", Comment.class)
                 .setParameter("commentsPostId", postId)
+                .getResultList();
+    }
+
+    @Override
+    public List<Comment> getCommentsByCommentId(Long commentId) {
+        return em.createQuery("select c from Comment c where  c.id =: commentId", Comment.class)
+                .setParameter("commentId", commentId)
                 .getResultList();
     }
 
     @Override
     public Comment setCommentByPostId(CommentDto commentDto) {
         User user = userRepository.findUser(commentDto.getUserNickName());
-        Post post = postRepository.getPostByPostId(commentDto.getPostId());
+        Post post = null;
+        List<Post> tmp = em.createQuery("select p from Post p where p.id =: id", Post.class)
+                .setParameter("id", commentDto.getPostId())
+                .getResultList();
+        if(tmp!= null)
+            post = tmp.get(0);
+
         Comment comment = new Comment(
                 commentDto.getContent(),
                 user,
@@ -45,5 +57,21 @@ public class CommentRepositoryImpl implements CommentRepository{
         );
         em.persist(comment);
         return comment;
+    }
+
+    @Transactional
+    @Override
+    public void deleteCommentsByPostId(Long postId) {
+        List<Comment> commentsByPostId = getCommentsByPostId(postId);
+        for(int i = 0 ; i < commentsByPostId.size() ;i++){
+            em.remove(commentsByPostId.get(i));
+        }
+    }
+
+    @Override
+    public Comment deleteCommentByCommentId(Long commentId) {
+        em.createQuery("delete from Comment c where c.id =: commentId")
+                .setParameter("commentId", commentId);
+        return null;
     }
 }

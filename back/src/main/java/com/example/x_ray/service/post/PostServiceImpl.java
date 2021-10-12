@@ -34,7 +34,6 @@ public class PostServiceImpl implements PostService{
 
 
     public PostDto postToPostDtoMapper(Post v) {
-        {
             ImageDto imageDto = new ImageDto(
                     v.getImage().getOriginalImageFileName(),
                     v.getImage().getHeatmapImageFileName(),
@@ -64,7 +63,7 @@ public class PostServiceImpl implements PostService{
             );
 
             return postDto;
-        }
+
     }
     @Transactional
     @Override
@@ -109,8 +108,7 @@ public class PostServiceImpl implements PostService{
 
     @Transactional
     @Override
-    public PostDto deleteByPostId(Long id){
-        Post post = postRepository.deletePostById(id);
-        return postToPostDtoMapper(post);
+    public void deleteByPostId(Long id){
+        postRepository.deletePostById(id);
     }
 }
