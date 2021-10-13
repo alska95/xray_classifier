@@ -36,7 +36,7 @@ public class ImageController {
         this.postService = postService;
         this.userService = userService;
     }
-    private String saveDir = "I:\\programming\\xray_classifier\\front\\public\\img\\";
+
 
 
 
@@ -51,29 +51,9 @@ public class ImageController {
         log.info("diagnosis result =[{}]", resultList);
 
         Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-        String dateString = format.format(date);
-        String fileNames[] = new String[2]; // 0: original 1: heatmap
-        String dbSaveNames[] = new String[2];
 
-        String path = saveDir;
-
-        for(int i = 0 ; i < 2 ; i++){
-            fileNames[i] = path+dateString+images.get(i).getOriginalFilename();
-            dbSaveNames[i] = "/img/" + dateString+images.get(i).getOriginalFilename();
-            long fileSize = images.get(i).getSize();
-            log.info("fileNames [{}] = [{}]", i , fileNames[i]);
-            try{
-                images.get(i).transferTo(new File(fileNames[i]));
-            }catch (IllegalStateException e){
-                e.printStackTrace();
-            }catch (IOException e){
-                e.printStackTrace();;
-            }
-        }
-
-        ImageDto imageDto = new ImageDto(userNickName, dbSaveNames[0] , dbSaveNames[1], date);
-        imageService.saveImageName(imageDto);
+        ImageDto imageDto = new ImageDto(userNickName, "" , "", date, resultList);
+        imageService.saveImageName(images, imageDto);
         PostDto postDto = new PostDto(
                 "",
                 resultList,
