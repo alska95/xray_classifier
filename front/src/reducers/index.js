@@ -16,7 +16,7 @@ const initialState = {
     signInDone: false,
     signInSuccess : false,
 
-    logInUser:null,
+    logInUser:{},
     /*
     {nickName:'hwang',email:'abc@naver.com'}
     * */
@@ -270,7 +270,7 @@ const rootReducer = combineReducers({
             case LOG_OUT_SUCCESS:
                 return{
                     ...state,
-                    logInUser: null,
+                    logInUser: {},
                     logOutLoading: false,
                     logOutDone: true,
                 }
@@ -279,6 +279,7 @@ const rootReducer = combineReducers({
                     ...state,
                     logOutLoading: true,
                     logOutDone: false,
+                    logInUser: {},
                 }
 
             case LOG_IN_FAILURE:
@@ -287,6 +288,7 @@ const rootReducer = combineReducers({
                     logInError: action.error,
                     logInLoading: false,
                     logInDone: true,
+                    logInUser: null,
                 }
             case LOG_IN_SUCCESS:
                 return{
@@ -300,7 +302,6 @@ const rootReducer = combineReducers({
                     ...state,
                     logInLoading: true,
                     logInDone: false,
-                    logInFailure : true,
                 }
 
             case SIGN_IN_SUCCESS:

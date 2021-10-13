@@ -47,9 +47,10 @@ public class PostServiceImpl implements PostService{
             List<CommentDto> commentDtos = null;
             if(v.getComments() != null){
                 commentDtos = v.getComments().stream().map(c-> new CommentDto(
+                        c.getId(),
                         c.getContent(),
                         c.getUser().getNickName(),
-                        c.getId()
+                        v.getId()
                 )).collect(Collectors.toList());
             }
 

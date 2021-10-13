@@ -25,7 +25,7 @@ const LoginForm = () => {
     const dispatch = useDispatch();
     const [userNickName, onChangeName] = useInput('');
     const [password, onChangePassword] = useInput('');
-    const logInFailure = useSelector((state)=>state.index.logInFailure)
+    const logInUser = useSelector((state)=>state.index.logInUser)
 
     const onSubmitForm = useCallback(() => {
         console.log(userNickName, password);
@@ -52,7 +52,7 @@ const LoginForm = () => {
             </div>
             <ButtonWrapper>
                 <Button type="primary" htmlType="submit" >로그인</Button>
-                {logInFailure &&
+                {logInUser == null &&
                 <div style={{fontWeight: "bold" ,fontSize : "20px"}}>
                     <p></p>
                     <Alert type="error" message="존재하지 않는 아이디 이거나, 비밀번호가 틀립니다." banner/>

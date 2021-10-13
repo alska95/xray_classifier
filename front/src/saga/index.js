@@ -31,11 +31,11 @@ axios.defaults.baseURL = 'http://localhost:8080'
 axios.defaults.withCredentials = true;
 
 function deleteCommentAPI(data){
-    return axios.data('/comment', data);
+    return axios.delete('/comment/id/' + data);
 }
 function* deleteComment(action){
     try{
-        const result = yield call(addCommentAPI, action.data);
+        yield call(deleteCommentAPI, action.data);
         yield put({
             type:DELETE_COMMENT_SUCCESS,
         })

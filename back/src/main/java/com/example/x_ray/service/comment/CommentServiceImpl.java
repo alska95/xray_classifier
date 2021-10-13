@@ -36,6 +36,14 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public CommentDto addCommentToPost(CommentDto commentDto) {
         Comment comment = commentRepository.setCommentByPostId(commentDto);
-        return commentToCommentDtoMapper(comment);
+        if(comment != null)
+            return commentToCommentDtoMapper(comment);
+        return null;
+    }
+
+    @Transactional
+    @Override
+    public void deleteComment(Long commentId) {
+        commentRepository.deleteCommentByCommentId(commentId);
     }
 }

@@ -6,6 +6,7 @@ import com.example.x_ray.entity.Post;
 import com.example.x_ray.entity.User;
 import com.example.x_ray.repository.post.PostRepository;
 import com.example.x_ray.repository.user.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
+@Slf4j
 public class CommentRepositoryImpl implements CommentRepository{
 
 
@@ -34,10 +36,13 @@ public class CommentRepositoryImpl implements CommentRepository{
     }
 
     @Override
-    public List<Comment> getCommentsByCommentId(Long commentId) {
-        return em.createQuery("select c from Comment c where  c.id =: commentId", Comment.class)
+    public Comment getCommentsByCommentId(Long commentId) {
+        List<Comment> comment = em.createQuery("select c from Comment c where  c.id =: commentId", Comment.class)
                 .setParameter("commentId", commentId)
                 .getResultList();
+        if(comment!= null)
+            return comment.get(0);
+        return null;
     }
 
     @Override
@@ -47,21 +52,25 @@ public class CommentRepositoryImpl implements CommentRepository{
         List<Post> tmp = em.createQuery("select p from Post p where p.id =: id", Post.class)
                 .setParameter("id", commentDto.getPostId())
                 .getResultList();
-        if(tmp!= null)
+        if(tmp!= null){
             post = tmp.get(0);
 
-        Comment comment = new Comment(
-                commentDto.getContent(),
-                user,
-                post
-        );
-        em.persist(comment);
-        return comment;
+            Comment comment = new Comment(
+                    commentDto.getContent(),
+                    user,
+                    post
+            );
+            em.persist(comment);
+            return comment;
+        }
+        return null;
+
     }
 
     @Transactional
     @Override
     public void deleteCommentsByPostId(Long postId) {
+//        em.createQuery("delete from Comment c where c.post.id =: postId ").setParameter("postId" , postId);
         List<Comment> commentsByPostId = getCommentsByPostId(postId);
         for(int i = 0 ; i < commentsByPostId.size() ;i++){
             em.remove(commentsByPostId.get(i));
@@ -69,9 +78,10 @@ public class CommentRepositoryImpl implements CommentRepository{
     }
 
     @Override
-    public Comment deleteCommentByCommentId(Long commentId) {
-        em.createQuery("delete from Comment c where c.id =: commentId")
-                .setParameter("commentId", commentId);
-        return null;
+    public void deleteCommentByCommentId(Long commentId) {
+/*        em.createQuery("delete from Comment c where c.id =: commentId")
+                .setParameter("commentId", commentId);*/
+        Comment comment = getCommentsByCommentId(commentId);
+        em.remove(comment);
     }
 }

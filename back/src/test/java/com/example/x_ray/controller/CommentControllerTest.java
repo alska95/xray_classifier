@@ -101,6 +101,5 @@ public class CommentControllerTest {
 //        log.info("added comments = [{}]" , addedComments.get(0).getContent());
 //        Assertions.assertThat(postComments).isEqualTo(addedComments);
 
-
     }
 }

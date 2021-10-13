@@ -9,6 +9,6 @@ public interface CommentRepository {
     public List<Comment> getCommentsByPostId(Long postId);
     public Comment setCommentByPostId(CommentDto commentDto);
     public void deleteCommentsByPostId(Long postId);
-    public Comment deleteCommentByCommentId(Long commentId);
-    public List<Comment> getCommentsByCommentId(Long commentId);
+    public void deleteCommentByCommentId(Long commentId);
+    public Comment getCommentsByCommentId(Long commentId);
 }
