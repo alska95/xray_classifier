@@ -93,8 +93,7 @@ public class PostController {
     }
 
     @DeleteMapping("/post/id/{postId}")
-    public ResponsePostDto deleteByPostId(@PathVariable Long postId){
+    public void deleteByPostId(@PathVariable Long postId){
         postService.deleteByPostId(postId);
-        return null;
     }
 }

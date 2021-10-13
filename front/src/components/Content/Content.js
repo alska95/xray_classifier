@@ -147,6 +147,7 @@ const Content = () => {
     const targetImage = useSelector((state)=>state.index.image);
     const isLoggedIn = useSelector((state)=>state.index.logInUser);
     const postComponent = useSelector((state)=>state.index.postComponent);
+    const setLogInForm = useSelector((state)=>state.index.setLogInForm);
     const dispatch = useDispatch();
 
 
@@ -250,9 +251,12 @@ const Content = () => {
                     <Button target={"_blank"} style={{color:"white"}} href={"https://github.com/alska95/xray_classifier"} type={"text"}><GithubOutlined  style={{fontSize : "30px"}}/> Sever, Client Code</Button>
                     <p></p>
                     <Button target={"_blank"} style={{color:"white"}} href={"https://www.kaggle.com/kyeonghahwangg/capstone"} type={"text"}><AreaChartOutlined  style={{fontSize : "30px"}}/> Model Code</Button>
+                    <p></p>
+                    <Button target={"_blank"} style={{color:"white"}} href={"https://m.blog.naver.com/rhsalska55"} type={"text"}><UserOutlined  style={{fontSize : "30px"}}/> Blog</Button>
                 </div>
             </MainContentContainer>
             :
+                setLogInForm == true &&
             <LoginForm/>}
 
             <PostContainer>

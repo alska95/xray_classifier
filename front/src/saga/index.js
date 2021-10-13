@@ -61,7 +61,7 @@ function* addComment(action){
     }
 }
 function deletePostAPI(data){
-    return axios.delete('/post/' + data.postId)
+    return axios.delete('/post/id/' + data.postId)
 }
 
 function* deletePost(action){

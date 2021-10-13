@@ -2,6 +2,7 @@ import {combineReducers} from "redux";
 import {act} from "@testing-library/react";
 
 const initialState = {
+    setLogInForm : true,
     loadPostsError: [],
     loadPostsLoading: false,
     loadPostsDone: true,
@@ -16,7 +17,7 @@ const initialState = {
     signInDone: false,
     signInSuccess : false,
 
-    logInUser:{},
+    logInUser:null,
     /*
     {nickName:'hwang',email:'abc@naver.com'}
     * */
@@ -228,14 +229,27 @@ const rootReducer = combineReducers({
                     loginCheckError: action.error,
                     loginCheckLoading:false,
                     loginCheckDone:true,
+                    setLogInForm : true,
                 }
             case LOG_IN_CHECK_SUCCESS:
-                return{
-                    ...state,
-                    logInUser: action.data,
-                    loginCheckLoading:false,
-                    loginCheckDone:true,
+                if(action.data == null){
+                    return{
+                        ...state,
+                        setLogInForm : true,
+                        logInUser: action.data,
+                        loginCheckLoading:false,
+                        loginCheckDone:true,
+                    }
                 }
+                else
+                    return{
+                        ...state,
+                        setLogInForm : false,
+                        logInUser: action.data,
+                        loginCheckLoading:false,
+                        loginCheckDone:true,
+                    }
+
             case LOG_IN_CHECK_REQUEST:
                 return{
                     ...state,
@@ -266,29 +280,32 @@ const rootReducer = combineReducers({
                     logOutError: action.error,
                     logOutLoading: false,
                     logOutDone: true,
+
                 }
             case LOG_OUT_SUCCESS:
                 return{
                     ...state,
-                    logInUser: {},
+                    logInUser: null,
                     logOutLoading: false,
                     logOutDone: true,
+                    setLogInForm : true,
                 }
             case LOG_OUT_REQUEST:
                 return{
                     ...state,
                     logOutLoading: true,
                     logOutDone: false,
-                    logInUser: {},
                 }
 
             case LOG_IN_FAILURE:
                 return{
                     ...state,
+                    logInUser: null,
                     logInError: action.error,
                     logInLoading: false,
                     logInDone: true,
-                    logInUser: null,
+                    logInFailure: true,
+                    setLogInForm : true,
                 }
             case LOG_IN_SUCCESS:
                 return{
@@ -296,12 +313,15 @@ const rootReducer = combineReducers({
                     logInUser: action.data,
                     logInLoading: false,
                     logInDone: true,
+                    logInFailure: false,
+                    setLogInForm : false,
                 }
             case LOG_IN_REQUEST:
                 return{
                     ...state,
                     logInLoading: true,
                     logInDone: false,
+                    logInFailure : false,
                 }
 
             case SIGN_IN_SUCCESS:

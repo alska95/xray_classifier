@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Alert, Avatar, Button, Card, Popover} from "antd";
 import {CommentOutlined, DeleteOutlined} from "@ant-design/icons";
-import {deleteCommentAction, deletePostAction} from "../../reducers";
+import {deleteCommentAction, deletePostAction, loadPostAction} from "../../reducers";
 import {useDispatch, useSelector} from "react-redux";
 
 
@@ -13,7 +13,8 @@ const CommentCard = ({comment}) =>{
 
     const onClickDelete = () =>{
         setDeletedStatus(true);
-        dispatch(deleteCommentAction(comment))
+        dispatch(deleteCommentAction(comment.commentId))
+        setTimeout(function(){dispatch(loadPostAction())}, 200);
     }
 
     return (
@@ -29,6 +30,7 @@ const CommentCard = ({comment}) =>{
                         </div>
                     }
                 />
+                {logInUser != null && logInUser.nickName == comment.userNickName &&
                 <Popover placement="topRight"
                          content={
                              <div>
@@ -47,7 +49,7 @@ const CommentCard = ({comment}) =>{
                          trigger="click">
 
                     <Button style={{fontWeight: "bold"  , marginLeft : "90%"}}>댓글 삭제</Button>
-                </Popover>
+                </Popover>}
             </Card>
 
         </>
