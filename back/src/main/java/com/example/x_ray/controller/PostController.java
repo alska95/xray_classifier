@@ -80,7 +80,6 @@ public class PostController {
         List<PostDto> postDtos = postService.getPostByNickName(userNickName);
         List<ResponsePostDto> responsePostDtos = postDtos.stream().map( v-> postDtoToResponseMapper(v)
         ).collect(Collectors.toList());
-
         return responsePostDtos;
     }
 
