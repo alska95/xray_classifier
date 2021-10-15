@@ -70,11 +70,13 @@ public class CommentRepositoryImpl implements CommentRepository{
     @Transactional
     @Override
     public void deleteCommentsByPostId(Long postId) {
-//        em.createQuery("delete from Comment c where c.post.id =: postId ").setParameter("postId" , postId);
-        List<Comment> commentsByPostId = getCommentsByPostId(postId);
+        em.createQuery("delete from Comment c where c.post.id =: postId ")
+                .setParameter("postId" , postId)
+                .executeUpdate();
+/*        List<Comment> commentsByPostId = getCommentsByPostId(postId);
         for(int i = 0 ; i < commentsByPostId.size() ;i++){
             em.remove(commentsByPostId.get(i));
-        }
+        }*/
     }
 
     @Override
