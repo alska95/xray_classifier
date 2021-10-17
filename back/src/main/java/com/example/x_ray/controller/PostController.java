@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +41,15 @@ public class PostController {
                 v.getDiagnosisResult(),
                 v.getComments()
         );
+    }
+
+    @GetMapping("/health-check")
+    public String status(HttpServletRequest request){
+        return "It's working in user service on Port : "
+                + request.getServerPort() + "\n from request : "
+                + request.getLocalPort()
+                + "\n session : "
+                + request.getSession(false);
     }
 
     @PutMapping("/post")
