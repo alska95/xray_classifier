@@ -1,15 +1,18 @@
 package com.example.x_ray.repository.user;
 
 import com.example.x_ray.dto.user.UserDto;
+import com.example.x_ray.entity.QUser;
 import com.example.x_ray.entity.User;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import java.util.Date;
 import java.util.List;
+
+import static com.example.x_ray.entity.QUser.*;
 
 @Slf4j
 @Repository
@@ -17,6 +20,11 @@ public class UserRepositoryImpl implements UserRepository{
 
     @PersistenceContext
     private EntityManager em;
+    final JPAQueryFactory queryFactory;
+
+    public UserRepositoryImpl(JPAQueryFactory queryFactory) {
+        this.queryFactory = queryFactory;
+    }
 
     @Override
     public User createUser(UserDto userDto) {
@@ -45,18 +53,25 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     public User findUser(String nickName){
-        List<User> result = em.createQuery("select u from User u where u.nickName like : nickName", User.class)
-                .setParameter("nickName", nickName)
-                .getResultList();
-        if(result.isEmpty())
-            return null;
-        else
-            return result.get(0);
+        return queryFactory
+                .selectFrom(QUser.user)
+                .where(QUser.user.nickName.eq(nickName))
+                .fetchFirst();
+//        List<User> result = em.createQuery("select u from User u where u.nickName like : nickName", User.class)
+//                .setParameter("nickName", nickName)
+//                .getResultList();
+//        if(result.isEmpty())
+//            return null;
+//        else
+//            return result.get(0);
     }
 
     @Override
     public List<User> findAll() {
-        return em.createQuery("select u from User u", User.class)
-                .getResultList();
+        return queryFactory
+                .selectFrom(user)
+                .fetch();
+//        return em.createQuery("select u from User u", User.class)
+//                .getResultList();
     }
 }
