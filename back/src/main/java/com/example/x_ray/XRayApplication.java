@@ -1,13 +1,15 @@
 package com.example.x_ray;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+
+import javax.persistence.EntityManager;
 
 @SpringBootApplication
 @EnableWebSecurity
@@ -24,6 +26,11 @@ public class XRayApplication {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
         multipartResolver.setMaxUploadSize(FILE_MAX_UPLOAD_SIZE);
         return multipartResolver;
+    }
+
+    @Bean
+    public JPAQueryFactory queryFactory(EntityManager em){
+        return new JPAQueryFactory(em);
     }
 
     @Bean
