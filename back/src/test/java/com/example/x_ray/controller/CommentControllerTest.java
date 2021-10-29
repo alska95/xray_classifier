@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +49,7 @@ public class CommentControllerTest {
 
 
     @Test
+    @Rollback
     public void 포스트생성후찾아서댓글달기(){
         //given -- 포스트 생성
         String content = "이것은 생성 테스트 입니다.";

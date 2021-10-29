@@ -9,4 +9,5 @@ import java.util.List;
 public interface ImageRepository {
     public void saveImages(ImageDto imageDto);
     public Image getImage(String originalImageName);
+    public Image findImageById(Long id);
 }

@@ -82,4 +82,14 @@ public class ImageController {
         );
         return responseImageDto;
     }
+
+    @GetMapping("/image/id/{id}")
+    public ResponseImageDto findImageById(@PathVariable Long id){
+        ImageDto image = imageService.findImageById(id);
+        ResponseImageDto responseImageDto = new ResponseImageDto(
+                image.getOriginalImageFileName(),
+                image.getHeatmapImageFileName()
+        );
+        return responseImageDto;
+    }
 }

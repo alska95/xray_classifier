@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.mock.web.MockMultipartHttpServletRequest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,7 @@ public class ImageControllerTest {
     private UserController userController;
 
     @Test
+    @Rollback
     public void 분석완료후이미지와게시물등록() throws IOException {
         //given
         MockHttpServletRequest loginRequest = new MockHttpServletRequest();
@@ -58,6 +60,7 @@ public class ImageControllerTest {
         request.addFile(heatMapFile);
         request.addParameter("src", "is working?");
         request.addParameter("userNickName", "hwang");
+        request.addParameter("result" , "0.0342452,0.9891014,0.0088289,0.0015494,0.2037666,0.0155353,0.0124964,0.0077972,0.0700025,0.0085904,0.0319604,0.0224845,0.0026027,0.004623");
 
 
         //when

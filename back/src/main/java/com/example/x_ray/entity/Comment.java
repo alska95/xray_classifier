@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor
 public class Comment {
-
     @Id @GeneratedValue
     @Column(name = "comment_id")
     private Long id;
