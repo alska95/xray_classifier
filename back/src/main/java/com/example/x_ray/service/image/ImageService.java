@@ -9,4 +9,5 @@ import java.util.List;
 public interface ImageService {
     public void saveImageName(List<MultipartFile> images,  ImageDto imageDto);
     public ImageDto getImageByImageName(String originalImageName);
+    public ImageDto findImageById(Long id);
 }

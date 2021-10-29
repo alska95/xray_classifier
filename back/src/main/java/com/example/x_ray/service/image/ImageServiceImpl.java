@@ -26,6 +26,14 @@ public class ImageServiceImpl implements ImageService{
         this.imageRepository = imageRepository;
     }
 
+    private ImageDto imageToImageDtoMapper(Image image){
+        return new ImageDto(
+                image.getUser().getNickName(),
+                image.getOriginalImageFileName(),
+                image.getHeatmapImageFileName(),
+                image.getCreatedDate());
+    }
+
     @Transactional
     @Override
     public void saveImageName(List<MultipartFile> images , ImageDto imageDto) {
@@ -103,16 +111,18 @@ public class ImageServiceImpl implements ImageService{
 
     }
 
+
     @Transactional
     @Override
     public ImageDto getImageByImageName(String originalImageName) {
         Image image = imageRepository.getImage(originalImageName);
-        ImageDto dto  = new ImageDto(
-                image.getUser().getNickName(),
-                image.getOriginalImageFileName(),
-                image.getHeatmapImageFileName(),
-                image.getCreatedDate()
-        );
+        ImageDto dto  = imageToImageDtoMapper(image);
         return dto;
+    }
+
+    @Override
+    public ImageDto findImageById(Long id) {
+        Image imageById = imageRepository.findImageById(id);
+        return imageToImageDtoMapper(imageById);
     }
 }

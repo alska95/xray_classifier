@@ -48,4 +48,10 @@ public class ImageRepositoryImpl implements ImageRepository{
 //                .setParameter("originalImageName" , originalImageName)
 //                .getResultList().get(0);
     }
+
+    @Override
+    public Image findImageById(Long id) {
+        return queryFactory.selectFrom(image)
+                .where(image.id.eq(id)).fetchFirst();
+    }
 }

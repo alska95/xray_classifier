@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +36,7 @@ public class PostControllerTest {
     private ImageService imageService;
 
     @Test
+    @Rollback
     public void 포스트생성테스트(){
         //given
         String content = "이것은 생성 테스트 입니다.";
@@ -69,6 +71,7 @@ public class PostControllerTest {
     }
 
     @Test
+    @Rollback
     public void 유저가_가지고_있는_포스트_가져오기(){
         //given
         String userName = "hwang";
@@ -78,6 +81,7 @@ public class PostControllerTest {
         log.info("유저가 가지고 있는 포스트 개수 = [{}]" , postByUserNickName.size());
     }
     @Test
+    @Rollback
     public void 포스트업데이트테스트(){
         //given
         String content = "이것은 생성 테스트 입니다.";
