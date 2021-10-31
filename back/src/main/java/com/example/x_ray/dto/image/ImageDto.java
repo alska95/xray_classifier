@@ -19,12 +19,12 @@ public class ImageDto {
         this.userNickName = userNickName;
     }
 
-    public ImageDto(String userNickName, String originalImageFileName, String heatmapImageFileName, Date createdDate, String diseaseName) {
+    public ImageDto(String userNickName, String originalImageFileName, String heatmapImageFileName, Date createdDate, String diagnosisResult) {
         this.userNickName = userNickName;
         this.originalImageFileName = originalImageFileName;
         this.heatmapImageFileName = heatmapImageFileName;
         this.createdDate = createdDate;
-        this.diseaseName = diseaseName;
+        this.diagnosisResult = diagnosisResult;
     }
 
     public ImageDto(String originalImageFileName, String heatmapImageFileName, Date createdDate) {
