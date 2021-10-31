@@ -1,16 +1,14 @@
 
 # X-ray Classifier - v2
 
-:link: [서비스 링크](http://ec2-3-133-106-136.us-east-2.compute.amazonaws.com:3000/)
-
-Aws를 이용하여 우분투에서 배포될 예정입니다.
+:link: [서비스 링크](http://3.144.200.16:3000/)(이용 가능)
 
 ---
 
 
 ## 사용된 기술
 
-***Spring Boot |  Spring Security | JUnit | JPA | H2DataBase  
+***Spring Boot |  Spring Security | JUnit | JPA | QueryDsl | H2DataBase  
 React | Redux | Saga | Node.js  
 Antd  
 TensorFlow .py | TensorFlow.js | SkLearn***
@@ -115,6 +113,22 @@ TensorFlow .py | TensorFlow.js | SkLearn***
 
 --- 
 
+## 검색기능
+
+현재 Api로만 구현 되어 있습니다.
+```
+url : http://3.144.200.16:8080/post/condition
+request형식 {
+    String type;
+    String userName;
+    String diagnosisResult;
+    Date createdDateStart;
+    Date createdDateEnd;
+}
+type : "all", "result", "name"
+null입력, 미입력시 조건이 무시됨.
+```
+---
 
 ## 데이터 구조 :minidisc: 
 
