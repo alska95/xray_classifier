@@ -26,6 +26,8 @@ function getResultArray(diagnosisResult){
 }
 
 const CommentEditForm = ({post}) => {
+
+    const loginUser = useSelector((state)=>state.index.logInUser)
     const useInput = (initValue = null) => {
         const [value, setter] = useState(initValue);
         const handler = useCallback((e) => {
@@ -45,7 +47,7 @@ const CommentEditForm = ({post}) => {
         console.log(content)
         dispatch(addCommentAction({
             "content" : content,
-            "userNickName" : post.userNickName,
+            "userNickName" : loginUser.nickName,
             "postId" : post.postId
         }));
         setTimeout(function (){dispatch(loadPostAction())}, 200);

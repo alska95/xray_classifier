@@ -27,6 +27,7 @@ import {
     DELETE_POST_REQUEST,
     ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE, ADD_COMMENT_REQUEST, DELETE_COMMENT_SUCCESS, DELETE_COMMENT_REQUEST
 } from "../reducers/index"
+/*http://3.144.200.16:8000*/
 axios.defaults.baseURL = 'http://localhost:8080'
 axios.defaults.withCredentials = true;
 

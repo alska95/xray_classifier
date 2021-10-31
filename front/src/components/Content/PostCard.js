@@ -99,7 +99,7 @@ email(pin):"abc@naver.com"*/
 
                     <Button style={{fontWeight: "bold" ,marginTop : "10px"}}>게시물 삭제</Button>
                 </Popover>}
-                {logInUser != null &&logInUser.nickName == post.userNickName &&
+                {logInUser != null &&
                 <Popover placement="topRight" title={<div><CommentOutlined /> 댓글 달기</div>} content={<CommentEditForm post = {post}/>} trigger="click">
                     <Button style={{fontWeight: "bold" ,marginTop : "10px"}}> 댓글 달기</Button>
                 </Popover>}
