@@ -73,11 +73,15 @@ public class ImageServiceImpl implements ImageService{
             sb.append(ConstVariable.DISEASE_LABEL[resultList.get(0).index]);
             sb.append("/");
             for(int i = 0 ;i < resultList.size() ; i++){
-                sb.append(ConstVariable.DISEASE_LABEL[resultList.get(i).index]);
+                String targetDisease =ConstVariable.DISEASE_LABEL[resultList.get(i).index];
+                if(i == 0)
+                    imageDto.setDiseaseName(targetDisease);
+                sb.append(targetDisease);
                 sb.append("_");
             }
         }else{
             sb.append("/noFound/");
+            imageDto.setDiseaseName("noFound");
         }
 
 
@@ -85,6 +89,7 @@ public class ImageServiceImpl implements ImageService{
 
         String imageNames[] = new String[2];
         String saveDir = "I:\\programming\\xray_classifier\\front\\public";
+//        String saveDir = "C:\\Users\\Administrator\\Desktop\\xray\\xray_classifier\\front\\public\\img";
         imageNames[0] = sb.toString()+images.get(0).getOriginalFilename();
         imageNames[1] = sb.toString()+images.get(1).getOriginalFilename();
         imageDto.setOriginalImageFileName(imageNames[0]);

@@ -15,6 +15,7 @@ public class Image {
 
     private String originalImageFileName;
     private String heatmapImageFileName;
+    private String diseaseName;
     private Date createdDate;
 
     @ManyToOne(fetch =FetchType.LAZY)

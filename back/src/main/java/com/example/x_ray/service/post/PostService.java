@@ -1,7 +1,7 @@
 package com.example.x_ray.service.post;
 
 import com.example.x_ray.dto.post.PostDto;
-import org.springframework.stereotype.Service;
+import com.example.x_ray.dto.post.PostSearchConditionDto;
 
 import java.util.List;
 
@@ -12,6 +12,7 @@ public interface PostService {
     public PostDto updatePost(PostDto postDto);
     public PostDto getPostById(Long id);
     public void deleteByPostId(Long id);
+    List<PostDto> searchByCondition(PostSearchConditionDto condition);
 
 
 }

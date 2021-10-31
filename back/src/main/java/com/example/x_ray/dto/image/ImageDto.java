@@ -13,9 +13,18 @@ public class ImageDto {
     private String heatmapImageFileName;
     private Date createdDate;
     private String diagnosisResult;
+    private String diseaseName;
 
     public ImageDto(String userNickName){
         this.userNickName = userNickName;
+    }
+
+    public ImageDto(String userNickName, String originalImageFileName, String heatmapImageFileName, Date createdDate, String diseaseName) {
+        this.userNickName = userNickName;
+        this.originalImageFileName = originalImageFileName;
+        this.heatmapImageFileName = heatmapImageFileName;
+        this.createdDate = createdDate;
+        this.diseaseName = diseaseName;
     }
 
     public ImageDto(String originalImageFileName, String heatmapImageFileName, Date createdDate) {

@@ -3,6 +3,7 @@ package com.example.x_ray.service.post;
 import com.example.x_ray.dto.comment.CommentDto;
 import com.example.x_ray.dto.image.ImageDto;
 import com.example.x_ray.dto.post.PostDto;
+import com.example.x_ray.dto.post.PostSearchConditionDto;
 import com.example.x_ray.dto.user.UserDto;
 import com.example.x_ray.entity.Post;
 import com.example.x_ray.repository.post.PostRepository;
@@ -112,4 +113,11 @@ public class PostServiceImpl implements PostService{
     public void deleteByPostId(Long id){
         postRepository.deletePostById(id);
     }
+
+    @Override
+    public List<PostDto> searchByCondition(PostSearchConditionDto condition) {
+        List<Post> byCondition = postRepository.findByCondition(condition);
+        return byCondition.stream().map(v -> postToPostDtoMapper(v)).collect(Collectors.toList());
+    }
+
 }

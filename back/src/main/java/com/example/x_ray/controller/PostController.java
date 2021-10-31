@@ -2,6 +2,7 @@ package com.example.x_ray.controller;
 
 import com.example.x_ray.dto.comment.CommentDto;
 import com.example.x_ray.dto.post.PostDto;
+import com.example.x_ray.dto.post.PostSearchConditionDto;
 import com.example.x_ray.dto.post.RequestPostDto;
 import com.example.x_ray.dto.post.ResponsePostDto;
 import com.example.x_ray.service.comment.CommentService;
@@ -104,5 +105,13 @@ public class PostController {
     @DeleteMapping("/post/id/{postId}")
     public void deleteByPostId(@PathVariable Long postId){
         postService.deleteByPostId(postId);
+    }
+
+    @PostMapping("/post/condition")
+    public List<ResponsePostDto> searchByCondition(@RequestBody PostSearchConditionDto condition){
+        List<PostDto> postDtoList = postService.searchByCondition(condition);
+        List<ResponsePostDto> responsePostDtos = postDtoList.stream().map( v-> postDtoToResponseMapper(v))
+                .collect(Collectors.toList());
+        return responsePostDtos;
     }
 }

@@ -1,24 +1,26 @@
 package com.example.x_ray.repository.post;
 
 import com.example.x_ray.dto.post.PostDto;
+import com.example.x_ray.dto.post.PostSearchConditionDto;
 import com.example.x_ray.entity.*;
-import com.example.x_ray.entity.QImage;
-import com.example.x_ray.entity.QPost;
 import com.example.x_ray.entity.QUser;
 import com.example.x_ray.repository.comment.CommentRepository;
 import com.example.x_ray.repository.image.ImageRepository;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.x_ray.entity.QImage.*;
 import static com.example.x_ray.entity.QPost.*;
 import static com.example.x_ray.entity.QUser.*;
+import static org.springframework.util.StringUtils.*;
 
 @Slf4j
 @Repository
@@ -135,5 +137,64 @@ public class PostRepositoryImpl implements PostRepository {
         commentRepository.deleteCommentsByPostId(id);
         log.info("post = [{}] " ,post.getComments());
         em.remove(post);
+    }
+
+    /**
+     *     private String type;
+     *     private String userName;
+     *     private String diagnosisResult;
+     *     private Date createdDateStart;
+     *     private Date createdDateEnd;
+     * }
+     * */
+
+    @Override
+    public List<Post> findByCondition(PostSearchConditionDto condition) {
+        JPAQuery<Post> postJPAQuery = queryFactory.selectFrom(post);
+
+        if(condition.getType().equals("name"))
+            return postJPAQuery
+                    .leftJoin(post.user(), user)
+                    .where(dateBtw(condition), nameEq(condition))
+                    .fetch();
+        if(condition.getType().equals("result"))
+            return postJPAQuery
+                    .leftJoin(post.image() , image)
+                    .where(dateBtw(condition), resultEq(condition))
+                    .fetch();
+        else{ //condition.getType.equals("all") //모든 field 사용자 입력값으로 통일됨.
+            return postJPAQuery
+                    .leftJoin(post.image(),image)
+                    .leftJoin(post.user(), user)
+                    .where(searchAll(condition), dateBtw(condition))
+                    .fetch();
+        }
+    }
+
+    private BooleanExpression searchAll(PostSearchConditionDto condition){
+        if(hasText(condition.getDiagnosisResult())){
+            StringBuilder sb =new StringBuilder();
+            String nameCondition = sb.append("%").append(condition.getUserName()).append("%").toString();
+            return user.nickName.like(nameCondition).or(image.diseaseName.eq(condition.getDiagnosisResult()));
+        }
+        return null;
+    }
+    private BooleanExpression resultEq(PostSearchConditionDto condition){
+        return hasText(condition.getDiagnosisResult()) ? image.diseaseName.eq(condition.getDiagnosisResult()) : null;
+    }
+
+    private BooleanExpression nameEq(PostSearchConditionDto condition){
+        return hasText(condition.getUserName()) ? user.nickName.eq(condition.getUserName()) : null;
+    }
+
+    private BooleanExpression dateBtw(PostSearchConditionDto condition){
+        if(condition.getCreatedDateStart() != null && condition.getCreatedDateEnd() != null)
+            return image.createdDate.between(condition.getCreatedDateStart() , condition.getCreatedDateEnd());
+        else if(condition.getCreatedDateEnd() != null)
+            return image.createdDate.goe(condition.getCreatedDateStart());
+        else if(condition.getCreatedDateStart() != null)
+            return image.createdDate.loe(condition.getCreatedDateEnd());
+        else
+            return null;
     }
 }

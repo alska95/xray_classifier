@@ -35,6 +35,7 @@ public class ImageRepositoryImpl implements ImageRepository{
         image.setHeatmapImageFileName(imageDto.getHeatmapImageFileName());
         image.setOriginalImageFileName(imageDto.getOriginalImageFileName());
         image.setCreatedDate(imageDto.getCreatedDate());
+        image.setDiseaseName(imageDto.getDiseaseName());
         em.persist(image);
     }
 
