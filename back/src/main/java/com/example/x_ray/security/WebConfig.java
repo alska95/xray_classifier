@@ -11,9 +11,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     private final PostCheckInterceptor postCheckInterceptor;
+    private final CommentCheckInterceptor commentCheckInterceptor;
 
-    public WebConfig(PostCheckInterceptor postCheckInterceptor) {
+    public WebConfig(PostCheckInterceptor postCheckInterceptor, CommentCheckInterceptor commentCheckInterceptor) {
         this.postCheckInterceptor = postCheckInterceptor;
+        this.commentCheckInterceptor = commentCheckInterceptor;
     }
 
     @Override
@@ -33,6 +35,9 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(postCheckInterceptor)
                 .order(2)
                 .addPathPatterns("/post","/post/**");
+        registry.addInterceptor(commentCheckInterceptor)
+                .order(3)
+                .addPathPatterns("/comment/**");
     }
 
 }
