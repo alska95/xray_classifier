@@ -151,27 +151,29 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public List<Post> findByCondition(PostSearchConditionDto condition) {
         JPAQuery<Post> postJPAQuery = queryFactory.selectFrom(post);
-
-        if(condition.getType().equals("name"))
-            return postJPAQuery
-                    .leftJoin(post.user(), user)
-                    .where(dateBtw(condition), nameEq(condition))
-                    .fetch();
-        if(condition.getType().equals("result"))
-            return postJPAQuery
-                    .leftJoin(post.image() , image)
-                    .where(dateBtw(condition), resultEq(condition))
-                    .fetch();
-        else{ //condition.getType.equals("all") //모든 field 사용자 입력값으로 통일됨.
-            return postJPAQuery
+        log.info("condition type = [{}]" , condition.getType());
+        if(condition.getType() != null){
+            if(condition.getType().equals("name"))
+                return postJPAQuery
+                        .leftJoin(post.user(), user)
+                        .where(dateBtw(condition), nameEq(condition))
+                        .fetch();
+            if(condition.getType().equals("result"))
+                return postJPAQuery
+                        .leftJoin(post.image() , image)
+                        .where(dateBtw(condition), resultEq(condition))
+                        .fetch();
+        }
+         //condition.getType.equals("all") //모든 field 사용자 입력값으로 통일됨.
+        return postJPAQuery
                     .leftJoin(post.image(),image)
                     .leftJoin(post.user(), user)
                     .where(searchAll(condition), dateBtw(condition))
                     .fetch();
-        }
     }
 
     private BooleanExpression searchAll(PostSearchConditionDto condition){
+
         if(hasText(condition.getDiagnosisResult())){
             StringBuilder sb =new StringBuilder();
             String nameCondition = sb.append("%").append(condition.getUserName()).append("%").toString();

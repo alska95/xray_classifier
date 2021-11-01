@@ -1,5 +1,6 @@
 package com.example.x_ray;
 
+import com.example.x_ray.security.PostCheckInterceptor;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -27,6 +28,9 @@ public class XRayApplication {
         multipartResolver.setMaxUploadSize(FILE_MAX_UPLOAD_SIZE);
         return multipartResolver;
     }
+
+
+
 
     @Bean
     public JPAQueryFactory queryFactory(EntityManager em){
